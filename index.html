@@ -75,19 +75,29 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-记一次网卡修改及nmcli 使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-记一次网卡修改及nmcli-使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli%20%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2025-09-06T04:41:55.942Z" itemprop="datePublished">2025-09-06</time>
+    <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2025-09-06T05:47:42.000Z" itemprop="datePublished">2025-09-06</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/">记一次网卡修改及nmcli 使用</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="记一次网卡修改及nmcli-使用"><a href="#记一次网卡修改及nmcli-使用" class="headerlink" title="记一次网卡修改及nmcli 使用"></a>记一次网卡修改及nmcli 使用</h1><p>因需要修改系统参数网卡队列，需要将其机器需要重启。目前发现集群一共100多台机器，重启其中一台master机器后，一直处于notReady状态。<br>原因是因为改机器为双网卡，但是因为网卡名未固定。造成使用为固定的网卡未启动成功。<br>目前为<br>解决思路：</p>
+        <p>因需要修改系统参数网卡队列，需要将其机器需要重启。目前发现集群一共100多台机器，重启其中一台master机器后，一直处于notReady状态。<br>原因是因为改机器为双网卡，但是因为网卡名未固定。造成使用为固定的网卡未启动成功。<br>目前为<br>解决思路：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 查询100多台机器，/etc/udev/rules.d/70-persistent-net.rules  文件是否都含2条记录</span><br><span class="line"></span><br><span class="line">2.针对未含的节点操作，添加该条信息，网卡名不可修改，要与原先重启前一致。添加后如下：</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:98:70:9c&quot;, NAME=&quot;ens3&quot;</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:f5:e0:f1&quot;, NAME=&quot;ens10&quot; #需要新增的网卡名</span><br></pre></td></tr></table></figure>
 
 <p>拓展：<br>因加的网卡名变更为ens4，造成网卡一直up不起来。</p>
@@ -101,7 +111,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli%20%E4%BD%BF%E7%94%A8/" data-id="cmf7s95yd0001wgvk50hd82jq" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/" data-id="cmf7vqtg60001q8vk1nqdbgz5" data-title="记一次网卡修改及nmcli 使用" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -135,13 +145,64 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h1><p>目前是开启我博客的开始之路</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CHUXUEZHE8210/article/details/146291775">于 Hexo + GitHub Pages 的搭建个人博客网站的详细教程</a></p>
+        <p>欢迎来到我的博客！</p>
+<p>一下是开启我博客的开始之路</p>
+<h2 id="一、创建"><a href="#一、创建" class="headerlink" title="一、创建"></a>一、创建</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CHUXUEZHE8210/article/details/146291775">于 Hexo + GitHub Pages 的搭建个人博客网站的详细教程</a></p>
+<h2 id="二、更新"><a href="#二、更新" class="headerlink" title="二、更新"></a>二、更新</h2><p>博客的<strong>源码</strong>（Markdown文章、主题、配置等）通常存放在一个GitHub仓库中，而通过Hexo生成的<strong>静态网站文件</strong>则部署到GitHub Pages（通常是 <code>username.github.io</code> 仓库的特定分支，如 <code>gh-pages</code> 或 <code>main</code>）。</p>
+<hr>
+<h3 id="📝-手动更新发布流程（本地完成）"><a href="#📝-手动更新发布流程（本地完成）" class="headerlink" title="📝 手动更新发布流程（本地完成）"></a>📝 手动更新发布流程（本地完成）</h3><p>这种方式需要在计算机上配置好Hexo环境（Node.js, Git, Hexo等）。</p>
+<ol>
+<li><p><strong>新建博文</strong>：使用命令创建新的Markdown文件。</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章题目&quot;  # 或 hexo n &quot;文章题目&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这会在 <code>source/_posts</code> 目录下生成一个 <code>文章题目.md</code> 文件。</p>
+</li>
+<li><p><strong>编写&#x2F;更新内容</strong>：用文本编辑器（如VS Code）编辑生成的Markdown文件。</p>
+</li>
+<li><p><strong>生成静态文件</strong>：在Hexo站点根目录下执行命令，将Markdown转换为HTML等静态资源。</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate  # 或 hexo g</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果需要先<strong>清除缓存</strong>和旧文件，可以使用：</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate</span><br><span class="line">```:cite[1]</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><strong>本地预览（可选但推荐）</strong>：在部署前，最好先在本地启动服务器检查效果。</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server  # 或 hexo s </span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后在浏览器中访问 <code>http://localhost:4000</code> 查看。</p>
+</li>
+<li><p><strong>部署到GitHub Pages</strong>：将生成好的静态文件（通常在 <code>public</code> 目录）推送至GitHub仓库的特定分支。</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy  # 或 hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+<p>常用的便捷组合命令是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">为了能使用 `hexo deploy` 命令，您需要：</span><br><span class="line">在Hexo的**站点配置文件** (`_config.yml`) 中正确设置部署信息:</span><br><span class="line">    deploy:</span><br><span class="line">      type: git</span><br><span class="line">      repo: &lt;您的GitHub仓库SSH或HTTPS地址&gt;  # 例如 git@github.com:username/username.github.io.git</span><br><span class="line">      branch: &lt;部署分支，如gh-pages或main&gt;</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确保已安装 <strong>hexo-deployer-git</strong> 插件:cite[4]:cite[6]：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>推送源码（重要）</strong>：<code>hexo deploy</code> 通常只部署生成的静态文件。别忘了将您的<strong>博客源码</strong>（Markdown文章、主题、配置文件等）也推送到GitHub仓库的另一个分支（例如 <code>source</code> 或 <code>hexo-source</code>），以便备份和在多设备间同步。</p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="cmf7s95y80000wgvkhen5796c" data-title="我的第一篇博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="cmf7vqtfw0000q8vk0kbth9mg" data-title="我的第一篇博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -184,7 +245,7 @@
       <ul>
         
           <li>
-            <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli%20%E4%BD%BF%E7%94%A8/">(no title)</a>
+            <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/">记一次网卡修改及nmcli 使用</a>
           </li>
         
           <li>
