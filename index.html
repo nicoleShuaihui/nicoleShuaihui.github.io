@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>我的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=sans-serif:300,300italic,400,400italic,700,700italic|Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
   <meta property="og:type" content="website">
 <meta property="og:title" content="我的博客">
 <meta property="og:url" content="http://example.com/index.html">
@@ -13,95 +27,185 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="帅汇">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="我的博客" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>我的博客</title>
   
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">我的博客</a>
-      </h1>
+          <div class="content index posts-expand">
+            
       
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">记录技术点滴</a>
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">记一次网卡修改及nmcli 使用</a>
         </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-记一次网卡修改及nmcli-使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2025-09-06T05:47:42.000Z" itemprop="datePublished">2025-09-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/">记一次网卡修改及nmcli 使用</a>
-    </h1>
-  
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
+              <time title="创建时间：2025-09-06 13:47:42 / 修改时间：15:44:42" itemprop="dateCreated datePublished" datetime="2025-09-06T13:47:42+08:00">2025-09-06</time>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>因需要修改系统参数网卡队列，需要将其机器需要重启。目前发现集群一共100多台机器，重启其中一台master机器后，一直处于notReady状态。<br>原因是因为改机器为双网卡，但是因为网卡名未固定。造成使用为固定的网卡未启动成功。<br>目前为<br>解决思路：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 查询100多台机器，/etc/udev/rules.d/70-persistent-net.rules  文件是否都含2条记录</span><br><span class="line"></span><br><span class="line">2.针对未含的节点操作，添加该条信息，网卡名不可修改，要与原先重启前一致。添加后如下：</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:98:70:9c&quot;, NAME=&quot;ens3&quot;</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:f5:e0:f1&quot;, NAME=&quot;ens10&quot; #需要新增的网卡名</span><br></pre></td></tr></table></figure>
+          <p>因需要修改系统参数网卡队列，需要将其机器需要重启。目前发现集群一共100多台机器，重启其中一台master机器后，一直处于notReady状态。<br>原因是因为改机器为双网卡，但是因为网卡名未固定。造成使用为固定的网卡未启动成功。</p>
+<p>解决思路：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 查询100多台机器，/etc/udev/rules.d/70-persistent-net.rules  文件是否都含2条记录</span><br><span class="line"></span><br><span class="line">2.针对未含的节点操作，添加该条信息，网卡名不可修改，要与原先重启前一致。添加后如下：</span><br><span class="line">SUBSYSTEM==<span class="string">&quot;net&quot;</span>, ACTION==<span class="string">&quot;add&quot;</span>, DRIVERS==<span class="string">&quot;?*&quot;</span>, ATTR&#123;address&#125;==<span class="string">&quot;fa:16:3e:98:70:9c&quot;</span>, NAME=<span class="string">&quot;ens3&quot;</span></span><br><span class="line">SUBSYSTEM==<span class="string">&quot;net&quot;</span>, ACTION==<span class="string">&quot;add&quot;</span>, DRIVERS==<span class="string">&quot;?*&quot;</span>, ATTR&#123;address&#125;==<span class="string">&quot;fa:16:3e:f5:e0:f1&quot;</span>, NAME=<span class="string">&quot;ens10&quot;</span> <span class="comment">#需要新增的网卡名</span></span><br></pre></td></tr></table></figure>
 
 <p>拓展：<br>因加的网卡名变更为ens4，造成网卡一直up不起来。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@tcs-10-25-83-48 network-scripts]# nmcli  device conn ens4</span><br><span class="line">错误：添加/激活新连接失败：Connection &#x27;ens4&#x27; is not available on device ens4 because device is strictly unmanaged</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@tcs-10-25-83-48 network-scripts]# nmcli  device conn ens4</span><br><span class="line">错误：添加/激活新连接失败：Connection <span class="string">&#x27;ens4&#x27;</span> is not available on device ens4 because device is strictly unmanaged</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>nmcli处理过程：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">nmcli</span> <span class="string">conn</span> <span class="string">show</span>  <span class="comment">#查看设备连接情况</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">conn</span> <span class="string">show</span> <span class="string">&quot;System ens4&quot;</span> <span class="comment">#查看网卡设置的详情</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">conn</span> <span class="string">reload</span> <span class="comment">#重启设备</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">conn</span> <span class="string">up</span> <span class="string">ens4</span> <span class="comment">#连接ens4设置</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">device</span> <span class="string">set</span> <span class="string">&lt;网卡名称&gt;</span> <span class="string">managed</span> <span class="literal">yes</span> <span class="comment">#激活网卡</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">device</span> <span class="comment">#查看所有的设备</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">device</span> <span class="string">conn</span> <span class="comment">#将所有设备conn</span></span><br><span class="line"><span class="string">nmcli</span> <span class="string">device</span> <span class="string">conn</span> <span class="string">ens4</span> <span class="comment">#网卡连接</span></span><br><span class="line"><span class="string">nmcli</span>  <span class="string">networking</span> <span class="comment">#查看网络是由设置</span></span><br></pre></td></tr></table></figure>
 
@@ -110,42 +214,62 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/" data-id="cmf7vqtg60001q8vk1nqdbgz5" data-title="记一次网卡修改及nmcli 使用" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-我的第一篇博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="article-date">
-  <time class="dt-published" datetime="2025-09-06T03:29:57.000Z" itemprop="datePublished">2025-09-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">我的第一篇博客</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">我的第一篇博客</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-09-06 11:29:57 / 修改时间：16:03:25" itemprop="dateCreated datePublished" datetime="2025-09-06T11:29:57+08:00">2025-09-06</time>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>欢迎来到我的博客！</p>
+          <p>欢迎来到我的博客！</p>
 <p>一下是开启我博客的开始之路</p>
 <h2 id="一、创建"><a href="#一、创建" class="headerlink" title="一、创建"></a>一、创建</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CHUXUEZHE8210/article/details/146291775">于 Hexo + GitHub Pages 的搭建个人博客网站的详细教程</a></p>
 <h2 id="二、更新"><a href="#二、更新" class="headerlink" title="二、更新"></a>二、更新</h2><p>博客的<strong>源码</strong>（Markdown文章、主题、配置等）通常存放在一个GitHub仓库中，而通过Hexo生成的<strong>静态网站文件</strong>则部署到GitHub Pages（通常是 <code>username.github.io</code> 仓库的特定分支，如 <code>gh-pages</code> 或 <code>main</code>）。</p>
@@ -153,7 +277,6 @@
 <h3 id="📝-手动更新发布流程（本地完成）"><a href="#📝-手动更新发布流程（本地完成）" class="headerlink" title="📝 手动更新发布流程（本地完成）"></a>📝 手动更新发布流程（本地完成）</h3><p>这种方式需要在计算机上配置好Hexo环境（Node.js, Git, Hexo等）。</p>
 <ol>
 <li><p><strong>新建博文</strong>：使用命令创建新的Markdown文件。</p>
-<p>bash</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章题目&quot;  # 或 hexo n &quot;文章题目&quot;</span><br></pre></td></tr></table></figure>
 
 
@@ -163,19 +286,16 @@
 <li><p><strong>编写&#x2F;更新内容</strong>：用文本编辑器（如VS Code）编辑生成的Markdown文件。</p>
 </li>
 <li><p><strong>生成静态文件</strong>：在Hexo站点根目录下执行命令，将Markdown转换为HTML等静态资源。</p>
-<p>bash</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate  # 或 hexo g</span><br></pre></td></tr></table></figure>
 
 
 
 <p>如果需要先<strong>清除缓存</strong>和旧文件，可以使用：</p>
-<p>bash</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate</span><br><span class="line">```:cite[1]</span><br></pre></td></tr></table></figure>
 
 
 </li>
 <li><p><strong>本地预览（可选但推荐）</strong>：在部署前，最好先在本地启动服务器检查效果。</p>
-<p>bash</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server  # 或 hexo s </span><br></pre></td></tr></table></figure>
 
 
@@ -183,7 +303,6 @@
 <p>然后在浏览器中访问 <code>http://localhost:4000</code> 查看。</p>
 </li>
 <li><p><strong>部署到GitHub Pages</strong>：将生成好的静态文件（通常在 <code>public</code> 目录）推送至GitHub仓库的特定分支。</p>
-<p>bash</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy  # 或 hexo d</span><br></pre></td></tr></table></figure>
 
 
@@ -198,106 +317,184 @@
 <li><p><strong>推送源码（重要）</strong>：<code>hexo deploy</code> 通常只部署生成的静态文件。别忘了将您的<strong>博客源码</strong>（Markdown文章、主题、配置文件等）也推送到GitHub仓库的另一个分支（例如 <code>source</code> 或 <code>hexo-source</code>），以便备份和在多设备间同步。</p>
 </li>
 </ol>
+<h2 id="三、next-客制化页面"><a href="#三、next-客制化页面" class="headerlink" title="三、next 客制化页面"></a>三、next 客制化页面</h2><p>3.1 字体设置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">font:</span></span><br><span class="line">  <span class="comment">#enable: false</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Uri of fonts host, e.g. https://fonts.googleapis.com (Default).</span></span><br><span class="line">  <span class="attr">host:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font options:</span></span><br><span class="line">  <span class="comment"># `external: true` will load this font family from `host` above.</span></span><br><span class="line">  <span class="comment"># `family: Times New Roman`. Without any quotes.</span></span><br><span class="line">  <span class="comment"># `size: x.x`. Use `em` as unit. Default: 1 (16px)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Global font settings used for all elements inside &lt;body&gt;.</span></span><br><span class="line">  <span class="attr">global:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span> <span class="string">sans-serif</span></span><br><span class="line">    <span class="attr">size:</span> <span class="number">0.</span><span class="string">725em</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for site title (.site-title).</span></span><br><span class="line">  <span class="attr">title:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line">    <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for headlines (&lt;h1&gt; to &lt;h6&gt;).</span></span><br><span class="line">  <span class="attr">headings:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line">    <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for posts (.post-body).</span></span><br><span class="line">  <span class="attr">posts:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for &lt;code&gt; and code blocks.</span></span><br><span class="line">  <span class="comment">#Roboto</span></span><br><span class="line">  <span class="attr">codes:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span> <span class="string">Fira</span> <span class="string">Code</span>  </span><br><span class="line">    <span class="attr">size:</span> <span class="string">.6em</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3.2 页面字体设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat  themes/next/source/css/_variables/base.styl</span><br><span class="line">$font-size-base           = (hexo-config(&#x27;font.enable&#x27;) and hexo-config(&#x27;font.global.size&#x27;) is a &#x27;unit&#x27;) ? unit(hexo-config(&#x27;font.global.size&#x27;), em) : .8125em;</span><br><span class="line">//$font-size-base           = .8125em; #统一更改这个大小</span><br></pre></td></tr></table></figure>
+
+
+
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="cmf7vqtfw0000q8vk0kbth9mg" data-title="我的第一篇博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">帅汇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帅汇</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-</article>
-
-
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/">记一次网卡修改及nmcli 使用</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">我的第一篇博客</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2025 帅汇<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>
