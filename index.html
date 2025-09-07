@@ -161,6 +161,144 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/" class="post-title-link" itemprop="url">容器化之细节问题处理篇02</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-09-07 09:54:09 / 修改时间：11:07:59" itemprop="dateCreated datePublished" datetime="2025-09-07T09:54:09+08:00">2025-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>背景：项目上需要将服务的日志都显示出来，对于有两类日志文件不能正常显示日志出来的。<br>情况1：业务服务中未将服务日志打印在日志文件中，查看容器所在节点有查看到0.log 类似的日志，需要确认该日志是否就是服务的运行日志，目前针对该种日志产生的过程流程梳理</p>
+<p>容器的标准输出<br>&#x2F;var&#x2F;log&#x2F;pods&#x2F;…&#x2F;0.log 文件的产生过程是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">App 输出 -&gt; stdout/stderr</span><br><span class="line"></span><br><span class="line">运行时捕获 -&gt; 容器运行时（Docker/containerd）将其写入自己的 JSON 日志文件中。</span><br><span class="line"></span><br><span class="line">kubelet 组织 -&gt; kubelet 创建清晰的目录结构，并通过符号链接指向容器运行时的原始日志文件。</span><br><span class="line"></span><br><span class="line">对外接口 -&gt; 这个路径成为了该容器日志在节点上的标准化、稳定的访问点。无论是系统管理员、日志采集代理（如 Filebeat、Fluentd），还是 kubectl logs 命令，最终都是通过读取这个路径下的文件来获取日志内容的。</span><br><span class="line"></span><br><span class="line">kubectl logs 命令的工作原理就是：apiserver -&gt; 对应节点的 kubelet -&gt; kubelet 读取 /var/log/pods/.../0.<span class="built_in">log</span> 文件中的内容，解析 JSON 格式，只提取 <span class="built_in">log</span> 字段的纯文本信息，然后流式传输回给请求者。</span><br></pre></td></tr></table></figure>
+
+<h3 id="关系与区别"><a href="#关系与区别" class="headerlink" title="关系与区别"></a>关系与区别</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left"><code>/var/log/pods/.../0.log</code> (源文件:类比数据库原始表)</th>
+<th align="left"><code>kubectl logs</code> (解析后的视图:类比执行SQL后的视图)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>内容</strong></td>
+<td align="left"><strong>原始、完整</strong>的数据</td>
+<td align="left"><strong>解析后、筛选过</strong>的内容</td>
+</tr>
+<tr>
+<td align="left"><strong>格式</strong></td>
+<td align="left"><strong>JSON格式</strong>，每行一条完整的JSON记录</td>
+<td align="left"><strong>纯文本</strong>，只提取了JSON中的日志消息本身</td>
+</tr>
+<tr>
+<td align="left"><strong>元数据</strong></td>
+<td align="left"><strong>包含丰富元数据</strong>，如完整的时间戳、流类型（stdout&#x2F;stderr）</td>
+<td align="left"><strong>不包含</strong>JSON中的元数据，但可能会格式化输出时间戳（需加 <code>--timestamps</code>）</td>
+</tr>
+<tr>
+<td align="left"><strong>访问方式</strong></td>
+<td align="left">直接登录到节点服务器查看文件</td>
+<td align="left">通过Kubernetes API Server远程查询</td>
+</tr>
+<tr>
+<td align="left"><strong>主要使用者</strong></td>
+<td align="left">系统、日志采集代理（如Fluentd, Filebeat）</td>
+<td align="left"><strong>开发者、运维人员</strong></td>
+</tr>
+</tbody></table>
+<p>情况2：业务服务中日志打印显示是需要日志文件的挂载，目前挂载文件日志显示如下。mountPath: &#x2F;root&#x2F;app (服务启动jar在改目录) 则会挂载失败。原因:共享卷会把其他镜像内置的文件清空的。所以使用该种方式最好统一放在日志文件中，如下是该种情况的最佳实践</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/root/app/log</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">test-log-l9ynkeyd-1</span></span><br><span class="line"></span><br><span class="line"><span class="string">...</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">emptyDir:</span> &#123;&#125;</span><br><span class="line">        <span class="attr">name:</span> <span class="string">test-log-l9ynkeyd-1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="存储类型总结对比表格"><a href="#存储类型总结对比表格" class="headerlink" title="存储类型总结对比表格:"></a>存储类型总结对比表格:</h3><table>
+<thead>
+<tr>
+<th align="left">存储类型</th>
+<th align="left">概念理解</th>
+<th align="left">生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>emptyDir</strong></td>
+<td align="left">临时存储，会在节点创建空目录</td>
+<td align="left">生命周期&#x3D;pod</td>
+</tr>
+<tr>
+<td align="left"><strong>hostPath</strong></td>
+<td align="left">允许挂载宿主机文件到pod</td>
+<td align="left">生命周期&#x3D;宿主机</td>
+</tr>
+<tr>
+<td align="left"><strong>PVC&#x2F;PV</strong></td>
+<td align="left">Kubernetes中持久存储的抽象，用户通过声明PVC请求存储资源，而PVC会绑定到满足其需求的PV</td>
+<td align="left">持久存储</td>
+</tr>
+<tr>
+<td align="left"><strong>StorageClass</strong></td>
+<td align="left">多个StorageClass，用户在创建PVC时指定StorageClass名称，以动态申请存储资源。</td>
+<td align="left">持久存储</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1650296">详细场景说明</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -184,17 +322,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-09-06 19:18:23 / 修改时间：19:27:33" itemprop="dateCreated datePublished" datetime="2025-09-06T19:18:23+08:00">2025-09-06</time>
+              <time title="创建时间：2025-09-06 19:18:23" itemprop="dateCreated datePublished" datetime="2025-09-06T19:18:23+08:00">2025-09-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-07 11:09:08" itemprop="dateModified" datetime="2025-09-07T11:09:08+08:00">2025-09-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
                 </span>
             </span>
 
@@ -306,17 +450,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-09-06 16:50:28 / 修改时间：19:17:06" itemprop="dateCreated datePublished" datetime="2025-09-06T16:50:28+08:00">2025-09-06</time>
+              <time title="创建时间：2025-09-06 16:50:28" itemprop="dateCreated datePublished" datetime="2025-09-06T16:50:28+08:00">2025-09-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-07 11:09:35" itemprop="dateModified" datetime="2025-09-07T11:09:35+08:00">2025-09-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/shell/" itemprop="url" rel="index"><span itemprop="name">shell</span></a>
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
                 </span>
             </span>
 
@@ -331,7 +481,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>背景：该项目迁移至新环境需求，将原先TSF集群（节点数：xxx）迁移到新环境中，jmeter 压测一个查询接口的数据。分别在旧环境与新环境的接口数据进行压测，对比监控CPU、内存利用率情况。目前旧环境容器无监控，故思路上使用脚本来获取监控数据，获取的数据用图标展示出来</p>
+          <p>背景：该项目迁移至新环境需求，将原先TSF集群（节点数：xxx）迁移到新环境中，jmeter 压测一个查询接口的数据。分别在旧环境与新环境的接口数据进行压测，对比监控CPU、内存利用率情况。目前旧环境容器无监控，故思路上使用脚本来获取监控数据，获取的数据用图标展示出来。底层的k8s比较老，暂未支持kubectl  top  容器。</p>
 <p>问题:为什么不进入容器中查看，top查看容器的资源使用量。这是因为我们在容器中运行 top 命令，虽然可以看到容器中每个进程的 CPU 使用率，但是 top 中”%Cpu(s)”那一行中显示的数值，并不是这个容器的 CPU 整体使用率，而是容器宿主机的 CPU 使用率。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">HOST_NAME=$(hostname -I | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">LOG_FILE=<span class="string">&quot;/var/log/docker_stats_20250719_<span class="variable">$HOST_NAME</span>.log&quot;</span></span><br><span class="line">DOCKER_NAME=$(docker ps |grep  <span class="string">&quot;tsf_1/element-server&quot;</span> |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">INTERVAL=5 <span class="comment"># 收集间隔（秒）</span></span><br><span class="line"><span class="comment"># 创建日志文件并添加表头</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;时间戳,容器ID,CPU使用率%,内存使用率%&quot;</span> &gt; <span class="string">&quot;<span class="variable">$LOG_FILE</span>&quot;</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># 获取当前时间戳</span></span><br><span class="line">    TIMESTAMP=$(<span class="built_in">date</span> <span class="string">&#x27;+%H:%M:%S&#x27;</span>)</span><br><span class="line">    <span class="comment"># 使用 top 收集 CPU 使用率（提取 %Cpu(s): 后的数值）</span></span><br><span class="line"></span><br><span class="line">    CPU_MEM_USAGE=$(docker stats <span class="variable">$DOCKER_NAME</span> --no-stream --format <span class="string">&quot;&#123;&#123;.Container&#125;&#125;,\t&#123;&#123;.CPUPerc&#125;&#125;,\t\t&#123;&#123;.MemPerc&#125;&#125;&quot;</span>)</span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$CPU_MEM_USAGE</span></span><br><span class="line">    <span class="comment">#top -bn1 | grep &#x27;%Cpu&#x27; | awk &#x27;&#123;print &quot;CPU使用率: &quot; 100 - $8 &quot;%&quot;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$TIMESTAMP</span>， <span class="variable">$CPU_MEM_USAGE</span> &quot;</span>  &gt;&gt; <span class="string">&quot;<span class="variable">$LOG_FILE</span>&quot;</span></span><br><span class="line">    <span class="comment"># 等待下一次收集</span></span><br><span class="line">    <span class="built_in">sleep</span> <span class="variable">$INTERVAL</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -460,9 +610,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-09-06 11:29:57 / 修改时间：18:35:27" itemprop="dateCreated datePublished" datetime="2025-09-06T11:29:57+08:00">2025-09-06</time>
+              <time title="创建时间：2025-09-06 11:29:57" itemprop="dateCreated datePublished" datetime="2025-09-06T11:29:57+08:00">2025-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-07 11:10:45" itemprop="dateModified" datetime="2025-09-07T11:10:45+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">杂篇</span></a>
+                </span>
             </span>
 
           
@@ -535,10 +700,10 @@
 <p>3.3 生效并部署</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d <span class="comment">#清除缓存且浏览器也需无痕</span></span><br></pre></td></tr></table></figure>
 
-<p>3.4 图片问题</p>
+<p>3.4 图片问题与设置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#参数开启+插件安装+用hexo n 文档 去生成文档文件</span></span><br><span class="line">1.将_config.yml 文件中的post_asset_folder 选项设为 <span class="literal">true</span> 来打开</span><br><span class="line">2.npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
 
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_43401436/article/details/107191688">图片设置不生效</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_43401436/article/details/107191688">图片设置不生效</a>  <a target="_blank" rel="noopener" href="https://juejin.cn/post/6921750181297782798">标签与分类配置</a></p>
 
       
     </div>
@@ -620,20 +785,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
