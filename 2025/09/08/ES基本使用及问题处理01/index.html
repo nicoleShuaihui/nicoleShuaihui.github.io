@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="问题现象：容器1，我们可以看到： 1PID 1： Java进程  容器2，我们可以看到： 12PID 1: &#x2F;sbin&#x2F;tini -- .&#x2F;entrypoint.shPID 6: Java进程  关键区别在于：第二个容器的entrypoint.sh脚本可能是通过tini启动的。而第一个容器可能是直接以entrypoint.sh作为入口点，没有使用tini，所以在exec执行后Java进程替换了sh">
+  <meta name="description" content="业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。 清理数据123curl 10.25.83.242:9200&#x2F;_cluster&#x2F;health?pretty #查看监控curl 10.25.83.242:9200&#x2F;_cat&#x2F;indices?v |grep gb #查看数据curl -XDELETE 10.25.83.242:9200&#x2F;xxxxx #删除数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="容器化之细节问题处理篇01">
-<meta property="og:url" content="http://example.com/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/index.html">
+<meta property="og:title" content="ES基本使用及问题处理01">
+<meta property="og:url" content="http://example.com/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="问题现象：容器1，我们可以看到： 1PID 1： Java进程  容器2，我们可以看到： 12PID 1: &#x2F;sbin&#x2F;tini -- .&#x2F;entrypoint.shPID 6: Java进程  关键区别在于：第二个容器的entrypoint.sh脚本可能是通过tini启动的。而第一个容器可能是直接以entrypoint.sh作为入口点，没有使用tini，所以在exec执行后Java进程替换了sh">
+<meta property="og:description" content="业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。 清理数据123curl 10.25.83.242:9200&#x2F;_cluster&#x2F;health?pretty #查看监控curl 10.25.83.242:9200&#x2F;_cat&#x2F;indices?v |grep gb #查看数据curl -XDELETE 10.25.83.242:9200&#x2F;xxxxx #删除数据">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-06T11:18:23.000Z">
-<meta property="article:modified_time" content="2025-09-07T03:09:08.862Z">
+<meta property="article:published_time" content="2025-09-08T06:20:17.000Z">
+<meta property="article:modified_time" content="2025-09-09T07:48:16.808Z">
 <meta property="article:author" content="帅汇">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="ES">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/">
+<link rel="canonical" href="http://example.com/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>容器化之细节问题处理篇01 | 我的博客</title>
+  <title>ES基本使用及问题处理01 | 我的博客</title>
   
 
 
@@ -167,7 +167,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -180,7 +180,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          容器化之细节问题处理篇01
+          ES基本使用及问题处理01
         </h1>
 
         <div class="post-meta">
@@ -190,14 +190,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-09-06 19:18:23" itemprop="dateCreated datePublished" datetime="2025-09-06T19:18:23+08:00">2025-09-06</time>
+              <time title="创建时间：2025-09-08 14:20:17" itemprop="dateCreated datePublished" datetime="2025-09-08T14:20:17+08:00">2025-09-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-07 11:09:08" itemprop="dateModified" datetime="2025-09-07T11:09:08+08:00">2025-09-07</time>
+                <time title="修改时间：2025-09-09 15:48:16" itemprop="dateModified" datetime="2025-09-09T15:48:16+08:00">2025-09-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,7 +205,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
+                  <a href="/categories/%E4%B8%AD%E9%97%B4/" itemprop="url" rel="index"><span itemprop="name">中间</span></a>
                 </span>
             </span>
 
@@ -220,59 +220,58 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>问题现象：<br>容器1，我们可以看到：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PID 1： Java进程</span><br></pre></td></tr></table></figure>
+        <p>业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
+<h3 id="清理数据"><a href="#清理数据" class="headerlink" title="清理数据"></a>清理数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl 10.25.83.242:9200/_cluster/health?pretty <span class="comment">#查看监控</span></span><br><span class="line">curl 10.25.83.242:9200/_cat/indices?v |grep gb <span class="comment">#查看数据</span></span><br><span class="line">curl -XDELETE 10.25.83.242:9200/xxxxx <span class="comment">#删除数据</span></span><br></pre></td></tr></table></figure>
 
-<p>容器2，我们可以看到：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PID 1: /sbin/tini -- ./entrypoint.sh</span><br><span class="line">PID 6: Java进程</span><br></pre></td></tr></table></figure>
-
-<p>关键区别在于：第二个容器的entrypoint.sh脚本可能是通过tini启动的。而第一个容器可能是直接以entrypoint.sh作为入口点，没有使用tini，所以在exec执行后Java进程替换了shell进程成为PID 1。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a --no-trunc |grep xxx <span class="comment">#查看docker 启动命令进行确认,使用docker run时指定了init程序为tini。</span></span><br></pre></td></tr></table></figure>
-
-<p>这是因为在Dockerfile中可能使用了类似以下的指令：<br>ENTRYPOINT [“&#x2F;sbin&#x2F;tini”, “–”, “.&#x2F;entrypoint.sh”]</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> entrypoint.sh </span><br><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;The application will start in <span class="variable">$&#123;APP_SLEEP&#125;</span>s...&quot;</span> &amp;&amp; <span class="built_in">sleep</span> <span class="variable">$&#123;APP_SLEEP&#125;</span></span><br><span class="line"><span class="built_in">exec</span> /usr/bin/java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap <span class="variable">$&#123;JAVA_OPTS&#125;</span> \</span><br><span class="line">     	-Djava.security.egd=file:/dev/./urandom \</span><br><span class="line">      -Dtsf.swagger.enabled=<span class="literal">false</span> \</span><br><span class="line">     	-jar /root/app/element-server2*.jar <span class="variable">$&#123;RUN_ARGS&#125;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-<p><strong>tini 的作用</strong></p>
+<p>但是发现清理数据完候，ES只读，数据写不进数据</p>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p><strong>只读标记未手动清除</strong>：这是最常见的原因。Elasticsearch <strong>不会自动</strong>将索引的 <code>read_only_allow_delete</code> 属性改回 <code>false</code></p>
+<p><strong>磁盘空间未真正有效释放</strong>：</p>
 <ul>
-<li><p>1.tini 是一个轻量级的初始化系统，专门为容器设计</p>
+<li><p><strong>延迟释放</strong>：使用 <code>DELETE</code> 操作或 <code>_delete_by_query</code> 进行数据删除时，Elasticsearch 采用的是“标记删除”而非立即从磁盘擦除。真正的空间释放需要等待 <strong>Segment Merge</strong> 过程完成。</p>
 </li>
-<li><p>1.可以确保它能正确接收 Docker 停止命令发送的信号</p>
-</li>
-<li><p>2.它作为 PID 1 运行，负责管理子进程（这里是 entrypoint.sh）</p>
-</li>
-<li><p>3.entrypoint.sh 脚本仍然使用 exec 启动 Java，但此时：</p>
-<p>  exec 替换的是 entrypoint.sh 进程（PID 6），而不是 PID 1</p>
-<p>  tini 保持为 PID 1，Java 进程作为其子进程运行</p>
+<li><p><strong>清理量不足</strong>：可能删除的数据量不足以让所有磁盘的使用率都降到水位线（特别是 flood_stage, 例如95%）以下。Elasticsearch 会检查所有节点磁盘空间。</p>
 </li>
 </ul>
-<h2 id="两种方式的比较"><a href="#两种方式的比较" class="headerlink" title="两种方式的比较"></a>两种方式的比较</h2><table>
+<p>水位线检查有延迟或缓存：Elasticsearch 检测磁盘空间和使用率变化可能存在短暂延迟。</p>
+<p>分片分配问题：即使空间足够，如果之前因磁盘空间不足导致分片未分配，空间释放后可能需要手动恢复分片分配或等待集群自动重新平衡。</p>
+<h3 id="📖-总结：问题解决步骤"><a href="#📖-总结：问题解决步骤" class="headerlink" title="📖 总结：问题解决步骤"></a>📖 总结：问题解决步骤</h3><table>
 <thead>
 <tr>
-<th align="left">特性</th>
-<th align="left">直接 exec (无 tini)</th>
-<th align="left">使用 tini</th>
+<th align="left">步骤</th>
+<th align="left">操作</th>
+<th align="left">命令&#x2F;操作示例</th>
+<th align="left">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">PID 1 进程</td>
-<td align="left">Java 应用</td>
-<td align="left">tini</td>
+<td align="left">1️⃣</td>
+<td align="left"><strong>确认磁盘空间</strong></td>
+<td align="left"><code>GET /_cat/allocation?v</code></td>
+<td align="left">查看所有节点的磁盘使用率，确保均低于洪水水位线（如95%）</td>
 </tr>
 <tr>
-<td align="left">信号处理</td>
-<td align="left">应用需自行处理</td>
-<td align="left">tini 协助处理</td>
+<td align="left">2️⃣</td>
+<td align="left"><strong>检查索引设置</strong></td>
+<td align="left"><code>GET your_index_name/_settings</code></td>
+<td align="left">确认 <code>index.blocks.read_only_allow_delete</code> 是否为 <code>true</code></td>
 </tr>
 <tr>
-<td align="left">僵尸进程回收</td>
-<td align="left">可能存在问题</td>
-<td align="left">自动回收</td>
+<td align="left">3️⃣</td>
+<td align="left"><strong>手动解除只读</strong></td>
+<td align="left">curl  -H “Content-Type:application&#x2F;json” -XPUT 10.25.83.242:9200&#x2F;_cluster&#x2F;settings -d ‘{   “persistent”: {     “cluster.blocks.read_only_allow_delete”: false   } }’</td>
+<td align="left">核心步骤：手动清除索引的只读标记</td>
 </tr>
 <tr>
-<td align="left">进程树结构</td>
-<td align="left">更简单</td>
-<td align="left">稍复杂但更健壮</td>
+<td align="left">4️⃣</td>
+<td align="left">xxx</td>
+<td align="left">curl -H “Content-Type: application&#x2F;json”  -XPUT ‘10.25.83.242:9200&#x2F;_all&#x2F;_settings’ -d ‘{“index”:{“blocks”:{“read_only_allow_delete”:null}}}’</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">5️⃣</td>
+<td align="left"><strong>验证写入</strong></td>
+<td align="left"><code>POST your_index_name/_doc &#123; &quot;test&quot;: &quot;data&quot; &#125;</code></td>
+<td align="left">尝试写入一条测试数据，验证是否成功</td>
 </tr>
 </tbody></table>
 
@@ -284,7 +283,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/ES/" rel="tag"># ES</a>
           </div>
 
         
@@ -293,12 +292,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/09/06/shell%E4%B9%8B%E8%8E%B7%E5%8F%96docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84cpu%E4%B8%8E%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E7%8E%87/" rel="prev" title="shell之获取docker容器中的cpu与内存使用率">
-      <i class="fa fa-chevron-left"></i> shell之获取docker容器中的cpu与内存使用率
+    <a href="/2025/09/08/clickhouse%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="clickhouse分布式基本使用">
+      <i class="fa fa-chevron-left"></i> clickhouse分布式基本使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/" rel="next" title="容器化之细节问题处理篇02">
-      容器化之细节问题处理篇02 <i class="fa fa-chevron-right"></i>
+    <a href="/2025/09/11/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8703/" rel="next" title="容器化之细节问题处理篇03">
+      容器化之细节问题处理篇03 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -358,7 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.</span> <span class="nav-text">两种方式的比较</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">清理数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%93%96-%E6%80%BB%E7%BB%93%EF%BC%9A%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">📖 总结：问题解决步骤</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
