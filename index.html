@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-12 17:31:08" itemprop="dateModified" datetime="2025-09-12T17:31:08+08:00">2025-09-12</time>
+                <time title="修改时间：2025-09-12 17:40:01" itemprop="dateModified" datetime="2025-09-12T17:40:01+08:00">2025-09-12</time>
               </span>
 
           
@@ -210,8 +210,8 @@
 
 <h3 id="告警信息解读"><a href="#告警信息解读" class="headerlink" title="告警信息解读"></a>告警信息解读</h3><p><strong>触发时长：</strong> <code>56s (x1313 over 2d2h)</code></p>
 <ul>
-<li>**<code>56s</code>**： 本次告警持续了56秒（可能刚刚恢复或正在触发）。</li>
-<li>**<code>x1313 over 2d2h</code>**： 它在过去 <strong>2天2小时</strong> 内已经触发了 <strong>1313次</strong>。</li>
+<li>** <code>56s</code> **： 本次告警持续了56秒（可能刚刚恢复或正在触发）。</li>
+<li>** <code>x1313 over 2d2h</code> **： 它在过去 <strong>2天2小时</strong> 内已经触发了 <strong>1313次</strong>。</li>
 </ul>
 <p><strong>监控源：</strong> <code>custom-plugin-monitor</code></p>
 <p><strong>告警原因：</strong> <code>system load/cores percent exceeded threshold 80%</code></p>
@@ -220,8 +220,8 @@
 </ul>
 <p><strong>具体数值：</strong> <code>load/cores percent: 118.09%, load15m: 37.79</code></p>
 <ul>
-<li>**<code>load15m: 37.79</code>**： 过去15分钟的系统平均负载是 <strong>37.79</strong>。</li>
-<li>**<code>load/cores percent: 118.09%</code>**： **(37.79 &#x2F; 核心数) * 100% &#x3D; 118.09%**。</li>
+<li>** <code>load15m: 37.79</code> **： 过去15分钟的系统平均负载是 <strong>37.79</strong>。</li>
+<li>** <code>load/cores percent: 118.09%</code> ** ： ** (37.79 &#x2F; 核心数) * 100% &#x3D; 118.09% **。</li>
 </ul>
 <h3 id="核心问题计算与确认"><a href="#核心问题计算与确认" class="headerlink" title="核心问题计算与确认"></a>核心问题计算与确认</h3><p>根据告警提供的百分比，我们可以反推出监控系统认为的CPU核心数：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">核心数 = load15m / (load/cores percent) = 37.79 / 1.1809 ≈ 32 个核心</span><br></pre></td></tr></table></figure>
