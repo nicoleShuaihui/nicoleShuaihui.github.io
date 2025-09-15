@@ -564,6 +564,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/" class="post-title-link" itemprop="url">ETCD基本使用及问题处理01</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-11 14:04:31" itemprop="dateCreated datePublished" datetime="2025-09-11T14:04:31+08:00">2025-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-15 10:27:57" itemprop="dateModified" datetime="2025-09-15T10:27:57+08:00">2025-09-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AD%E9%97%B4/" itemprop="url" rel="index"><span itemprop="name">中间</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.3查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -595,7 +670,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-12 09:21:00" itemprop="dateModified" datetime="2025-09-12T09:21:00+08:00">2025-09-12</time>
+                <time title="修改时间：2025-09-15 15:26:32" itemprop="dateModified" datetime="2025-09-15T15:26:32+08:00">2025-09-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -618,10 +693,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
-<h3 id="清理数据"><a href="#清理数据" class="headerlink" title="清理数据"></a>清理数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl 10.25.83.242:9200/_cluster/health?pretty <span class="comment">#查看监控</span></span><br><span class="line">curl 10.25.83.242:9200/_cat/indices?v |grep gb <span class="comment">#查看数据</span></span><br><span class="line">curl -XDELETE 10.25.83.242:9200/xxxxx <span class="comment">#删除数据</span></span><br></pre></td></tr></table></figure>
+          <p>项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
+<h3 id="清理数据"><a href="#清理数据" class="headerlink" title="清理数据"></a>清理数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -I -m 10 -o /dev/null -s -w %&#123;http_code&#125; -X GET <span class="string">&quot;<span class="variable">$&#123;dst_es_schema&#125;</span>://<span class="variable">$&#123;dst_es_user&#125;</span>:<span class="variable">$&#123;dst_es_passwd&#125;</span>@<span class="variable">$&#123;dst_es_host&#125;</span>:<span class="variable">$&#123;dst_es_port&#125;</span>/_cluster/health?pretty&quot;</span></span><br><span class="line"><span class="comment"># 如需用户名与密码则需 curl -u xxx:&#x27;xxx&#x27;, 密码有特殊字符可用单引号</span></span><br><span class="line">curl 10.25.83.242:9200/_cluster/health?pretty <span class="comment">#查看监控</span></span><br><span class="line">curl 10.25.83.242:9200/_cat/indices?v |grep gb <span class="comment">#查看数据</span></span><br><span class="line">curl -XDELETE 10.25.83.242:9200/xxxxx <span class="comment">#删除数据</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>但是发现清理数据完候，ES只读，数据写不进数据</p>
 <h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p><strong>只读标记未手动清除</strong>：这是最常见的原因。Elasticsearch <strong>不会自动</strong>将索引的 <code>read_only_allow_delete</code> 属性改回 <code>false</code></p>
 <p><strong>磁盘空间未真正有效释放</strong>：</p>
 <ul>
@@ -632,7 +706,7 @@
 </ul>
 <p>水位线检查有延迟或缓存：Elasticsearch 检测磁盘空间和使用率变化可能存在短暂延迟。</p>
 <p>分片分配问题：即使空间足够，如果之前因磁盘空间不足导致分片未分配，空间释放后可能需要手动恢复分片分配或等待集群自动重新平衡。</p>
-<h3 id="📖-总结：问题解决步骤"><a href="#📖-总结：问题解决步骤" class="headerlink" title="📖 总结：问题解决步骤"></a>📖 总结：问题解决步骤</h3><table>
+<h4 id="📖-总结：问题解决步骤"><a href="#📖-总结：问题解决步骤" class="headerlink" title="📖 总结：问题解决步骤"></a>📖 总结：问题解决步骤</h4><table>
 <thead>
 <tr>
 <th align="left">步骤</th>
@@ -672,6 +746,102 @@
 <td align="left">尝试写入一条测试数据，验证是否成功</td>
 </tr>
 </tbody></table>
+<h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>项目背景：目前项目由两套环境，需要将A环境的数据迁移至环境B。项目B中本身也有数据。故需求是需要先将项目B中的ES数据清空后再将项目A的ES数据迁移过来。因为A、B两个环境的网络可临时开通端口且两个环境没有HDFS、s3这样的共享文件系统，但可部署ntfs系统。故es备份恢复使用的是multielasticdump进行的备份与恢复。</p>
+<h4 id="备份工具区别选择"><a href="#备份工具区别选择" class="headerlink" title="备份工具区别选择"></a>备份工具区别选择</h4><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">elasticdump</th>
+<th align="left">multielasticdump</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心原理</strong></td>
+<td align="left">单进程工具</td>
+<td align="left"><strong>elasticdump 的包装器</strong>，管理多个进程</td>
+</tr>
+<tr>
+<td align="left"><strong>处理方式</strong></td>
+<td align="left"><strong>串行</strong>：一次处理一个索引或一种数据类型</td>
+<td align="left"><strong>并行</strong>：同时处理多个索引</td>
+</tr>
+<tr>
+<td align="left"><strong>效率</strong></td>
+<td align="left">速度较慢，尤其当索引很多时</td>
+<td align="left"><strong>速度非常快</strong>，充分利用多核CPU和网络带宽</td>
+</tr>
+<tr>
+<td align="left"><strong>使用场景</strong></td>
+<td align="left">备份或迁移<strong>单个或少量几个索引</strong></td>
+<td align="left">备份或迁移<strong>整个集群</strong>或大量索引</td>
+</tr>
+<tr>
+<td align="left"><strong>输出结构</strong></td>
+<td align="left">输出是指定的单个文件</td>
+<td align="left">为<strong>每个索引创建子文件夹</strong>，文件夹内包含该索引的各种类型文件（data, mapping等）</td>
+</tr>
+<tr>
+<td align="left"><strong>资源占用</strong></td>
+<td align="left">占用资源较少</td>
+<td align="left">占用资源较多（CPU、内存、网络连接数）</td>
+</tr>
+<tr>
+<td align="left"><strong>控制粒度</strong></td>
+<td align="left"><strong>高</strong>：可以非常精细地控制单个索引的传输</td>
+<td align="left"><strong>低</strong>：以索引为单元进行批量操作</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left"><code>elasticdump</code> &#x2F; <code>multielasticdump</code></th>
+<th align="left">Elasticsearch 快照&#x2F;恢复 (Snapshot&#x2F;Restore)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>格式</strong></td>
+<td align="left"><strong>纯文本 JSON</strong></td>
+<td align="left"><strong>专有的二进制格式</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>可读性</strong></td>
+<td align="left"><strong>高</strong>。可以用文本编辑器、<code>cat</code>, <code>head</code>, <code>jq</code> 等工具直接查看和分析。</td>
+<td align="left"><strong>低</strong>。只能由 Elasticsearch 本身识别和解析。</td>
+</tr>
+<tr>
+<td align="left"><strong>用途</strong></td>
+<td align="left"><strong>逻辑备份</strong>。数据迁移、少量数据恢复、数据审计、转换格式。</td>
+<td align="left"><strong>物理备份</strong>。完整的集群快照，用于灾难恢复、全量备份。</td>
+</tr>
+<tr>
+<td align="left"><strong>速度</strong></td>
+<td align="left">相对较慢（需要将二进制数据编码为JSON文本并传输）</td>
+<td align="left"><strong>非常快</strong>（直接拷贝底层的段文件）</td>
+</tr>
+<tr>
+<td align="left"><strong>存储空间</strong></td>
+<td align="left"><strong>更大</strong>（文本格式通常比二进制表示更占空间）</td>
+<td align="left"><strong>更小</strong>（是高效的二进制压缩格式）</td>
+</tr>
+<tr>
+<td align="left"><strong>系统要求</strong></td>
+<td align="left">任何有文件系统的地方</td>
+<td align="left">必须配置在支持的<strong>快照仓库</strong>中（如 S3, HDFS, NFS, 共享FS）</td>
+</tr>
+</tbody></table>
+<h4 id="数据迁移过程"><a href="#数据迁移过程" class="headerlink" title="数据迁移过程"></a>数据迁移过程</h4><p>查看数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET <span class="string">&#x27;&lt;ES_IP&gt;:9200/_cluster/health?pretty&#x27;</span></span><br><span class="line">1. 使用 GET /_cat/indices 命令</span><br><span class="line">curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET <span class="string">&#x27;&lt;ES_IP&gt;:9200/_cat/indices?v&#x27;</span> | grep red</span><br><span class="line"><span class="comment">#查看所有索引</span></span><br><span class="line">curl -u elastic:<span class="string">&#x27;your_password&#x27;</span> http://localhost:9200/_cat/indices?v</span><br></pre></td></tr></table></figure>
+
+<p>数据清理,将所有的索引的数据都清理干净。也可以用删除索引的方式将其都删除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -u <span class="string">&quot;elastic:密码&quot;</span> -X POST <span class="string">&quot;http://localhost:9200/&lt;索引名&gt;/_delete_by_query&quot;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> -d<span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;match_all&quot;: &#123;&#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>数据备份：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">date_dir=`<span class="built_in">date</span> +%Y%m%d`</span><br><span class="line">multielasticdump \</span><br><span class="line">    --direction=dump \</span><br><span class="line">    --match=<span class="string">&#x27;^.*$&#x27;</span> \</span><br><span class="line">    --includeType=<span class="string">&#x27;data,mapping,analyzer,alias,settings,template&#x27;</span> \</span><br><span class="line">    --input=http://<span class="variable">$&#123;es_user&#125;</span>:<span class="variable">$&#123;es_passwd&#125;</span>@<span class="variable">$&#123;es_host&#125;</span>:<span class="variable">$&#123;es_port&#125;</span> \</span><br><span class="line">    --output=<span class="variable">$backup_dir</span>/elasticsearch-dump/<span class="variable">$date_dir</span> </span><br></pre></td></tr></table></figure>
+
+<p>数据恢复</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">multielasticdump \</span><br><span class="line">  --direction=load \</span><br><span class="line">  --skip-existing \</span><br><span class="line">  --match=<span class="string">&#x27;^.*$&#x27;</span> \</span><br><span class="line">  --includeType=<span class="string">&#x27;data,mapping,analyzer,alias,settings,template&#x27;</span> \</span><br><span class="line">  --ignoreChildError \</span><br><span class="line">  --input=<span class="variable">$backup_data</span> \</span><br><span class="line">  --output=http://<span class="variable">$&#123;ES_USER&#125;</span>:<span class="variable">$&#123;ES_PASSWD&#125;</span>@<span class="variable">$ES_HOST</span>:<span class="variable">$ES_PORT</span></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -1438,144 +1608,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">我的第一篇博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-06 11:29:57" itemprop="dateCreated datePublished" datetime="2025-09-06T11:29:57+08:00">2025-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-12 09:23:38" itemprop="dateModified" datetime="2025-09-12T09:23:38+08:00">2025-09-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9D%82%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">杂篇</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>欢迎来到我的博客！</p>
-<p>一下是开启我博客的开始之路</p>
-<h2 id="一、创建"><a href="#一、创建" class="headerlink" title="一、创建"></a>一、创建</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CHUXUEZHE8210/article/details/146291775">于 Hexo + GitHub Pages 的搭建个人博客网站的详细教程</a></p>
-<h2 id="二、更新"><a href="#二、更新" class="headerlink" title="二、更新"></a>二、更新</h2><p>博客的<strong>源码</strong>（Markdown文章、主题、配置等）通常存放在一个GitHub仓库中，而通过Hexo生成的<strong>静态网站文件</strong>则部署到GitHub Pages（通常是 <code>username.github.io</code> 仓库的特定分支，如 <code>gh-pages</code> 或 <code>main</code>）。</p>
-<hr>
-<h3 id="📝-手动更新发布流程（本地完成）"><a href="#📝-手动更新发布流程（本地完成）" class="headerlink" title="📝 手动更新发布流程（本地完成）"></a>📝 手动更新发布流程（本地完成）</h3><p>这种方式需要在计算机上配置好Hexo环境（Node.js, Git, Hexo等）。</p>
-<ol>
-<li><p><strong>新建博文</strong>：使用命令创建新的Markdown文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章题目&quot;  # 或 hexo n &quot;文章题目&quot;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>这会在 <code>source/_posts</code> 目录下生成一个 <code>文章题目.md</code> 文件。</p>
-</li>
-<li><p><strong>编写&#x2F;更新内容</strong>：用文本编辑器（如VS Code）编辑生成的Markdown文件。</p>
-</li>
-<li><p><strong>生成静态文件</strong>：在Hexo站点根目录下执行命令，将Markdown转换为HTML等静态资源。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate  # 或 hexo g</span><br></pre></td></tr></table></figure>
-
-
-
-<p>如果需要先<strong>清除缓存</strong>和旧文件，可以使用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate</span><br><span class="line">```:cite[1]</span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p><strong>本地预览（可选但推荐）</strong>：在部署前，最好先在本地启动服务器检查效果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server  # 或 hexo s </span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后在浏览器中访问 <code>http://localhost:4000</code> 查看。</p>
-</li>
-<li><p><strong>部署到GitHub Pages</strong>：将生成好的静态文件（通常在 <code>public</code> 目录）推送至GitHub仓库的特定分支。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy  # 或 hexo d</span><br></pre></td></tr></table></figure>
-
-
-
-<p>常用的便捷组合命令是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">为了能使用 `hexo deploy` 命令，您需要：</span><br><span class="line">在Hexo的**站点配置文件** (`_config.yml`) 中正确设置部署信息:</span><br><span class="line">    deploy:</span><br><span class="line">      type: git</span><br><span class="line">      repo: &lt;您的GitHub仓库SSH或HTTPS地址&gt;  # 例如 git@github.com:username/username.github.io.git</span><br><span class="line">      branch: &lt;部署分支，如gh-pages或main&gt;</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>确保已安装 <strong>hexo-deployer-git</strong> 插件:cite[4]:cite[6]：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p><strong>推送源码（重要）</strong>：<code>hexo deploy</code> 通常只部署生成的静态文件。别忘了将您的<strong>博客源码</strong>（Markdown文章、主题、配置文件等）也推送到GitHub仓库的另一个分支（例如 <code>source</code> 或 <code>hexo-source</code>），以便备份和在多设备间同步。</p>
-</li>
-</ol>
-<h2 id="三、next-客制化页面"><a href="#三、next-客制化页面" class="headerlink" title="三、next 客制化页面"></a>三、next 客制化页面</h2><p>3.1 字体设置</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">font:</span></span><br><span class="line">  <span class="comment">#enable: false</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Uri of fonts host, e.g. https://fonts.googleapis.com (Default).</span></span><br><span class="line">  <span class="attr">host:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font options:</span></span><br><span class="line">  <span class="comment"># `external: true` will load this font family from `host` above.</span></span><br><span class="line">  <span class="comment"># `family: Times New Roman`. Without any quotes.</span></span><br><span class="line">  <span class="comment"># `size: x.x`. Use `em` as unit. Default: 1 (16px)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Global font settings used for all elements inside &lt;body&gt;.</span></span><br><span class="line">  <span class="attr">global:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span> <span class="string">sans-serif</span></span><br><span class="line">    <span class="attr">size:</span> <span class="number">0.</span><span class="string">725em</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for site title (.site-title).</span></span><br><span class="line">  <span class="attr">title:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line">    <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for headlines (&lt;h1&gt; to &lt;h6&gt;).</span></span><br><span class="line">  <span class="attr">headings:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line">    <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for posts (.post-body).</span></span><br><span class="line">  <span class="attr">posts:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font settings for &lt;code&gt; and code blocks.</span></span><br><span class="line">  <span class="comment">#Roboto</span></span><br><span class="line">  <span class="attr">codes:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span> <span class="string">Fira</span> <span class="string">Code</span>  </span><br><span class="line">    <span class="attr">size:</span> <span class="string">.6em</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>3.2 页面字体设置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat  themes/next/source/css/_variables/base.styl</span><br><span class="line">$font-size-base           = (hexo-config(&#x27;font.enable&#x27;) and hexo-config(&#x27;font.global.size&#x27;) is a &#x27;unit&#x27;) ? unit(hexo-config(&#x27;font.global.size&#x27;), em) : .8125em;</span><br><span class="line">//$font-size-base           = .8125em; #统一更改这个大小</span><br></pre></td></tr></table></figure>
-
-<p>3.3 生效并部署</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d <span class="comment">#清除缓存且浏览器也需无痕</span></span><br></pre></td></tr></table></figure>
-
-<p>3.4 图片问题与设置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#参数开启+插件安装+用hexo n 文档 去生成文档文件</span></span><br><span class="line">1.将_config.yml 文件中的post_asset_folder 选项设为 <span class="literal">true</span> 来打开</span><br><span class="line">2.npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_43401436/article/details/107191688">图片设置不生效</a>  <a target="_blank" rel="noopener" href="https://juejin.cn/post/6921750181297782798">标签与分类配置</a>  <a target="_blank" rel="noopener" href="https://ifonlybean.github.io/note/hexo-site/">站点导航</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1640,20 +1677,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
