@@ -1,114 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Chronyd 安装与配置排错指南</title>
-    <url>/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="Chronyd-安装与配置排错指南"><a href="#Chronyd-安装与配置排错指南" class="headerlink" title="Chronyd 安装与配置排错指南"></a>Chronyd 安装与配置排错指南</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
-<li>Chronyd 安装与配置</li>
-<li>端口检查与防火墙配置</li>
-<li>时间同步状态诊断</li>
-<li>硬件时钟问题解决方案</li>
-<li>时区配置</li>
-</ol>
-<hr>
-<h2 id="1-Chronyd-安装与配置"><a href="#1-Chronyd-安装与配置" class="headerlink" title="1. Chronyd 安装与配置"></a>1. Chronyd 安装与配置</h2><h3 id="安装-Chronyd"><a href="#安装-Chronyd" class="headerlink" title="安装 Chronyd"></a>安装 Chronyd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install chronyd -y</span><br></pre></td></tr></table></figure>
-
-<h3 id="检查时间同步源"><a href="#检查时间同步源" class="headerlink" title="检查时间同步源"></a>检查时间同步源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chronyc sources -v</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证-Chronyd-服务状态"><a href="#验证-Chronyd-服务状态" class="headerlink" title="验证 Chronyd 服务状态"></a>验证 Chronyd 服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netstat -nlap | grep 123  <span class="comment"># 查看 UDP 端口，确认 chronyd 已启动</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="2-端口检查与防火墙配置"><a href="#2-端口检查与防火墙配置" class="headerlink" title="2. 端口检查与防火墙配置"></a>2. 端口检查与防火墙配置</h2><h3 id="检查-UDP-端口连通性"><a href="#检查-UDP-端口连通性" class="headerlink" title="检查 UDP 端口连通性"></a>检查 UDP 端口连通性</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方案1：使用 nmap</span></span><br><span class="line">nmap -sU 192.168.70.2 -p 123 -Pn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案2：使用 netcat</span></span><br><span class="line">nc -uvz 192.168.70.2 123</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口状态说明"><a href="#端口状态说明" class="headerlink" title="端口状态说明"></a>端口状态说明</h3><ul>
-<li><strong>正常状态</strong>: <code>123/udp open ntp</code></li>
-<li><strong>异常状态</strong>: <code>123/udp open|filtered ntp</code> (表示端口不可用)</li>
-</ul>
-<h3 id="配置防火墙规则-UFW-示例"><a href="#配置防火墙规则-UFW-示例" class="headerlink" title="配置防火墙规则 (UFW 示例)"></a>配置防火墙规则 (UFW 示例)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看当前防火墙规则</span></span><br><span class="line">ufw status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开放 NTP 服务所需端口</span></span><br><span class="line">ufw allow 123/udp</span><br><span class="line">ufw allow 323/udp</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="3-时间同步状态诊断"><a href="#3-时间同步状态诊断" class="headerlink" title="3. 时间同步状态诊断"></a>3. 时间同步状态诊断</h2><h3 id="异常状态示例"><a href="#异常状态示例" class="headerlink" title="异常状态示例"></a>异常状态示例</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检查 chrony 服务状态</span></span><br><span class="line">chronyc sources</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^? 192.168.70.2                  0   9     0     -     +0ns[   +0ns] +/-    0ns</span><br></pre></td></tr></table></figure>
-
-<h3 id="正常状态示例"><a href="#正常状态示例" class="headerlink" title="正常状态示例"></a>正常状态示例</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 正常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^* 192.168.70.2                 10   6    17     1    -12us[+23us] +/- 276us</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="4-硬件时钟问题解决方案"><a href="#4-硬件时钟问题解决方案" class="headerlink" title="4. 硬件时钟问题解决方案"></a>4. 硬件时钟问题解决方案</h2><h3 id="检查当前时间状态"><a href="#检查当前时间状态" class="headerlink" title="检查当前时间状态"></a>检查当前时间状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">date</span>                    <span class="comment"># 查看系统时间</span></span><br><span class="line">hwclock --show          <span class="comment"># 查看硬件时钟时间</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="硬件时钟同步操作"><a href="#硬件时钟同步操作" class="headerlink" title="硬件时钟同步操作"></a>硬件时钟同步操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 手动设置硬件时钟时间</span></span><br><span class="line">hwclock --<span class="built_in">set</span> --<span class="built_in">date</span> <span class="string">&#x27;2018-08-20 14:05:25&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步硬件时钟与系统时间</span></span><br><span class="line">hwclock --hctosys       <span class="comment"># 硬件时间同步到系统时间</span></span><br><span class="line">hwclock --systohc       <span class="comment"># 系统时间同步到硬件时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存时钟设置</span></span><br><span class="line">clock -w</span><br></pre></td></tr></table></figure>
-
-<h3 id="高级时间管理"><a href="#高级时间管理" class="headerlink" title="高级时间管理"></a>高级时间管理</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看时间同步源状态</span></span><br><span class="line">chronyc sourcestats -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即手动同步时间（适用于时间偏差较大时）</span></span><br><span class="line">chronyc -a makestep</span><br><span class="line"></span><br><span class="line"><span class="comment"># 校准时间服务器</span></span><br><span class="line">chronyc tracking</span><br></pre></td></tr></table></figure>
-
-<h3 id="硬件时钟配置"><a href="#硬件时钟配置" class="headerlink" title="硬件时钟配置"></a>硬件时钟配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检查硬件时钟配置</span></span><br><span class="line">timedatectl | grep <span class="built_in">local</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用本地时区</span></span><br><span class="line">timedatectl set-local-rtc 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用 UTC（推荐）</span></span><br><span class="line">timedatectl set-local-rtc 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用 NTP 时间同步</span></span><br><span class="line">timedatectl set-ntp <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="5-时区配置"><a href="#5-时区配置" class="headerlink" title="5. 时区配置"></a>5. 时区配置</h2><h3 id="更改时区（例如从-EST-改为-CST）"><a href="#更改时区（例如从-EST-改为-CST）" class="headerlink" title="更改时区（例如从 EST 改为 CST）"></a>更改时区（例如从 EST 改为 CST）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份原时区配置</span></span><br><span class="line"><span class="built_in">mv</span> /etc/localtime /etc/localtime.bak</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置上海时区（中国标准时间 CST）</span></span><br><span class="line"><span class="built_in">ln</span> -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="故障排除流程图"><a href="#故障排除流程图" class="headerlink" title="故障排除流程图"></a>故障排除流程图</h2><ol>
-<li><strong>时间不同步</strong><ul>
-<li>检查 <code>chronyc sources</code> 输出</li>
-<li>验证 NTP 端口连通性</li>
-<li>确认防火墙配置</li>
-</ul>
-</li>
-<li><strong>硬件时钟与系统时间不一致</strong><ul>
-<li>使用 <code>hwclock --hctosys</code> 或 <code>hwclock --systohc</code> 同步</li>
-<li>检查时区设置是否正确</li>
-</ul>
-</li>
-<li><strong>时区错误</strong><ul>
-<li>使用 <code>timedatectl</code> 检查当前时区</li>
-<li>重新链接正确的时区文件</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h2 id="常用命令速查表"><a href="#常用命令速查表" class="headerlink" title="常用命令速查表"></a>常用命令速查表</h2><table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">功能描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>chronyc sources</code></td>
-<td align="left">查看时间同步源状态</td>
-</tr>
-<tr>
-<td align="left"><code>chronyc -a makestep</code></td>
-<td align="left">立即强制时间同步</td>
-</tr>
-<tr>
-<td align="left"><code>hwclock --hctosys</code></td>
-<td align="left">硬件时间同步到系统时间</td>
-</tr>
-<tr>
-<td align="left"><code>hwclock --systohc</code></td>
-<td align="left">系统时间同步到硬件时间</td>
-</tr>
-<tr>
-<td align="left"><code>timedatectl set-local-rtc 1</code></td>
-<td align="left">设置硬件时钟使用本地时区</td>
-</tr>
-<tr>
-<td align="left"><code>timedatectl set-ntp yes</code></td>
-<td align="left">启用 NTP 时间同步</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>适用系统</strong>: CentOS&#x2F;RHEL 7+、Ubuntu 16.04+</p>
-<blockquote>
-<p>提示：生产环境中建议将硬件时钟设置为 UTC (<code>timedatectl set-local-rtc 0</code>)，并确保防火墙正确配置允许 NTP 流量。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>chrony</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ES基本使用及问题处理01</title>
     <url>/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
     <content><![CDATA[<p>项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
@@ -266,6 +158,114 @@
       </categories>
       <tags>
         <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Chronyd 安装与配置排错指南</title>
+    <url>/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="Chronyd-安装与配置排错指南"><a href="#Chronyd-安装与配置排错指南" class="headerlink" title="Chronyd 安装与配置排错指南"></a>Chronyd 安装与配置排错指南</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li>Chronyd 安装与配置</li>
+<li>端口检查与防火墙配置</li>
+<li>时间同步状态诊断</li>
+<li>硬件时钟问题解决方案</li>
+<li>时区配置</li>
+</ol>
+<hr>
+<h2 id="1-Chronyd-安装与配置"><a href="#1-Chronyd-安装与配置" class="headerlink" title="1. Chronyd 安装与配置"></a>1. Chronyd 安装与配置</h2><h3 id="安装-Chronyd"><a href="#安装-Chronyd" class="headerlink" title="安装 Chronyd"></a>安装 Chronyd</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install chronyd -y</span><br></pre></td></tr></table></figure>
+
+<h3 id="检查时间同步源"><a href="#检查时间同步源" class="headerlink" title="检查时间同步源"></a>检查时间同步源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chronyc sources -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证-Chronyd-服务状态"><a href="#验证-Chronyd-服务状态" class="headerlink" title="验证 Chronyd 服务状态"></a>验证 Chronyd 服务状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netstat -nlap | grep 123  <span class="comment"># 查看 UDP 端口，确认 chronyd 已启动</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-端口检查与防火墙配置"><a href="#2-端口检查与防火墙配置" class="headerlink" title="2. 端口检查与防火墙配置"></a>2. 端口检查与防火墙配置</h2><h3 id="检查-UDP-端口连通性"><a href="#检查-UDP-端口连通性" class="headerlink" title="检查 UDP 端口连通性"></a>检查 UDP 端口连通性</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方案1：使用 nmap</span></span><br><span class="line">nmap -sU 192.168.70.2 -p 123 -Pn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案2：使用 netcat</span></span><br><span class="line">nc -uvz 192.168.70.2 123</span><br></pre></td></tr></table></figure>
+
+<h3 id="端口状态说明"><a href="#端口状态说明" class="headerlink" title="端口状态说明"></a>端口状态说明</h3><ul>
+<li><strong>正常状态</strong>: <code>123/udp open ntp</code></li>
+<li><strong>异常状态</strong>: <code>123/udp open|filtered ntp</code> (表示端口不可用)</li>
+</ul>
+<h3 id="配置防火墙规则-UFW-示例"><a href="#配置防火墙规则-UFW-示例" class="headerlink" title="配置防火墙规则 (UFW 示例)"></a>配置防火墙规则 (UFW 示例)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看当前防火墙规则</span></span><br><span class="line">ufw status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开放 NTP 服务所需端口</span></span><br><span class="line">ufw allow 123/udp</span><br><span class="line">ufw allow 323/udp</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-时间同步状态诊断"><a href="#3-时间同步状态诊断" class="headerlink" title="3. 时间同步状态诊断"></a>3. 时间同步状态诊断</h2><h3 id="异常状态示例"><a href="#异常状态示例" class="headerlink" title="异常状态示例"></a>异常状态示例</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检查 chrony 服务状态</span></span><br><span class="line">chronyc sources</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^? 192.168.70.2                  0   9     0     -     +0ns[   +0ns] +/-    0ns</span><br></pre></td></tr></table></figure>
+
+<h3 id="正常状态示例"><a href="#正常状态示例" class="headerlink" title="正常状态示例"></a>正常状态示例</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 正常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^* 192.168.70.2                 10   6    17     1    -12us[+23us] +/- 276us</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-硬件时钟问题解决方案"><a href="#4-硬件时钟问题解决方案" class="headerlink" title="4. 硬件时钟问题解决方案"></a>4. 硬件时钟问题解决方案</h2><h3 id="检查当前时间状态"><a href="#检查当前时间状态" class="headerlink" title="检查当前时间状态"></a>检查当前时间状态</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">date</span>                    <span class="comment"># 查看系统时间</span></span><br><span class="line">hwclock --show          <span class="comment"># 查看硬件时钟时间</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="硬件时钟同步操作"><a href="#硬件时钟同步操作" class="headerlink" title="硬件时钟同步操作"></a>硬件时钟同步操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 手动设置硬件时钟时间</span></span><br><span class="line">hwclock --<span class="built_in">set</span> --<span class="built_in">date</span> <span class="string">&#x27;2018-08-20 14:05:25&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步硬件时钟与系统时间</span></span><br><span class="line">hwclock --hctosys       <span class="comment"># 硬件时间同步到系统时间</span></span><br><span class="line">hwclock --systohc       <span class="comment"># 系统时间同步到硬件时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存时钟设置</span></span><br><span class="line">clock -w</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级时间管理"><a href="#高级时间管理" class="headerlink" title="高级时间管理"></a>高级时间管理</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看时间同步源状态</span></span><br><span class="line">chronyc sourcestats -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即手动同步时间（适用于时间偏差较大时）</span></span><br><span class="line">chronyc -a makestep</span><br><span class="line"></span><br><span class="line"><span class="comment"># 校准时间服务器</span></span><br><span class="line">chronyc tracking</span><br></pre></td></tr></table></figure>
+
+<h3 id="硬件时钟配置"><a href="#硬件时钟配置" class="headerlink" title="硬件时钟配置"></a>硬件时钟配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检查硬件时钟配置</span></span><br><span class="line">timedatectl | grep <span class="built_in">local</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用本地时区</span></span><br><span class="line">timedatectl set-local-rtc 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用 UTC（推荐）</span></span><br><span class="line">timedatectl set-local-rtc 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用 NTP 时间同步</span></span><br><span class="line">timedatectl set-ntp <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-时区配置"><a href="#5-时区配置" class="headerlink" title="5. 时区配置"></a>5. 时区配置</h2><h3 id="更改时区（例如从-EST-改为-CST）"><a href="#更改时区（例如从-EST-改为-CST）" class="headerlink" title="更改时区（例如从 EST 改为 CST）"></a>更改时区（例如从 EST 改为 CST）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份原时区配置</span></span><br><span class="line"><span class="built_in">mv</span> /etc/localtime /etc/localtime.bak</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置上海时区（中国标准时间 CST）</span></span><br><span class="line"><span class="built_in">ln</span> -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="故障排除流程图"><a href="#故障排除流程图" class="headerlink" title="故障排除流程图"></a>故障排除流程图</h2><ol>
+<li><strong>时间不同步</strong><ul>
+<li>检查 <code>chronyc sources</code> 输出</li>
+<li>验证 NTP 端口连通性</li>
+<li>确认防火墙配置</li>
+</ul>
+</li>
+<li><strong>硬件时钟与系统时间不一致</strong><ul>
+<li>使用 <code>hwclock --hctosys</code> 或 <code>hwclock --systohc</code> 同步</li>
+<li>检查时区设置是否正确</li>
+</ul>
+</li>
+<li><strong>时区错误</strong><ul>
+<li>使用 <code>timedatectl</code> 检查当前时区</li>
+<li>重新链接正确的时区文件</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="常用命令速查表"><a href="#常用命令速查表" class="headerlink" title="常用命令速查表"></a>常用命令速查表</h2><table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>chronyc sources</code></td>
+<td align="left">查看时间同步源状态</td>
+</tr>
+<tr>
+<td align="left"><code>chronyc -a makestep</code></td>
+<td align="left">立即强制时间同步</td>
+</tr>
+<tr>
+<td align="left"><code>hwclock --hctosys</code></td>
+<td align="left">硬件时间同步到系统时间</td>
+</tr>
+<tr>
+<td align="left"><code>hwclock --systohc</code></td>
+<td align="left">系统时间同步到硬件时间</td>
+</tr>
+<tr>
+<td align="left"><code>timedatectl set-local-rtc 1</code></td>
+<td align="left">设置硬件时钟使用本地时区</td>
+</tr>
+<tr>
+<td align="left"><code>timedatectl set-ntp yes</code></td>
+<td align="left">启用 NTP 时间同步</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>适用系统</strong>: CentOS&#x2F;RHEL 7+、Ubuntu 16.04+</p>
+<blockquote>
+<p>提示：生产环境中建议将硬件时钟设置为 UTC (<code>timedatectl set-local-rtc 0</code>)，并确保防火墙正确配置允许 NTP 流量。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>chrony</tag>
       </tags>
   </entry>
   <entry>
@@ -763,6 +763,36 @@
       </tags>
   </entry>
   <entry>
+    <title>容器化之细节问题处理篇04</title>
+    <url>/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/</url>
+    <content><![CDATA[<p>问题背景：在k8s种，查看一个mysql 容器化的内存（16G）告警了，表示资源不够了。该mysql pod 有三副本，一主两从。有1从得资源内存耗费很低。且该内存已经由8G已经扩容至16G了。使用kubectl top 查看该mysql的 的确是到达了15334Mi ，但是docker stats看到的内存使用量4.477GiB。为什么同一个对象，显示的内存差异如此之大。</p>
+<p>核心原因：统计维度不同</p>
+<p><strong><code>docker stats</code> (显示 4.477 GiB)</strong></p>
+<ul>
+<li><strong>统计对象</strong>： Docker 容器本身（即 <code>cgroup</code> 的内存使用情况）。</li>
+<li><strong>统计内容</strong>：RSS，即进程占用的内存。这个值更接近应用程序（比如你的 MySQL 进程）真正占用的、未被磁盘缓存缓冲区的内存</li>
+<li><strong>特点</strong>： 这个值通常会更小，因为它不包含被内核利用为缓存（Page Cache）的内存。</li>
+</ul>
+<p><strong><code>kubectl top</code> (显示 15334 MiB ≈ 15 GiB)</strong></p>
+<ul>
+<li><p><strong>统计来源</strong>： 这个数据来自于 Kubernetes 的监控组件 <code>metrics-server</code>，而 <code>metrics-server</code> 的数据又来自节点的 <code>cAdvisor</code>。</p>
+</li>
+<li><p><strong>统计内容</strong>： 它显示的是<strong>容器内存工作集（Working Set）</strong> 的大小。</p>
+</li>
+<li><p><strong>工作集（Working Set）</strong> 包括：</p>
+<p>内存使用量（memory.usage_in_bytes）：&#x3D; RSS + 缓存（包括文件缓存、块设备缓存等） + 内核内存等</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+        <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>容器化之细节问题处理篇03</title>
     <url>/2025/09/11/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8703/</url>
     <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Warning  SystemLoadIsFull  56s (x1313 over 2d2h)  custom-plugin-monitor  (combined from similar events): system load/cores percent exceeded threshold 80%, load/cores percent: 118.09%, load15m: 37.79</span><br></pre></td></tr></table></figure>
@@ -807,36 +837,6 @@
 <li><p><strong>为什么您的系统负载高，但CPU使用率看起来不算极高？</strong></p>
 <p>1.<strong><code>%wa</code> (I&#x2F;O Wait)</strong>,几乎所有核心的 <code>%wa</code> 都是 <strong>0.0</strong>。所有高纯粹的CPU计算资源竞争。</p>
 <p>2.这些进程对CPU的总需求（43.67）超过了系统能同时提供的数量（32），所以它们必须<strong>排队</strong>。这个排队队伍的<strong>平均长度</strong>就是负载平均值(43.67)。【理解等于PID的所再占的CPU值大于32】</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>容器化</category>
-      </categories>
-      <tags>
-        <tag>k8s</tag>
-        <tag>cpu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>容器化之细节问题处理篇04</title>
-    <url>/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/</url>
-    <content><![CDATA[<p>问题背景：在k8s种，查看一个mysql 容器化的内存（16G）告警了，表示资源不够了。该mysql pod 有三副本，一主两从。有1从得资源内存耗费很低。且该内存已经由8G已经扩容至16G了。使用kubectl top 查看该mysql的 的确是到达了15334Mi ，但是docker stats看到的内存使用量4.477GiB。为什么同一个对象，显示的内存差异如此之大。</p>
-<p>核心原因：统计维度不同</p>
-<p><strong><code>docker stats</code> (显示 4.477 GiB)</strong></p>
-<ul>
-<li><strong>统计对象</strong>： Docker 容器本身（即 <code>cgroup</code> 的内存使用情况）。</li>
-<li><strong>统计内容</strong>：RSS，即进程占用的内存。这个值更接近应用程序（比如你的 MySQL 进程）真正占用的、未被磁盘缓存缓冲区的内存</li>
-<li><strong>特点</strong>： 这个值通常会更小，因为它不包含被内核利用为缓存（Page Cache）的内存。</li>
-</ul>
-<p><strong><code>kubectl top</code> (显示 15334 MiB ≈ 15 GiB)</strong></p>
-<ul>
-<li><p><strong>统计来源</strong>： 这个数据来自于 Kubernetes 的监控组件 <code>metrics-server</code>，而 <code>metrics-server</code> 的数据又来自节点的 <code>cAdvisor</code>。</p>
-</li>
-<li><p><strong>统计内容</strong>： 它显示的是<strong>容器内存工作集（Working Set）</strong> 的大小。</p>
-</li>
-<li><p><strong>工作集（Working Set）</strong> 包括：</p>
-<p>内存使用量（memory.usage_in_bytes）：&#x3D; RSS + 缓存（包括文件缓存、块设备缓存等） + 内核内存等</p>
 </li>
 </ul>
 ]]></content>
@@ -921,6 +921,24 @@
       <categories>
         <category>杂篇</category>
       </categories>
+  </entry>
+  <entry>
+    <title>网络排障工具的使用01</title>
+    <url>/2025/09/11/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%9A%9C%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A801/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /data/tcpdump</span><br><span class="line"><span class="built_in">chmod</span> 777  /data/tcpdump</span><br><span class="line"><span class="comment">#现场需要把这个podname做成替换，替换为现场的实际pod名称</span></span><br><span class="line">podname=4d1af57e04da</span><br><span class="line"><span class="built_in">id</span>=$(docker ps | grep -v pause | grep <span class="variable">$podname</span> | <span class="built_in">head</span> -1 |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">pid=$(docker inspect <span class="variable">$id</span>| grep -w Pid |grep -oE <span class="string">&#x27;[0-9]+&#x27;</span>)</span><br><span class="line">nsenter -t <span class="variable">$pid</span> -n  tcpdump -i eth0    -nvve -C 100 -W 20 -w /tmp/<span class="variable">$podname</span>.pcap</span><br><span class="line"></span><br><span class="line"><span class="comment"># -C 100 是100M，-W 10 保存10个文件</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看一个服务异常，需要查看详细的日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">journalctl -xe -u network</span><br><span class="line">dmesg | grep bond</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>tcpdump</tag>
+        <tag>nsenter</tag>
+        <tag>journalctl</tag>
+      </tags>
   </entry>
   <entry>
     <title>记一次网卡修改及nmcli 使用</title>

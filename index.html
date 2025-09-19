@@ -560,6 +560,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/11/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%9A%9C%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A801/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/11/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%9A%9C%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A801/" class="post-title-link" itemprop="url">网络排障工具的使用01</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-11 16:17:10" itemprop="dateCreated datePublished" datetime="2025-09-11T16:17:10+08:00">2025-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-19 17:08:06" itemprop="dateModified" datetime="2025-09-19T17:08:06+08:00">2025-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /data/tcpdump</span><br><span class="line"><span class="built_in">chmod</span> 777  /data/tcpdump</span><br><span class="line"><span class="comment">#现场需要把这个podname做成替换，替换为现场的实际pod名称</span></span><br><span class="line">podname=4d1af57e04da</span><br><span class="line"><span class="built_in">id</span>=$(docker ps | grep -v pause | grep <span class="variable">$podname</span> | <span class="built_in">head</span> -1 |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">pid=$(docker inspect <span class="variable">$id</span>| grep -w Pid |grep -oE <span class="string">&#x27;[0-9]+&#x27;</span>)</span><br><span class="line">nsenter -t <span class="variable">$pid</span> -n  tcpdump -i eth0    -nvve -C 100 -W 20 -w /tmp/<span class="variable">$podname</span>.pcap</span><br><span class="line"></span><br><span class="line"><span class="comment"># -C 100 是100M，-W 10 保存10个文件</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看一个服务异常，需要查看详细的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">journalctl -xe -u network</span><br><span class="line">dmesg | grep bond</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/11/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8703/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1527,97 +1605,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/shell%E4%B9%8B%E8%8E%B7%E5%8F%96docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84cpu%E4%B8%8E%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E7%8E%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/06/shell%E4%B9%8B%E8%8E%B7%E5%8F%96docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84cpu%E4%B8%8E%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E7%8E%87/" class="post-title-link" itemprop="url">shell之获取docker容器中的cpu与内存使用率</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-06 16:50:28" itemprop="dateCreated datePublished" datetime="2025-09-06T16:50:28+08:00">2025-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-07 11:09:35" itemprop="dateModified" datetime="2025-09-07T11:09:35+08:00">2025-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>背景：该项目迁移至新环境需求，将原先TSF集群（节点数：xxx）迁移到新环境中，jmeter 压测一个查询接口的数据。分别在旧环境与新环境的接口数据进行压测，对比监控CPU、内存利用率情况。目前旧环境容器无监控，故思路上使用脚本来获取监控数据，获取的数据用图标展示出来。底层的k8s比较老，暂未支持kubectl  top  容器。</p>
-<p>问题:为什么不进入容器中查看，top查看容器的资源使用量。这是因为我们在容器中运行 top 命令，虽然可以看到容器中每个进程的 CPU 使用率，但是 top 中”%Cpu(s)”那一行中显示的数值，并不是这个容器的 CPU 整体使用率，而是容器宿主机的 CPU 使用率。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">HOST_NAME=$(hostname -I | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">LOG_FILE=<span class="string">&quot;/var/log/docker_stats_20250719_<span class="variable">$HOST_NAME</span>.log&quot;</span></span><br><span class="line">DOCKER_NAME=$(docker ps |grep  <span class="string">&quot;tsf_1/element-server&quot;</span> |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">INTERVAL=5 <span class="comment"># 收集间隔（秒）</span></span><br><span class="line"><span class="comment"># 创建日志文件并添加表头</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;时间戳,容器ID,CPU使用率%,内存使用率%&quot;</span> &gt; <span class="string">&quot;<span class="variable">$LOG_FILE</span>&quot;</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># 获取当前时间戳</span></span><br><span class="line">    TIMESTAMP=$(<span class="built_in">date</span> <span class="string">&#x27;+%H:%M:%S&#x27;</span>)</span><br><span class="line">    <span class="comment"># 使用 top 收集 CPU 使用率（提取 %Cpu(s): 后的数值）</span></span><br><span class="line"></span><br><span class="line">    CPU_MEM_USAGE=$(docker stats <span class="variable">$DOCKER_NAME</span> --no-stream --format <span class="string">&quot;&#123;&#123;.Container&#125;&#125;,\t&#123;&#123;.CPUPerc&#125;&#125;,\t\t&#123;&#123;.MemPerc&#125;&#125;&quot;</span>)</span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$CPU_MEM_USAGE</span></span><br><span class="line">    <span class="comment">#top -bn1 | grep &#x27;%Cpu&#x27; | awk &#x27;&#123;print &quot;CPU使用率: &quot; 100 - $8 &quot;%&quot;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$TIMESTAMP</span>， <span class="variable">$CPU_MEM_USAGE</span> &quot;</span>  &gt;&gt; <span class="string">&quot;<span class="variable">$LOG_FILE</span>&quot;</span></span><br><span class="line">    <span class="comment"># 等待下一次收集</span></span><br><span class="line">    <span class="built_in">sleep</span> <span class="variable">$INTERVAL</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最后制作出来的图标如下：</p>
-<p><img src="/2025/09/06/shell%E4%B9%8B%E8%8E%B7%E5%8F%96docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84cpu%E4%B8%8E%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E7%8E%87/image-20250906170446394.png" alt="image-20250906170446394"></p>
-<p>关于得到的数据的疑问的记录</p>
-<p>从图标上可以得出有的CPU超100%了，原因是什么呢？正常来看这个CPU应该是多少的</p>
-<ol>
-<li>绝对资源消耗量</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">307% = 3.07 个逻辑 CPU 核心满载</span><br><span class="line"><span class="comment">#表示容器当前每秒消耗 3.07 核心秒的计算资</span></span><br><span class="line"><span class="comment">#相当于： 3 个核心 100% 满载 + 第 4 个核心 7% 负载 或 4 个核心平均 76.75% 负载</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>docker stats 中查看 以下参数 docker 有关cpu配置的区别：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@x.x.x.x ~]# docker inspect 1f77b1a2b98e |grep -i cpu</span><br><span class="line">            <span class="string">&quot;CpuShares&quot;</span>: 4096, <span class="comment">#cpu request的值</span></span><br><span class="line">            <span class="string">&quot;NanoCpus&quot;</span>: 0,</span><br><span class="line">            <span class="string">&quot;CpuPeriod&quot;</span>: 100000,</span><br><span class="line">            <span class="string">&quot;CpuQuota&quot;</span>: 400000, <span class="comment">#cpu limit的值</span></span><br><span class="line">            <span class="string">&quot;CpuRealtimePeriod&quot;</span>: 0,</span><br><span class="line">            <span class="string">&quot;CpuRealtimeRuntime&quot;</span>: 0,</span><br><span class="line">            <span class="string">&quot;CpusetCpus&quot;</span>: <span class="string">&quot;9-12&quot;</span>, <span class="comment">#运行在哪个cpu上</span></span><br><span class="line">            <span class="string">&quot;CpusetMems&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">            <span class="string">&quot;CpuCount&quot;</span>: 0,</span><br><span class="line">            <span class="string">&quot;CpuPercent&quot;</span>: 0,</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1687,7 +1674,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1700,7 +1687,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
