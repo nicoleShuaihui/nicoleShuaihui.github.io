@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Chronyd 安装与配置排错指南</title>
+    <url>/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[Chronyd 安装与配置排错指南目录
+Chronyd 安装与配置
+端口检查与防火墙配置
+时间同步状态诊断
+硬件时钟问题解决方案
+时区配置
+
+
+1. Chronyd 安装与配置安装 Chronydyum install chronyd -y
+
+检查时间同步源chronyc sources -v
+
+验证 Chronyd 服务状态netstat -nlap | grep 123  # 查看 UDP 端口，确认 chronyd 已启动
+
+
+2. 端口检查与防火墙配置检查 UDP 端口连通性# 方案1：使用 nmapnmap -sU 192.168.70.2 -p 123 -Pn# 方案2：使用 netcatnc -uvz 192.168.70.2 123
+
+端口状态说明
+正常状态: 123/udp open ntp
+异常状态: 123/udp open|filtered ntp (表示端口不可用)
+
+配置防火墙规则 (UFW 示例)# 查看当前防火墙规则ufw status# 开放 NTP 服务所需端口ufw allow 123/udpufw allow 323/udp
+
+
+3. 时间同步状态诊断异常状态示例# 检查 chrony 服务状态chronyc sources# 异常输出示例：210 Number of sources = 1MS Name/IP address         Stratum Poll Reach LastRx Last sample===============================================================================^? 192.168.70.2                  0   9     0     -     +0ns[   +0ns] +/-    0ns
+
+正常状态示例# 正常输出示例：210 Number of sources = 1MS Name/IP address         Stratum Poll Reach LastRx Last sample===============================================================================^* 192.168.70.2                 10   6    17     1    -12us[+23us] +/- 276us
+
+
+4. 硬件时钟问题解决方案检查当前时间状态date                    # 查看系统时间hwclock --show          # 查看硬件时钟时间
+
+硬件时钟同步操作# 手动设置硬件时钟时间hwclock --set --date &#x27;2018-08-20 14:05:25&#x27;# 同步硬件时钟与系统时间hwclock --hctosys       # 硬件时间同步到系统时间hwclock --systohc       # 系统时间同步到硬件时间# 保存时钟设置clock -w
+
+高级时间管理# 查看时间同步源状态chronyc sourcestats -v# 立即手动同步时间（适用于时间偏差较大时）chronyc -a makestep# 校准时间服务器chronyc tracking
+
+硬件时钟配置# 检查硬件时钟配置timedatectl | grep local# 配置硬件时钟使用本地时区timedatectl set-local-rtc 1# 配置硬件时钟使用 UTC（推荐）timedatectl set-local-rtc 0# 启用 NTP 时间同步timedatectl set-ntp yes
+
+
+5. 时区配置更改时区（例如从 EST 改为 CST）# 备份原时区配置mv /etc/localtime /etc/localtime.bak# 设置上海时区（中国标准时间 CST）ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+
+故障排除流程图
+时间不同步
+检查 chronyc sources 输出
+验证 NTP 端口连通性
+确认防火墙配置
+
+
+硬件时钟与系统时间不一致
+使用 hwclock --hctosys 或 hwclock --systohc 同步
+检查时区设置是否正确
+
+
+时区错误
+使用 timedatectl 检查当前时区
+重新链接正确的时区文件
+
+
+
+
+常用命令速查表
+
+
+命令
+功能描述
+
+
+
+chronyc sources
+查看时间同步源状态
+
+
+chronyc -a makestep
+立即强制时间同步
+
+
+hwclock --hctosys
+硬件时间同步到系统时间
+
+
+hwclock --systohc
+系统时间同步到硬件时间
+
+
+timedatectl set-local-rtc 1
+设置硬件时钟使用本地时区
+
+
+timedatectl set-ntp yes
+启用 NTP 时间同步
+
+
+
+适用系统: CentOS&#x2F;RHEL 7+、Ubuntu 16.04+
+
+提示：生产环境中建议将硬件时钟设置为 UTC (timedatectl set-local-rtc 0)，并确保防火墙正确配置允许 NTP 流量。
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>chrony</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ES基本使用及问题处理01</title>
+    <url>/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
+    <content><![CDATA[项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。
+清理数据curl -I -m 10 -o /dev/null -s -w %&#123;http_code&#125; -X GET &quot;$&#123;dst_es_schema&#125;://$&#123;dst_es_user&#125;:$&#123;dst_es_passwd&#125;@$&#123;dst_es_host&#125;:$&#123;dst_es_port&#125;/_cluster/health?pretty&quot;# 如需用户名与密码则需 curl -u xxx:&#x27;xxx&#x27;, 密码有特殊字符可用单引号curl 10.25.83.242:9200/_cluster/health?pretty #查看监控curl 10.25.83.242:9200/_cat/indices?v |grep gb #查看数据curl -XDELETE 10.25.83.242:9200/xxxxx #删除数据
+
+原因分析只读标记未手动清除：这是最常见的原因。Elasticsearch 不会自动将索引的 read_only_allow_delete 属性改回 false
+磁盘空间未真正有效释放：
+
+延迟释放：使用 DELETE 操作或 _delete_by_query 进行数据删除时，Elasticsearch 采用的是“标记删除”而非立即从磁盘擦除。真正的空间释放需要等待 Segment Merge 过程完成。
+
+清理量不足：可能删除的数据量不足以让所有磁盘的使用率都降到水位线（特别是 flood_stage, 例如95%）以下。Elasticsearch 会检查所有节点磁盘空间。
+
+
+水位线检查有延迟或缓存：Elasticsearch 检测磁盘空间和使用率变化可能存在短暂延迟。
+分片分配问题：即使空间足够，如果之前因磁盘空间不足导致分片未分配，空间释放后可能需要手动恢复分片分配或等待集群自动重新平衡。
+📖 总结：问题解决步骤
+
+
+步骤
+操作
+命令&#x2F;操作示例
+说明
+
+
+
+1️⃣
+确认磁盘空间
+GET /_cat/allocation?v
+查看所有节点的磁盘使用率，确保均低于洪水水位线（如95%）
+
+
+2️⃣
+检查索引设置
+GET your_index_name/_settings
+确认 index.blocks.read_only_allow_delete 是否为 true
+
+
+3️⃣
+手动解除只读
+curl  -H “Content-Type:application&#x2F;json” -XPUT 10.25.83.242:9200&#x2F;_cluster&#x2F;settings -d ‘{   “persistent”: {     “cluster.blocks.read_only_allow_delete”: false   } }’
+核心步骤：手动清除索引的只读标记
+
+
+4️⃣
+xxx
+curl -H “Content-Type: application&#x2F;json”  -XPUT ‘10.25.83.242:9200&#x2F;_all&#x2F;_settings’ -d ‘{“index”:{“blocks”:{“read_only_allow_delete”:null}}}’
+
+
+
+5️⃣
+验证写入
+POST your_index_name/_doc &#123; &quot;test&quot;: &quot;data&quot; &#125;
+尝试写入一条测试数据，验证是否成功
+
+
+数据迁移项目背景：目前项目由两套环境，需要将A环境的数据迁移至环境B。项目B中本身也有数据。故需求是需要先将项目B中的ES数据清空后再将项目A的ES数据迁移过来。因为A、B两个环境的网络可临时开通端口且两个环境没有HDFS、s3这样的共享文件系统，但可部署ntfs系统。故es备份恢复使用的是multielasticdump进行的备份与恢复。
+备份工具区别选择
+
+
+特性
+elasticdump
+multielasticdump
+
+
+
+核心原理
+单进程工具
+elasticdump 的包装器，管理多个进程
+
+
+处理方式
+串行：一次处理一个索引或一种数据类型
+并行：同时处理多个索引
+
+
+效率
+速度较慢，尤其当索引很多时
+速度非常快，充分利用多核CPU和网络带宽
+
+
+使用场景
+备份或迁移单个或少量几个索引
+备份或迁移整个集群或大量索引
+
+
+输出结构
+输出是指定的单个文件
+为每个索引创建子文件夹，文件夹内包含该索引的各种类型文件（data, mapping等）
+
+
+资源占用
+占用资源较少
+占用资源较多（CPU、内存、网络连接数）
+
+
+控制粒度
+高：可以非常精细地控制单个索引的传输
+低：以索引为单元进行批量操作
+
+
+
+
+
+特性
+elasticdump &#x2F; multielasticdump
+Elasticsearch 快照&#x2F;恢复 (Snapshot&#x2F;Restore)
+
+
+
+格式
+纯文本 JSON
+专有的二进制格式
+
+
+可读性
+高。可以用文本编辑器、cat, head, jq 等工具直接查看和分析。
+低。只能由 Elasticsearch 本身识别和解析。
+
+
+用途
+逻辑备份。数据迁移、少量数据恢复、数据审计、转换格式。
+物理备份。完整的集群快照，用于灾难恢复、全量备份。
+
+
+速度
+相对较慢（需要将二进制数据编码为JSON文本并传输）
+非常快（直接拷贝底层的段文件）
+
+
+存储空间
+更大（文本格式通常比二进制表示更占空间）
+更小（是高效的二进制压缩格式）
+
+
+系统要求
+任何有文件系统的地方
+必须配置在支持的快照仓库中（如 S3, HDFS, NFS, 共享FS）
+
+
+数据迁移过程查看数据
+curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET &#x27;&lt;ES_IP&gt;:9200/_cluster/health?pretty&#x27;1. 使用 GET /_cat/indices 命令curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET &#x27;&lt;ES_IP&gt;:9200/_cat/indices?v&#x27; | grep red#查看所有索引curl -u elastic:&#x27;your_password&#x27; http://localhost:9200/_cat/indices?v
+
+数据清理,将所有的索引的数据都清理干净。也可以用删除索引的方式将其都删除。
+curl -u &quot;elastic:密码&quot; -X POST &quot;http://localhost:9200/&lt;索引名&gt;/_delete_by_query&quot; -H &#x27;Content-Type: application/json&#x27; -d&#x27;&#123;  &quot;query&quot;: &#123;    &quot;match_all&quot;: &#123;&#125;  &#125;&#125;&#x27;
+
+数据备份：
+date_dir=`date +%Y%m%d`multielasticdump \    --direction=dump \    --match=&#x27;^.*$&#x27; \    --includeType=&#x27;data,mapping,analyzer,alias,settings,template&#x27; \    --input=http://$&#123;es_user&#125;:$&#123;es_passwd&#125;@$&#123;es_host&#125;:$&#123;es_port&#125; \    --output=$backup_dir/elasticsearch-dump/$date_dir 
+
+数据恢复
+multielasticdump \  --direction=load \  --skip-existing \  --match=&#x27;^.*$&#x27; \  --includeType=&#x27;data,mapping,analyzer,alias,settings,template&#x27; \  --ignoreChildError \  --input=$backup_data \  --output=http://$&#123;ES_USER&#125;:$&#123;ES_PASSWD&#125;@$ES_HOST:$ES_PORT
+
+]]></content>
+      <categories>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ETCD基本使用及问题处理01</title>
+    <url>/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
+    <content><![CDATA[1.拷贝etcd命令并指定并使用etcdctlv3的版本which etcdctl || docker cp $(docker ps | grep  etcd-10 | grep -v pause | awk &#x27;&#123;print $1&#125;&#x27;):/usr/local/bin/etcdctl  /usr/local/bin/export ETCDCTL_API=32.查询etcd memberetcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table3.3查询etcd leaderetcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table
+
+]]></content>
+      <categories>
+        <category>中间</category>
+      </categories>
+      <tags>
+        <tag>ETCD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell之获取docker容器中的cpu与内存使用率</title>
+    <url>/2025/09/06/shell%E4%B9%8B%E8%8E%B7%E5%8F%96docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84cpu%E4%B8%8E%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E7%8E%87/</url>
+    <content><![CDATA[背景：该项目迁移至新环境需求，将原先TSF集群（节点数：xxx）迁移到新环境中，jmeter 压测一个查询接口的数据。分别在旧环境与新环境的接口数据进行压测，对比监控CPU、内存利用率情况。目前旧环境容器无监控，故思路上使用脚本来获取监控数据，获取的数据用图标展示出来。底层的k8s比较老，暂未支持kubectl  top  容器。
+问题:为什么不进入容器中查看，top查看容器的资源使用量。这是因为我们在容器中运行 top 命令，虽然可以看到容器中每个进程的 CPU 使用率，但是 top 中”%Cpu(s)”那一行中显示的数值，并不是这个容器的 CPU 整体使用率，而是容器宿主机的 CPU 使用率。
+#!/bin/bashHOST_NAME=$(hostname -I | awk &#x27;&#123;print $2&#125;&#x27;)LOG_FILE=&quot;/var/log/docker_stats_20250719_$HOST_NAME.log&quot;DOCKER_NAME=$(docker ps |grep  &quot;tsf_1/element-server&quot; |awk &#x27;&#123;print $1&#125;&#x27;)INTERVAL=5 # 收集间隔（秒）# 创建日志文件并添加表头echo &quot;时间戳,容器ID,CPU使用率%,内存使用率%&quot; &gt; &quot;$LOG_FILE&quot;while true; do    # 获取当前时间戳    TIMESTAMP=$(date &#x27;+%H:%M:%S&#x27;)    # 使用 top 收集 CPU 使用率（提取 %Cpu(s): 后的数值）    CPU_MEM_USAGE=$(docker stats $DOCKER_NAME --no-stream --format &quot;&#123;&#123;.Container&#125;&#125;,\t&#123;&#123;.CPUPerc&#125;&#125;,\t\t&#123;&#123;.MemPerc&#125;&#125;&quot;)    echo $CPU_MEM_USAGE    #top -bn1 | grep &#x27;%Cpu&#x27; | awk &#x27;&#123;print &quot;CPU使用率: &quot; 100 - $8 &quot;%&quot;&#125;&#x27;    echo &quot;$TIMESTAMP， $CPU_MEM_USAGE &quot;  &gt;&gt; &quot;$LOG_FILE&quot;    # 等待下一次收集    sleep $INTERVALdone
+
+最后制作出来的图标如下：
+
+关于得到的数据的疑问的记录
+从图标上可以得出有的CPU超100%了，原因是什么呢？正常来看这个CPU应该是多少的
+
+绝对资源消耗量
+
+307% = 3.07 个逻辑 CPU 核心满载#表示容器当前每秒消耗 3.07 核心秒的计算资#相当于： 3 个核心 100% 满载 + 第 4 个核心 7% 负载 或 4 个核心平均 76.75% 负载
+
+
+docker stats 中查看 以下参数 docker 有关cpu配置的区别：
+
+[root@x.x.x.x ~]# docker inspect 1f77b1a2b98e |grep -i cpu            &quot;CpuShares&quot;: 4096, #cpu request的值            &quot;NanoCpus&quot;: 0,            &quot;CpuPeriod&quot;: 100000,            &quot;CpuQuota&quot;: 400000, #cpu limit的值            &quot;CpuRealtimePeriod&quot;: 0,            &quot;CpuRealtimeRuntime&quot;: 0,            &quot;CpusetCpus&quot;: &quot;9-12&quot;, #运行在哪个cpu上            &quot;CpusetMems&quot;: &quot;&quot;,            &quot;CpuCount&quot;: 0,            &quot;CpuPercent&quot;: 0,
+
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【fio】的基本使用之磁盘性能测试</title>
+    <url>/2025/09/14/%E3%80%90fio%E3%80%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E4%B9%8B%E7%A3%81%E7%9B%98%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[【注意】：fio 对参数格式很严格，多余的空格会导致解析失败
+fio 查看的方面有，延时、吞吐量、IOPS。
+目前针对磁盘的性能使用fio的压测，我们使用了4K、与256K的测试方式将磁盘的利用率打满，可以反馈磁盘的最大性能。同步我们查看带宽性能、IOPS、延迟等方面。1.我们可用256K去测试带宽的极限速度。
+4K队列深度32-随机读写测试–512KB * 519 ≈ 260 MiB&#x2F;s
+
+
+指标
+结果
+
+
+
+平均写入速度
+260 MiB&#x2F;s (273 MB&#x2F;s) #磁盘的顺序写入极限速度
+
+
+平均IOPS
+520
+
+
+平均延迟
+61.4毫秒
+
+
+磁盘利用率
+100%
+
+
+fio --ioengine=libaio  --direct=1 --rw=write --time_based --refill_buffers --norandommap  --randrepeat=0 --group_reporting --name=fio-randwrite --size=1000G  --filename=/dev/vdb --iodepth=32 --bs=512kfio: time_based requires a runtime/timeout settingfio-randwrite: (g=0): rw=write, bs=(R) 512KiB-512KiB, (W) 512KiB-512KiB, (T) 512KiB-512KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 process#表示有1个I/O作业正在运行。写入操作完成了100%写入速度为260Mib/s ,计算：512KB * 520 ≈ 260 MiB/s）Jobs: 1 (f=1): [W(1)][100.0%][r=0KiB/s,w=260MiB/s][r=0,w=520 IOPS][eta 00m:00s]  #- 测试名称，组ID，任务数，错误数，进程ID和时间。fio-randwrite: (groupid=0, jobs=1): err= 0: pid=8750: Sun Sep 14 14:56:44 2025#- 写入测试结果：IOPS为520，带宽为260MiB/s（273MB/s），总共写入1000GiB，用时3937369毫秒（约3937.369秒，即65.6分钟）  write: IOPS=520, BW=260MiB/s (273MB/s)(1000GiB/3937369msec)#    slat (usec): min=12, max=143, avg=46.17, stdev=11.34 #提交延迟（从提交I/O到内核到内核开始处理的时间）微秒级，最小12，最大143，平均46.17，标准差11.34。    clat (msec): min=6, max=745, avg=61.37, stdev= 2.86 #完成延迟（从内核开始处理到完成的时间）毫秒级，最小6，最大745，平均61.37，标准差2.86。     lat (msec): min=6, max=745, avg=61.42, stdev= 2.86 # 总延迟（slat + clat），平均61.42毫秒。    clat percentiles (msec): #完成延迟的百分位数（单位毫秒），可以看出绝大多数请求的延迟在59到66毫秒之间，只有一个异常值到了176毫秒（99.99%处）。     |  1.00th=[   59],  5.00th=[   61], 10.00th=[   61], 20.00th=[   62],     | 30.00th=[   62], 40.00th=[   62], 50.00th=[   62], 60.00th=[   62],     | 70.00th=[   62], 80.00th=[   63], 90.00th=[   63], 95.00th=[   63],     | 99.00th=[   63], 99.50th=[   64], 99.90th=[   65], 99.95th=[   66],     | 99.99th=[  176]   #  带宽（bw）和IOPS（iops）的统计：提供了最小值、最大值、平均值和标准差，以及采样数。   bw (  KiB/s): min=263168, max=797696, per=100.00%, avg=266307.92, stdev=6013.18, samples=7874   iops        : min=  514, max= 1558, avg=520.12, stdev=11.75, samples=7874  #延迟分布：  lat (msec)   : 10=0.01%, 20=0.03%, 50=0.01%, 100=99.94%, 250=0.02% #表示99.94%的请求延迟在100毫秒以内。  lat (msec)   : 500=0.01%, 750=0.01%  #CPU使用情况：usr=5.69%, sys=2.50%, ctx=2042604 (上下文切换次数), majf=0 (主要缺页中断), minf=31 (次要缺页中断)  cpu          : usr=5.69%, sys=2.50%, ctx=2042604, majf=0, minf=31  #IO深度分布：几乎100%的时间队列深度都在32（即我们设置的iodepth）。  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     #提交和完成情况：大部分提交是4个一批（4=100.0%），完成也是4个一批（4=100.0%），但完成时32个一批的占0.1%。     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     #发出的读写命令总数：total=0（读）,2048000（写）,0（其他）,0（其他）     issued rwts: total=0,2048000,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32#总结：顺序写入1000GiB数据，用时约65.6分钟，平均写入速度260MiB/s（约273MB/s），平均IOPS为520。磁盘利用率（util）达到100%，说明磁盘一直被占用。Run status group 0 (all jobs):  WRITE: bw=260MiB/s (273MB/s), 260MiB/s-260MiB/s (273MB/s-273MB/s), io=1000GiB (1074GB), run=3937369-3937369msecDisk stats (read/write):  vdb: ios=41/4095920, merge=0/0, ticks=14/251312457, in_queue=251311675, util=100.00%
+
+4K随机写：
+
+
+指标
+结果
+
+
+
+平均IOPS
+26,000
+
+
+平均吞吐量
+102 MiB&#x2F;s
+
+
+平均延迟
+1.22毫秒
+
+
+磁盘利用率
+100%
+
+
+fio --ioengine=libaio --direct=1 --rw=randwrite  --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb --iodepth=32 --runtime=600  --bs=4kfio-randwrite: (g=0): rw=randwrite, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [w(1)][100.0%][r=0KiB/s,w=102MiB/s][r=0,w=26.0k IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=11639: Sun Sep 14 15:24:29 2025  write: IOPS=26.0k, BW=102MiB/s (107MB/s)(59.6GiB/600208msec) #26,000 IOPS 高性能SSD或NVMe硬盘，IOPS范围: 25,896 - 55,142 (最低-最高)    slat (nsec): min=1824, max=137699, avg=3761.17, stdev=1377.41    clat (usec): min=285, max=208738, avg=1224.16, stdev=457.16 #平均延迟: 1.22毫秒 (1224微秒)     lat (usec): min=290, max=208741, avg=1228.19, stdev=457.15    clat percentiles (usec): #延迟表现 (Latency),     |  1.00th=[  611],  5.00th=[  947], 10.00th=[  979], 20.00th=[ 1004],     | 30.00th=[ 1029], 40.00th=[ 1057], 50.00th=[ 1074], 60.00th=[ 1106], #50%的请求在1.07毫秒内完成     | 70.00th=[ 1172], 80.00th=[ 1713], 90.00th=[ 1778], 95.00th=[ 1827], #95%的请求在1.83毫秒内完成     | 99.00th=[ 1975], 99.50th=[ 2024], 99.90th=[ 4424], 99.95th=[ 4621], #99%的请求在1.98毫秒内完成     | 99.99th=[ 5407]#极少数请求(0.01%)延迟较高(5.4毫秒)，这属于正常波动   bw (  KiB/s): min=103584, max=220568, per=100.00%, avg=104105.78, stdev=3424.83, samples=1200   iops        : min=25896, max=55142, avg=26026.45, stdev=856.21, samples=1200  lat (usec)   : 500=0.41%, 750=0.82%, 1000=15.98%  lat (msec)   : 2=82.14%, 4=0.49%, 10=0.16%, 250=0.01% #总延迟（slat + clat）  cpu          : usr=5.52%, sys=15.09%, ctx=3406080, majf=0, minf=32 # 用户空间5.52%，内核空间15.09%，说明消耗的是I/O资源，CPU不是瓶颈  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=0,15616422,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):  WRITE: bw=102MiB/s (107MB/s), 102MiB/s-102MiB/s (107MB/s-107MB/s), io=59.6GiB (63.0GB), run=600208-600208msecDisk stats (read/write):  vdb: ios=41/15616420, merge=0/0, ticks=21/18778520, in_queue=18777870, util=100.00%
+
+4K随机读
+
+
+指标
+结果与单位
+
+
+
+IOPS
+26,000
+
+
+带宽 (BW)
+102 MiB&#x2F;s
+
+
+平均延迟 (clat)
+1224.46 μs (约 1.22 ms)
+
+
+磁盘利用率 (util)
+100.00%
+
+
+fio --ioengine=libaio --direct=1 --rw=randread  --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb --iodepth=32  --runtime=600 --bs=4kfio-randwrite: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [r(1)][100.0%][r=101MiB/s,w=0KiB/s][r=25.0k,w=0 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=12202: Sun Sep 14 15:40:35 2025   read: IOPS=26.0k, BW=102MiB/s (107MB/s)(59.6GiB/600002msec) # IOPS与带宽    slat (nsec): min=1795, max=147725, avg=3537.09, stdev=1508.45    clat (usec): min=151, max=7033, avg=1224.46, stdev=376.93 #平均延迟     lat (usec): min=155, max=7036, avg=1228.29, stdev=376.97    clat percentiles (usec):     |  1.00th=[  627],  5.00th=[  873], 10.00th=[  938], 20.00th=[  988],     | 30.00th=[ 1012], 40.00th=[ 1045], 50.00th=[ 1074], 60.00th=[ 1106],     | 70.00th=[ 1188], 80.00th=[ 1680], 90.00th=[ 1860], 95.00th=[ 1926],     | 99.00th=[ 2008], 99.50th=[ 2040], 99.90th=[ 4047], 99.95th=[ 4359],     | 99.99th=[ 5145]   bw (  KiB/s): min=103584, max=200688, per=100.00%, avg=104131.86, stdev=3493.97, samples=1200   iops        : min=25896, max=50174, avg=26032.97, stdev=873.54, samples=1200  lat (usec)   : 250=0.01%, 500=0.48%, 750=2.11%, 1000=21.93%  lat (msec)   : 2=74.42%, 4=0.95%, 10=0.11%  cpu          : usr=3.01%, sys=14.54%, ctx=3004183, majf=0, minf=67  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=15620286,0,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=102MiB/s (107MB/s), 102MiB/s-102MiB/s (107MB/s-107MB/s), io=59.6GiB (63.0GB), run=600002-600002msecDisk stats (read/write):  vdb: ios=15617264/0, merge=0/0, ticks=18811938/0, in_queue=18810717, util=100.00%
+
+4k随机7:3混合读写
+
+
+指标
+读取性能
+写入性能
+评价
+
+
+
+IOPS
+26,000
+11,100
+极其出色
+
+
+吞吐量(BW)
+102 MiB&#x2F;s
+43.6 MiB&#x2F;s
+与4K块大小匹配
+
+
+平均延迟(Clat)
+0.99ms
+0.54ms
+超低延迟
+
+
+磁盘利用率
+100%
+100%
+磁盘完全饱和
+
+
+#对磁盘/dev/vdb 进行了 10分钟(600秒)的4K随机混合读写测试，读写比例为70%读/30%写，使用深度队列(32)。fio --ioengine=libaio --direct=1 --rw=randrw  --rwmixread=70 --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb --iodepth=32  --runtime=600 --bs=4k fio-randwrite: (g=0): rw=randrw, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [m(1)][100.0%][r=102MiB/s,w=43.8MiB/s][r=26.0k,w=11.2k IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=12672: Sun Sep 14 15:54:10 2025   read: IOPS=26.0k, BW=102MiB/s (107MB/s)(59.6GiB/600003msec)    slat (nsec): min=1788, max=122280, avg=3695.80, stdev=1473.14    clat (usec): min=158, max=9285, avg=991.89, stdev=252.50     lat (usec): min=164, max=9289, avg=995.86, stdev=252.49    clat percentiles (usec):     |  1.00th=[  433],  5.00th=[  553], 10.00th=[  693], 20.00th=[  848],     | 30.00th=[  914], 40.00th=[  963], 50.00th=[  996], 60.00th=[ 1029],     | 70.00th=[ 1057], 80.00th=[ 1123], 90.00th=[ 1254], 95.00th=[ 1369],     | 99.00th=[ 1647], 99.50th=[ 1778], 99.90th=[ 3720], 99.95th=[ 4113],     | 99.99th=[ 4555]   bw (  KiB/s): min=103632, max=148232, per=100.00%, avg=104091.25, stdev=1882.41, samples=1200   iops        : min=25908, max=37058, avg=26022.83, stdev=470.60, samples=1200  write: IOPS=11.1k, BW=43.6MiB/s (45.7MB/s)(25.5GiB/600003msec)    slat (nsec): min=1844, max=74649, avg=3878.58, stdev=1460.63    clat (usec): min=271, max=9216, avg=537.67, stdev=156.54     lat (usec): min=276, max=9220, avg=541.82, stdev=156.57    clat percentiles (usec):     |  1.00th=[  355],  5.00th=[  392], 10.00th=[  412], 20.00th=[  441],     | 30.00th=[  465], 40.00th=[  494], 50.00th=[  529], 60.00th=[  553],     | 70.00th=[  586], 80.00th=[  619], 90.00th=[  668], 95.00th=[  717],     | 99.00th=[  832], 99.50th=[  922], 99.90th=[ 3458], 99.95th=[ 4015],     | 99.99th=[ 4228]   bw (  KiB/s): min=42416, max=63880, per=100.00%, avg=44596.01, stdev=1121.21, samples=1200   iops        : min=10604, max=15970, avg=11148.99, stdev=280.30, samples=1200  lat (usec)   : 250=0.01%, 500=14.86%, 750=23.18%, 1000=28.56%  lat (msec)   : 2=33.25%, 4=0.09%, 10=0.06%  cpu          : usr=5.69%, sys=22.40%, ctx=4720003, majf=0, minf=34  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=15614245,6689629,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=102MiB/s (107MB/s), 102MiB/s-102MiB/s (107MB/s-107MB/s), io=59.6GiB (63.0GB), run=600003-600003msec  WRITE: bw=43.6MiB/s (45.7MB/s), 43.6MiB/s-43.6MiB/s (45.7MB/s-45.7MB/s), io=25.5GiB (27.4GB), run=600003-600003msecDisk stats (read/write):  vdb: ios=15611269/6688288, merge=0/0, ticks=15107080/3522581, in_queue=18628447, util=100.00%
+
+命令行解释：
+
+
+参数
+含义
+相当于
+
+
+
+--rw=read/write/randread/randwrite
+测什么？ (读&#x2F;写&#x2F;随机读&#x2F;随机写)
+测试类型
+
+
+--bs=4k/1M
+每次运多少？ (小包&#x3D;测IOPS，大包&#x3D;测带宽)
+块大小
+
+
+--iodepth=1/32
+派多少辆车同时运？ (1&#x3D;测延迟，32&#x3D;测峰值)
+队列深度
+
+
+常用组合：
+
+测延迟和IOPS：bs=4k, iodepth=1 (快递员一次送一个小件)
+测最大吞吐带宽：bs=1M, iodepth=32 (用大卡车车队拉货)
+测最大IOPS：bs=4k, iodepth=32 (用摩托车车队送小件)
+
+256K顺序写fio --ioengine=libaio --direct=1 --rw=write  --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb --iodepth=32 --runtime=600  --bs=256kfio-randwrite: (g=0): rw=write, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [W(1)][100.0%][r=0KiB/s,w=260MiB/s][r=0,w=1040 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=14539: Sun Sep 14 16:43:06 2025  write: IOPS=1041, BW=260MiB/s (273MB/s)(153GiB/600031msec)    slat (nsec): min=6675, max=83106, avg=23107.73, stdev=7365.32    clat (msec): min=2, max=666, avg=30.64, stdev= 1.54     lat (msec): min=2, max=666, avg=30.66, stdev= 1.54    clat percentiles (usec):     |  1.00th=[29230],  5.00th=[29754], 10.00th=[30016], 20.00th=[30278],     | 30.00th=[30540], 40.00th=[30802], 50.00th=[30802], 60.00th=[30802],     | 70.00th=[31065], 80.00th=[31065], 90.00th=[31065], 95.00th=[31327],     | 99.00th=[31851], 99.50th=[33424], 99.90th=[34866], 99.95th=[34866],     | 99.99th=[35390]   bw (  KiB/s): min=264704, max=797696, per=100.00%, avg=266675.22, stdev=15345.76, samples=1200   iops        : min= 1034, max= 3116, avg=1041.68, stdev=59.95, samples=1200  lat (msec)   : 4=0.05%, 10=0.14%, 20=0.01%, 50=99.80%, 100=0.01%  lat (msec)   : 750=0.01%  cpu          : usr=6.04%, sys=2.70%, ctx=606905, majf=0, minf=31  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=0,625077,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):  WRITE: bw=260MiB/s (273MB/s), 260MiB/s-260MiB/s (273MB/s-273MB/s), io=153GiB (164GB), run=600031-600031msecDisk stats (read/write):  vdb: ios=40/624916, merge=0/0, ticks=21/19139965, in_queue=19140388, util=100.00%
+
+256K顺序读fio --ioengine=libaio --direct=1 --rw=read  --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting --name=fio-test --size=300G --filename=/dev/vdb --iodepth=32 --runtime=600 --bs=256kfio-test: (g=0): rw=read, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [R(1)][100.0%][r=260MiB/s,w=0KiB/s][r=1040,w=0 IOPS][eta 00m:00s]fio-test: (groupid=0, jobs=1): err= 0: pid=14943: Sun Sep 14 16:55:03 2025   read: IOPS=1041, BW=260MiB/s (273MB/s)(153GiB/600031msec)    slat (usec): min=9, max=1467, avg=23.27, stdev= 6.28    clat (usec): min=2138, max=59974, avg=30693.36, stdev=1249.32     lat (usec): min=2150, max=60002, avg=30716.91, stdev=1249.24    clat percentiles (usec):     |  1.00th=[29492],  5.00th=[29754], 10.00th=[30016], 20.00th=[30278],     | 30.00th=[30802], 40.00th=[30802], 50.00th=[30802], 60.00th=[31065],     | 70.00th=[31065], 80.00th=[31065], 90.00th=[31065], 95.00th=[31327],     | 99.00th=[31589], 99.50th=[33162], 99.90th=[34866], 99.95th=[35390],     | 99.99th=[35914]   bw (  KiB/s): min=264704, max=797696, per=100.00%, avg=266673.60, stdev=15345.36, samples=1200   iops        : min= 1034, max= 3116, avg=1041.68, stdev=59.94, samples=1200  lat (msec)   : 4=0.02%, 10=0.18%, 20=0.03%, 50=99.78%, 100=0.01%  cpu          : usr=0.19%, sys=2.98%, ctx=624157, majf=0, minf=548  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=625069,0,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=260MiB/s (273MB/s), 260MiB/s-260MiB/s (273MB/s-273MB/s), io=153GiB (164GB), run=600031-600031msecDisk stats (read/write):  vdb: ios=624912/0, merge=0/0, ticks=19178741/0, in_queue=19179226, util=100.00%
+
+256K顺序7:3混合读写 fio --ioengine=libaio --direct=1 --rw=rw  --rwmixread=70 --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb --iodepth=32  --runtime=600 --bs=256kfio-randwrite: (g=0): rw=rw, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=1): [M(1)][100.0%][r=260MiB/s,w=116MiB/s][r=1041,w=462 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=15542: Sun Sep 14 17:12:24 2025   read: IOPS=1041, BW=260MiB/s (273MB/s)(153GiB/600031msec)    slat (usec): min=9, max=224, avg=23.66, stdev= 6.05    clat (usec): min=1389, max=74402, avg=30065.00, stdev=1577.33     lat (usec): min=1416, max=74416, avg=30088.95, stdev=1577.27    clat percentiles (usec):     |  1.00th=[27395],  5.00th=[28705], 10.00th=[28967], 20.00th=[29492],     | 30.00th=[29754], 40.00th=[30016], 50.00th=[30016], 60.00th=[30540],     | 70.00th=[30802], 80.00th=[31065], 90.00th=[31065], 95.00th=[31327],     | 99.00th=[31589], 99.50th=[32375], 99.90th=[34341], 99.95th=[34866],     | 99.99th=[57410]   bw (  KiB/s): min=264704, max=660992, per=100.00%, avg=266711.21, stdev=12484.86, samples=1200   iops        : min= 1034, max= 2582, avg=1041.83, stdev=48.77, samples=1200  write: IOPS=447, BW=112MiB/s (117MB/s)(65.5GiB/600031msec)    slat (usec): min=6, max=198, avg=23.32, stdev= 7.29    clat (usec): min=792, max=167378, avg=1376.91, stdev=636.48     lat (usec): min=803, max=167388, avg=1400.52, stdev=636.57    clat percentiles (usec):     |  1.00th=[  996],  5.00th=[ 1057], 10.00th=[ 1106], 20.00th=[ 1139],     | 30.00th=[ 1172], 40.00th=[ 1205], 50.00th=[ 1254], 60.00th=[ 1303],     | 70.00th=[ 1418], 80.00th=[ 1582], 90.00th=[ 1762], 95.00th=[ 1893],     | 99.00th=[ 2343], 99.50th=[ 4359], 99.90th=[ 8586], 99.95th=[10028],     | 99.99th=[13698]   bw (  KiB/s): min=87040, max=307200, per=100.00%, avg=114523.47, stdev=10872.32, samples=1200   iops        : min=  340, max= 1200, avg=447.35, stdev=42.47, samples=1200  lat (usec)   : 1000=0.34%  lat (msec)   : 2=28.80%, 4=0.75%, 10=0.31%, 20=0.07%, 50=69.73%  lat (msec)   : 100=0.01%, 250=0.01%  cpu          : usr=2.79%, sys=4.21%, ctx=797662, majf=0, minf=33  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=625152,268421,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=260MiB/s (273MB/s), 260MiB/s-260MiB/s (273MB/s-273MB/s), io=153GiB (164GB), run=600031-600031msec  WRITE: bw=112MiB/s (117MB/s), 112MiB/s-112MiB/s (117MB/s-117MB/s), io=65.5GiB (70.4GB), run=600031-600031msecDisk stats (read/write):  vdb: ios=625031/268369, merge=0/0, ticks=18779993/364832, in_queue=19145288, util=100.00%
+
+多块盘4K随机写：
+
+
+指标
+结果
+
+
+
+
+聚合IOPS
+52,500
+是5块磁盘的聚合性能，平均每块磁盘约10,500 IOPS,与之前单盘测试的26,000 IOPS相比，5盘并行达到了52,500 IOPS，性能提升约2倍(不是5倍)，这表明可能存在一些共享资源瓶颈(如PCIe通道或存储控制器)，但整体扩展性仍然良好。
+
+
+聚合带宽
+205 MiB&#x2F;s (215 MB&#x2F;s)
+
+
+
+平均延迟
+0.60ms
+平均仅0.60ms，99%的请求在0.89ms内完成
+
+
+磁盘数量
+5块
+
+
+
+测试时长
+600秒(10分钟)
+
+
+
+[root@VM_172_180_centos ~]# cat 4k fio --ioengine=libaio --direct=1 --rw=randwrite --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32 --runtime=600  --bs=4kfio --ioengine=libaio --direct=1 --rw=randread --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32 --runtime=600  --bs=4kfio --ioengine=libaio --direct=1 --rw=randrw  --rwmixread=70 --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32  --runtime=600 --bs=4k [root@VM_172_180_centos ~]# sh 4k fio-randwrite: (g=0): rw=randwrite, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [w(1)][100.0%][r=0KiB/s,w=201MiB/s][r=0,w=51.3k IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=16421: Sun Sep 14 17:33:42 2025  write: IOPS=52.5k, BW=205MiB/s (215MB/s)(120GiB/600001msec)    slat (usec): min=2, max=189, avg= 5.40, stdev= 1.58    clat (usec): min=283, max=6328, avg=601.34, stdev=145.28     lat (usec): min=287, max=6334, avg=607.05, stdev=145.25    clat percentiles (usec):     |  1.00th=[  437],  5.00th=[  474], 10.00th=[  494], 20.00th=[  523],     | 30.00th=[  545], 40.00th=[  562], 50.00th=[  586], 60.00th=[  611],     | 70.00th=[  635], 80.00th=[  668], 90.00th=[  717], 95.00th=[  766],     | 99.00th=[  889], 99.50th=[  971], 99.90th=[ 1500], 99.95th=[ 4113],     | 99.99th=[ 4817]   bw (  KiB/s): min=183928, max=234600, per=99.99%, avg=210177.37, stdev=6712.20, samples=1199   iops        : min=45982, max=58650, avg=52544.35, stdev=1678.06, samples=1199  lat (usec)   : 500=12.15%, 750=81.70%, 1000=5.74%  lat (msec)   : 2=0.33%, 4=0.03%, 10=0.07%  #用户空间10.90%，内核空间38.92%,内核CPU使用率较高是正常的，因为需要处理大量I/O请求，下文切换次数较多(641万次)，这是多磁盘并行操作的特点  cpu          : usr=10.90%, sys=38.92%, ctx=6416674, majf=0, minf=42   IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=0,31528375,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):  WRITE: bw=205MiB/s (215MB/s), 205MiB/s-205MiB/s (215MB/s-215MB/s), io=120GiB (129GB), run=600001-600001msecDisk stats (read/write):  vdb: ios=41/6304332, merge=0/0, ticks=28/3689920, in_queue=3689073, util=100.00%  vdc: ios=41/6304332, merge=0/0, ticks=24/3703542, in_queue=3702711, util=100.00%  vdd: ios=40/6304332, merge=0/0, ticks=23/3706136, in_queue=3705460, util=100.00%  vde: ios=40/6304334, merge=0/0, ticks=25/3705165, in_queue=3704394, util=100.00%  vdf: ios=32/6304332, merge=0/0, ticks=21/3705596, in_queue=3704844, util=100.00%
+
+
+
+多块盘4K随机读：fio-randwrite: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [r(1)][100.0%][r=196MiB/s,w=0KiB/s][r=50.1k,w=0 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=16818: Sun Sep 14 17:43:43 2025   read: IOPS=49.4k, BW=193MiB/s (202MB/s)(113GiB/600001msec)    slat (usec): min=2, max=100, avg= 5.49, stdev= 1.39    clat (usec): min=144, max=7269, avg=641.45, stdev=184.12     lat (usec): min=149, max=7274, avg=647.23, stdev=184.12    clat percentiles (usec):     |  1.00th=[  379],  5.00th=[  453], 10.00th=[  490], 20.00th=[  537],     | 30.00th=[  570], 40.00th=[  594], 50.00th=[  619], 60.00th=[  644],     | 70.00th=[  676], 80.00th=[  725], 90.00th=[  799], 95.00th=[  865],     | 99.00th=[ 1106], 99.50th=[ 1614], 99.90th=[ 3097], 99.95th=[ 3884],     | 99.99th=[ 4424]   bw (  KiB/s): min=131240, max=218152, per=99.99%, avg=197466.52, stdev=9655.55, samples=1200   iops        : min=32810, max=54538, avg=49366.64, stdev=2413.89, samples=1200  lat (usec)   : 250=0.03%, 500=11.92%, 750=72.06%, 1000=14.56%  lat (msec)   : 2=1.27%, 4=0.13%, 10=0.04%  cpu          : usr=5.70%, sys=37.43%, ctx=5033016, majf=0, minf=77  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=29622379,0,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=193MiB/s (202MB/s), 193MiB/s-193MiB/s (202MB/s-202MB/s), io=113GiB (121GB), run=600001-600001msecDisk stats (read/write):  vdb: ios=5923231/0, merge=0/0, ticks=3671641/0, in_queue=3671080, util=100.00%  vdc: ios=5923233/0, merge=0/0, ticks=3751928/0, in_queue=3751240, util=100.00%  vdd: ios=5923231/0, merge=0/0, ticks=3752874/0, in_queue=3752289, util=100.00%  vde: ios=5923233/0, merge=0/0, ticks=3754781/0, in_queue=3754222, util=100.00%  vdf: ios=5923233/0, merge=0/0, ticks=3754502/0, in_queue=3754122, util=100.00%
+
+
+
+多块盘4K随机7:3混和读写：fio-randwrite: (g=0): rw=randrw, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [m(1)][100.0%][r=141MiB/s,w=60.4MiB/s][r=36.2k,w=15.5k IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=17159: Sun Sep 14 17:53:43 2025   read: IOPS=35.7k, BW=139MiB/s (146MB/s)(81.7GiB/600001msec)    slat (nsec): min=1987, max=132833, avg=5552.38, stdev=1567.02    clat (usec): min=146, max=5624, avg=594.68, stdev=151.94     lat (usec): min=151, max=5629, avg=600.54, stdev=151.92    clat percentiles (usec):     |  1.00th=[  379],  5.00th=[  429], 10.00th=[  457], 20.00th=[  498],     | 30.00th=[  529], 40.00th=[  553], 50.00th=[  578], 60.00th=[  611],     | 70.00th=[  635], 80.00th=[  676], 90.00th=[  742], 95.00th=[  799],     | 99.00th=[  922], 99.50th=[  979], 99.90th=[ 1565], 99.95th=[ 3851],     | 99.99th=[ 4359]   bw (  KiB/s): min=122144, max=159920, per=99.99%, avg=142736.96, stdev=6141.07, samples=1199   iops        : min=30536, max=39980, avg=35684.24, stdev=1535.27, samples=1199  write: IOPS=15.3k, BW=59.8MiB/s (62.7MB/s)(35.0GiB/600001msec)    slat (nsec): min=2087, max=96123, avg=5655.39, stdev=1576.16    clat (usec): min=286, max=6765, avg=680.60, stdev=165.39     lat (usec): min=294, max=6770, avg=686.57, stdev=165.38    clat percentiles (usec):     |  1.00th=[  457],  5.00th=[  506], 10.00th=[  537], 20.00th=[  578],     | 30.00th=[  603], 40.00th=[  635], 50.00th=[  668], 60.00th=[  693],     | 70.00th=[  734], 80.00th=[  775], 90.00th=[  832], 95.00th=[  889],     | 99.00th=[ 1020], 99.50th=[ 1090], 99.90th=[ 3556], 99.95th=[ 4113],     | 99.99th=[ 4621]   bw (  KiB/s): min=52072, max=68832, per=99.99%, avg=61183.93, stdev=2677.88, samples=1199   iops        : min=13018, max=17208, avg=15295.97, stdev=669.45, samples=1199  lat (usec)   : 250=0.01%, 500=15.94%, 750=70.14%, 1000=13.27%  lat (msec)   : 2=0.55%, 4=0.06%, 10=0.04%  cpu          : usr=7.52%, sys=38.29%, ctx=4810743, majf=0, minf=44  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=21412293,9178326,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=139MiB/s (146MB/s), 139MiB/s-139MiB/s (146MB/s-146MB/s), io=81.7GiB (87.7GB), run=600001-600001msec  WRITE: bw=59.8MiB/s (62.7MB/s), 59.8MiB/s-59.8MiB/s (62.7MB/s-62.7MB/s), io=35.0GiB (37.6GB), run=600001-600001msecDisk stats (read/write):  vdb: ios=4280455/1836455, merge=0/0, ticks=2488506/1221541, in_queue=3709393, util=100.00%  vdc: ios=4282591/1834319, merge=0/0, ticks=2490361/1223424, in_queue=3713056, util=100.00%  vdd: ios=4281157/1835753, merge=0/0, ticks=2488556/1226174, in_queue=3714052, util=100.00%  vde: ios=4282710/1834197, merge=0/0, ticks=2491021/1223394, in_queue=3713691, util=100.00%  vdf: ios=4281131/1835766, merge=0/0, ticks=2490609/1224589, in_queue=3714491, util=100.00%
+
+多块盘256K顺序写性能概览
+聚合带宽: 1302 MiB&#x2F;s (1365 MB&#x2F;s)
+聚合IOPS: 5208
+平均延迟: 6066.98微秒（约6毫秒）
+测试数据量: 763 GiB
+
+fio --ioengine=libaio --direct=1 --rw=write --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32 --runtime=600  --bs=256kfio-randwrite: (g=0): rw=write, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [W(1)][81.5%][r=0KiB/s,w=1301MiB/s][r=0,w=5204 IOPS][eta 01m:51s]Jobs: 1 (f=5): [W(1)][100.0%][r=0KiB/s,w=1300MiB/s][r=0,w=5200 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=20208: Sun Sep 14 19:20:40 2025  write: IOPS=5208, BW=1302MiB/s (1365MB/s)(763GiB/600009msec)    slat (usec): min=8, max=211, avg=23.32, stdev= 7.45    clat (usec): min=1385, max=64973, avg=6066.98, stdev=1060.84     lat (usec): min=1412, max=64984, avg=6090.60, stdev=1060.63    clat percentiles (usec):     |  1.00th=[ 3785],  5.00th=[ 4490], 10.00th=[ 4817], 20.00th=[ 5211],     | 30.00th=[ 5473], 40.00th=[ 5800], 50.00th=[ 5932], 60.00th=[ 6128],     | 70.00th=[ 6587], 80.00th=[ 6980], 90.00th=[ 7570], 95.00th=[ 7898],     | 99.00th=[ 8586], 99.50th=[ 9110], 99.90th=[10552], 99.95th=[11076],     | 99.99th=[12125]   #带宽波动范围: 1,295-2,713 MiB/s，表现相对稳定   bw (  MiB/s): min= 1295, max= 2713, per=99.99%, avg=1301.99, stdev=51.52, samples=1200   iops        : min= 5180, max=10852, avg=5207.92, stdev=206.07, samples=1200  lat (msec)   : 2=0.02%, 4=1.60%, 10=98.22%, 20=0.17%, 50=0.01%  lat (msec)   : 100=0.01%  cpu          : usr=28.61%, sys=13.14%, ctx=1262492, majf=0, minf=41  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=0,3125122,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):  WRITE: bw=1302MiB/s (1365MB/s), 1302MiB/s-1302MiB/s (1365MB/s-1365MB/s), io=763GiB (819GB), run=600009-600009msecDisk stats (read/write):  vdb: ios=41/624879, merge=0/0, ticks=25/3972394, in_queue=3972447, util=100.00%  vdc: ios=41/624880, merge=0/0, ticks=27/3583845, in_queue=3583902, util=100.00%  vdd: ios=40/624880, merge=0/0, ticks=26/3522861, in_queue=3522906, util=100.00%  vde: ios=40/624876, merge=0/0, ticks=22/4553654, in_queue=4553645, util=100.00%  vdf: ios=39/624880, merge=0/0, ticks=33/3169253, in_queue=3169239, util=100.00%
+
+
+
+多块盘256K顺序读性能概览
+聚合带宽: 1084 MiB&#x2F;s 
+聚合IOPS: 4334
+平均延迟: 7381.77微秒（约7毫秒）
+测试数据量: 635GiB
+
+fio --ioengine=libaio --direct=1 --rw=read --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32 --runtime=600  --bs=256kfio-randwrite: (g=0): rw=read, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [R(1)][100.0%][r=1112MiB/s,w=0KiB/s][r=4449,w=0 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=20560: Sun Sep 14 19:30:40 2025   read: IOPS=4334, BW=1084MiB/s (1136MB/s)(635GiB/600004msec)    slat (usec): min=9, max=1256, avg=24.92, stdev= 8.28    clat (usec): min=657, max=118445, avg=7356.55, stdev=2667.91     lat (usec): min=685, max=118473, avg=7381.77, stdev=2667.87    clat percentiles (usec):     |  1.00th=[ 1762],  5.00th=[ 3130], 10.00th=[ 4080], 20.00th=[ 5211],     | 30.00th=[ 5997], 40.00th=[ 6652], 50.00th=[ 7242], 60.00th=[ 7832],     | 70.00th=[ 8455], 80.00th=[ 9372], 90.00th=[10814], 95.00th=[12125],     | 99.00th=[14615], 99.50th=[15664], 99.90th=[17957], 99.95th=[19006],     | 99.99th=[21365]   bw (  MiB/s): min=  931, max= 1205, per=99.99%, avg=1083.46, stdev=27.93, samples=1200   iops        : min= 3726, max= 4820, avg=4333.83, stdev=111.73, samples=1200  lat (usec)   : 750=0.01%, 1000=0.02%  lat (msec)   : 2=1.50%, 4=7.94%, 10=75.93%, 20=14.59%, 50=0.02%  lat (msec)   : 100=0.01%, 250=0.01%  cpu          : usr=0.79%, sys=14.57%, ctx=2554943, majf=0, minf=559  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=2600625,0,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=1084MiB/s (1136MB/s), 1084MiB/s-1084MiB/s (1136MB/s-1136MB/s), io=635GiB (682GB), run=600004-600004msecDisk stats (read/write):  vdb: ios=520011/0, merge=0/0, ticks=3799217/0, in_queue=3799160, util=100.00%  vdc: ios=520013/0, merge=0/0, ticks=3815168/0, in_queue=3815099, util=100.00%  vdd: ios=520012/0, merge=0/0, ticks=3820941/0, in_queue=3820893, util=100.00%  vde: ios=520012/0, merge=0/0, ticks=3838577/0, in_queue=3838502, util=100.00%  vdf: ios=520010/0, merge=0/0, ticks=3823661/0, in_queue=3823597, util=100.00%
+
+
+
+多块盘256K随机7:3混和读写[root@VM_172_180_centos ~]# fio --ioengine=libaio --direct=1 --rw=rw  --rwmixread=70 --time_based --refill_buffers --norandommap --randrepeat=0 --group_reporting  --name=fio-randwrite --size=300G --filename=/dev/vdb:/dev/vdc:/dev/vdd:/dev/vde:/dev/vdf --iodepth=32  --runtime=600 --bs=256kfio-randwrite: (g=0): rw=rw, bs=(R) 256KiB-256KiB, (W) 256KiB-256KiB, (T) 256KiB-256KiB, ioengine=libaio, iodepth=32fio-3.7Starting 1 processJobs: 1 (f=5): [M(1)][100.0%][r=822MiB/s,w=338MiB/s][r=3287,w=1351 IOPS][eta 00m:00s]fio-randwrite: (groupid=0, jobs=1): err= 0: pid=21771: Sun Sep 14 20:03:22 2025   read: IOPS=3274, BW=819MiB/s (858MB/s)(480GiB/600006msec)    slat (usec): min=9, max=693, avg=25.26, stdev= 8.80    clat (usec): min=897, max=154693, avg=6634.02, stdev=1806.17     lat (usec): min=910, max=154719, avg=6659.59, stdev=1806.11    clat percentiles (usec):     |  1.00th=[ 2606],  5.00th=[ 3752], 10.00th=[ 4424], 20.00th=[ 5211],     | 30.00th=[ 5735], 40.00th=[ 6194], 50.00th=[ 6587], 60.00th=[ 7046],     | 70.00th=[ 7504], 80.00th=[ 8094], 90.00th=[ 8848], 95.00th=[ 9503],     | 99.00th=[10945], 99.50th=[11469], 99.90th=[12780], 99.95th=[13304],     | 99.99th=[15533]   bw (  KiB/s): min=680960, max=946176, per=99.99%, avg=838058.46, stdev=28357.45, samples=1200   iops        : min= 2660, max= 3696, avg=3273.63, stdev=110.79, samples=1200  write: IOPS=1403, BW=351MiB/s (368MB/s)(206GiB/600006msec)    slat (usec): min=6, max=540, avg=25.84, stdev=10.75    clat (usec): min=1066, max=219266, avg=7181.33, stdev=1876.67     lat (usec): min=1095, max=219295, avg=7207.48, stdev=1876.68    clat percentiles (usec):     |  1.00th=[ 2671],  5.00th=[ 4146], 10.00th=[ 4817], 20.00th=[ 5669],     | 30.00th=[ 6259], 40.00th=[ 6718], 50.00th=[ 7177], 60.00th=[ 7635],     | 70.00th=[ 8094], 80.00th=[ 8717], 90.00th=[ 9503], 95.00th=[10159],     | 99.00th=[11600], 99.50th=[12256], 99.90th=[13435], 99.95th=[13960],     | 99.99th=[15008]   bw (  KiB/s): min=278528, max=410624, per=99.99%, avg=359210.00, stdev=16717.13, samples=1200   iops        : min= 1088, max= 1604, avg=1403.15, stdev=65.31, samples=1200  lat (usec)   : 1000=0.01%  lat (msec)   : 2=0.38%, 4=5.53%, 10=90.21%, 20=3.89%, 50=0.01%  lat (msec)   : 100=0.01%, 250=0.01%  cpu          : usr=8.56%, sys=13.71%, ctx=1460581, majf=0, minf=43  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%     issued rwts: total=1964492,842024,0,0 short=0,0,0,0 dropped=0,0,0,0     latency   : target=0, window=0, percentile=100.00%, depth=32Run status group 0 (all jobs):   READ: bw=819MiB/s (858MB/s), 819MiB/s-819MiB/s (858MB/s-858MB/s), io=480GiB (515GB), run=600006-600006msec  WRITE: bw=351MiB/s (368MB/s), 351MiB/s-351MiB/s (368MB/s-368MB/s), io=206GiB (221GB), run=600006-600006msecDisk stats (read/write):  vdb: ios=392642/168565, merge=0/0, ticks=2592861/1196753, in_queue=3789580, util=100.00%  vdc: ios=393062/168145, merge=0/0, ticks=2598222/1194090, in_queue=3792256, util=100.00%  vdd: ios=393023/168184, merge=0/0, ticks=2596337/1194294, in_queue=3790680, util=100.00%  vde: ios=392274/168932, merge=0/0, ticks=2591293/1199083, in_queue=3790327, util=100.00%  vdf: ios=393198/167999, merge=0/0, ticks=2597884/1193103, in_queue=3791030, util=100.00%
+
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>fio</tag>
+        <tag>磁盘性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器化之细节问题处理篇01</title>
+    <url>/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/</url>
+    <content><![CDATA[问题现象：容器1，我们可以看到：
+PID 1： Java进程
+
+容器2，我们可以看到：
+PID 1: /sbin/tini -- ./entrypoint.shPID 6: Java进程
+
+关键区别在于：第二个容器的entrypoint.sh脚本可能是通过tini启动的。而第一个容器可能是直接以entrypoint.sh作为入口点，没有使用tini，所以在exec执行后Java进程替换了shell进程成为PID 1。
+docker ps -a --no-trunc |grep xxx #查看docker 启动命令进行确认,使用docker run时指定了init程序为tini。
+
+这是因为在Dockerfile中可能使用了类似以下的指令：ENTRYPOINT [“&#x2F;sbin&#x2F;tini”, “–”, “.&#x2F;entrypoint.sh”]
+cat entrypoint.sh #!/bin/sh -eecho &quot;The application will start in $&#123;APP_SLEEP&#125;s...&quot; &amp;&amp; sleep $&#123;APP_SLEEP&#125;exec /usr/bin/java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap $&#123;JAVA_OPTS&#125; \     	-Djava.security.egd=file:/dev/./urandom \      -Dtsf.swagger.enabled=false \     	-jar /root/app/element-server2*.jar $&#123;RUN_ARGS&#125; &quot;$@&quot;
+
+
+tini 的作用
+
+1.tini 是一个轻量级的初始化系统，专门为容器设计
+
+1.可以确保它能正确接收 Docker 停止命令发送的信号
+
+2.它作为 PID 1 运行，负责管理子进程（这里是 entrypoint.sh）
+
+3.entrypoint.sh 脚本仍然使用 exec 启动 Java，但此时：
+  exec 替换的是 entrypoint.sh 进程（PID 6），而不是 PID 1
+  tini 保持为 PID 1，Java 进程作为其子进程运行
+
+
+两种方式的比较
+
+
+特性
+直接 exec (无 tini)
+使用 tini
+
+
+
+PID 1 进程
+Java 应用
+tini
+
+
+信号处理
+应用需自行处理
+tini 协助处理
+
+
+僵尸进程回收
+可能存在问题
+自动回收
+
+
+进程树结构
+更简单
+稍复杂但更健壮
+
+
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>clickhouse分布式基本使用</title>
+    <url>/2025/09/08/clickhouse%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[目前clickhouse创建是2副本的,业务页面访问clickhouse 发现两个clickhouse的数据不同步。主要原因是未创建分布式clickhouse实例。目前针对该场景进行记录clickhouse分布式的使用
+容器登陆clickhouse数据库kubectl  exec -it -n sso     clickhouse-sso-test-clickhhouse-0-ss-0  -c clickhouse -- clickhouse-client --user root --password testclickhouse  
+
+或者使用curl连接clickhouse目前业务可依据使用情况，如使用代码进行创建。或者使用可视化视图进行创建。
+curl -X POST \  &quot;http://10.25.83.231:8123/?user=root&amp;password=testclickhouse&quot; \  -d &quot;create database test0814 on cluster defaultCluster;&quot;
+
+创建分布式库#test0813 为数据库名#defaultCluster 的 ClickHouse 集群create database test0813 on cluster defaultCluster;
+
+创建本地表#SHOW CREATE TABLE test0813.local_table 可查看表结构CREATE TABLE test0813.local_table ON CLUSTER defaultCluster(    event_date Date,    user_id UInt64,    action_type Enum(&#x27;login&#x27;, &#x27;logout&#x27;),    device Array(String))ENGINE = ReplicatedMergeTree(&#x27;/clickhouse/tables/&#123;shard&#125;/test0813/local_table&#x27;, &#x27;&#123;replica&#125;&#x27;)PARTITION BY toYYYYMM(event_date)ORDER BY (user_id, action_type)SETTINGS index_granularity = 8192;
+
+说明：
+1.test0813.local_table：创建在 test0813 数据库中的 local_table 表
+2.ON CLUSTER defaultCluster：在名为 defaultCluster 的 ClickHouse 集群所有节点上创建此表
+3.ReplicatedMergeTree这个引擎用于创建具有复制功能的表，确保数据在多个副本之间同步。
+
+
+
+路径组件
+说明
+示例值
+
+
+
+&#x2F;clickhouse&#x2F;tables
+根路径（ClickHouse 约定）
+固定值
+
+
+{shard}
+分片标识符占位符
+01, shard1
+
+
+test0813
+数据库名称
+您的数据库名
+
+
+local_table
+本地表名称
+您的表名
+
+
+4.PARTITION BY toYYYYMM(event_date) – 按月分区
+5.ORDER BY (user_id, action_type) – 主键索引
+6.SETTINGS index_granularity &#x3D; 8192 – 索引粒度
+索引粒度：每 8192 行生成一个索引标记性能影响：值越小 → 索引更精细 → 查询更快 → 索引更大值越大 → 索引更粗糙 → 查询稍慢 → 索引更小默认值：8192（平衡选择）
+
+
+
+创建分布式表CREATE TABLE test0813.user_data ON CLUSTER defaultCluster(    event_date Date,    user_id UInt64,    action_type Enum(&#x27;login&#x27;, &#x27;logout&#x27;),    device Array(String))ENGINE = Distributed(    defaultCluster,   -- 集群名称    &#x27;test0813&#x27;,       -- 数据库名    &#x27;local_table&#x27;,    -- 底层本地表名    rand()            -- 分片键（随机分布）);
+
+插入数据# 通过分布式表插入（自动路由）INSERT INTO test0813.user_data VALUES    (&#x27;2023-08-11&#x27;, 1001, &#x27;login&#x27;, [&#x27;iPhone&#x27;,&#x27;iOS 15&#x27;]),    (&#x27;2023-08-11&#x27;, 1002, &#x27;logout&#x27;, [&#x27;Android&#x27;,&#x27;Chrome&#x27;]),    (&#x27;2023-08-12&#x27;, 1003, &#x27;login&#x27;, [&#x27;Windows&#x27;,&#x27;Firefox&#x27;]);
+
+删除数据#安全删除分布式表，删除分布式表（不影响数据）DROP TABLE IF EXISTS test0813.user_data ON CLUSTER defaultCluster#删除本地表（永久删除数据）DROP TABLE IF EXISTS test0813.local_table ON CLUSTER defaultCluster
+
+其他说明
+创建多张表，是否需要创建多张local_table的表？需要的
+需要关闭一台节点，查看数据是否同步。会同步的
+
+]]></content>
+      <categories>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>clickhouse</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器化之细节问题处理篇02</title>
+    <url>/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/</url>
+    <content><![CDATA[背景：项目上需要将服务的日志都显示出来，对于有两类日志文件不能正常显示日志出来的。情况1：业务服务中未将服务日志打印在日志文件中，查看容器所在节点有查看到0.log 类似的日志，需要确认该日志是否就是服务的运行日志，目前针对该种日志产生的过程流程梳理
+容器的标准输出&#x2F;var&#x2F;log&#x2F;pods&#x2F;…&#x2F;0.log 文件的产生过程是：
+App 输出 -&gt; stdout/stderr运行时捕获 -&gt; 容器运行时（Docker/containerd）将其写入自己的 JSON 日志文件中。kubelet 组织 -&gt; kubelet 创建清晰的目录结构，并通过符号链接指向容器运行时的原始日志文件。对外接口 -&gt; 这个路径成为了该容器日志在节点上的标准化、稳定的访问点。无论是系统管理员、日志采集代理（如 Filebeat、Fluentd），还是 kubectl logs 命令，最终都是通过读取这个路径下的文件来获取日志内容的。kubectl logs 命令的工作原理就是：apiserver -&gt; 对应节点的 kubelet -&gt; kubelet 读取 /var/log/pods/.../0.log 文件中的内容，解析 JSON 格式，只提取 log 字段的纯文本信息，然后流式传输回给请求者。
+
+关系与区别
+
+
+特性
+/var/log/pods/.../0.log (源文件:类比数据库原始表)
+kubectl logs (解析后的视图:类比执行SQL后的视图)
+
+
+
+内容
+原始、完整的数据
+解析后、筛选过的内容
+
+
+格式
+JSON格式，每行一条完整的JSON记录
+纯文本，只提取了JSON中的日志消息本身
+
+
+元数据
+包含丰富元数据，如完整的时间戳、流类型（stdout&#x2F;stderr）
+不包含JSON中的元数据，但可能会格式化输出时间戳（需加 --timestamps）
+
+
+访问方式
+直接登录到节点服务器查看文件
+通过Kubernetes API Server远程查询
+
+
+主要使用者
+系统、日志采集代理（如Fluentd, Filebeat）
+开发者、运维人员
+
+
+情况2：业务服务中日志打印显示是需要日志文件的挂载，目前挂载文件日志显示如下。mountPath: &#x2F;root&#x2F;app (服务启动jar在改目录) 则会挂载失败。原因:共享卷会把其他镜像内置的文件清空的。所以使用该种方式最好统一放在日志文件中，如下是该种情况的最佳实践
+        volumeMounts:        - mountPath: /root/app/log          name: test-log-l9ynkeyd-1...      volumes:      - emptyDir: &#123;&#125;        name: test-log-l9ynkeyd-1
+
+存储类型总结对比表格:
+
+
+存储类型
+概念理解
+生命周期
+
+
+
+emptyDir
+临时存储，会在节点创建空目录
+生命周期&#x3D;pod
+
+
+hostPath
+允许挂载宿主机文件到pod
+生命周期&#x3D;宿主机
+
+
+PVC&#x2F;PV
+Kubernetes中持久存储的抽象，用户通过声明PVC请求存储资源，而PVC会绑定到满足其需求的PV
+持久存储
+
+
+StorageClass
+多个StorageClass，用户在创建PVC时指定StorageClass名称，以动态申请存储资源。
+持久存储
+
+
+详细场景说明
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>存储</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器化之细节问题处理篇03</title>
+    <url>/2025/09/11/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8703/</url>
+    <content><![CDATA[Warning  SystemLoadIsFull  56s (x1313 over 2d2h)  custom-plugin-monitor  (combined from similar events): system load/cores percent exceeded threshold 80%, load/cores percent: 118.09%, load15m: 37.79
+
+告警信息解读触发时长： 56s (x1313 over 2d2h)
+
+56s ： 本次告警持续了56秒（可能刚刚恢复或正在触发）。
+x1313 over 2d2h **： 它在过去 2天2小时 内已经触发了 1313次。
+
+监控源： custom-plugin-monitor
+告警原因： system load/cores percent exceeded threshold 80%
+
+告警规则是：（负载平均值 &#x2F; CPU核心数）的百分比 &gt; 80% 即触发告警。
+
+具体数值： load/cores percent: 118.09%, load15m: 37.79
+
+load15m: 37.79 **： 过去15分钟的系统平均负载是 37.79。
+load/cores percent: 118.09% ： ** (37.79 &#x2F; 核心数) * 100% &#x3D; 118.09% **。
+
+核心问题计算与确认根据告警提供的百分比，我们可以反推出监控系统认为的CPU核心数：
+核心数 = load15m / (load/cores percent) = 37.79 / 1.1809 ≈ 32 个核心
+
+结论：
+
+告警阈值是 80%，即当负载超过 0.8 * 32 = 25.6 时就会告警。
+而当前负载达到了 37.79，是阈值的 ~1.5倍，超出程度很高。
+负载&#x2F;核心比达到了 **118%**，意味着平均有 37.79个进程 在竞争 32个CPU核心，平均至少有 5-6个进程 在永远地排队等待，系统长期处于严重过载状态。
+
+TOP的信息解读
+负载是： 26.05, 37.57, 43.67 (1分钟，5分钟，15分钟平均负载)
+像只有32个收银台，却平均有43.67个顾客要结账。这意味着平均有超过11个进程一直在排队等待获得CPU资源（或者是在等待磁盘I&#x2F;O完成）。
+
+空闲率
+Cpu0: us 13.9%, sy 9.9%, id 73.5% -&gt; 空闲率73.5%，还算空闲。Cpu16: us 17.2%, sy 10.5%, id 69.9% -&gt; 空闲率69.9%Cpu19: us 19.3%, sy 9.8%, id 67.6% -&gt; 空闲率67.6%Cpu20: us 22.8%, sy 10.4%, id 64.1% -&gt; 空闲率64.1%
+有一些核心的idle（空闲）百分比低于70%，而有些核心（如Cpu11, Cpu12, Cpu13, Cpu14, Cpu15）的空闲率在97%以上。这表明负载并不均衡，可能有一些进程绑定到了特定的CPU核心上，或者某些进程在多个核心上运行但分布不均。
+
+高CPU进程: 
+PID 3995612 (java): 占用396.1% CPU (约4个核心的满载)
+PID 1677 (dockerd): 占用41.1% CPU
+PID 3995595 (containerd-shim): 占用21.1% CPU
+
+为什么您的系统负载高，但CPU使用率看起来不算极高？
+1.%wa (I&#x2F;O Wait),几乎所有核心的 %wa 都是 0.0。所有高纯粹的CPU计算资源竞争。
+2.这些进程对CPU的总需求（43.67）超过了系统能同时提供的数量（32），所以它们必须排队。这个排队队伍的平均长度就是负载平均值(43.67)。【理解等于PID的所再占的CPU值大于32】
+
+
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+        <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器化之细节问题处理篇04</title>
+    <url>/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/</url>
+    <content><![CDATA[问题背景：在k8s种，查看一个mysql 容器化的内存（16G）告警了，表示资源不够了。该mysql pod 有三副本，一主两从。有1从得资源内存耗费很低。且该内存已经由8G已经扩容至16G了。使用kubectl top 查看该mysql的 的确是到达了15334Mi ，但是docker stats看到的内存使用量4.477GiB。为什么同一个对象，显示的内存差异如此之大。
+核心原因：统计维度不同
+docker stats (显示 4.477 GiB)
+
+统计对象： Docker 容器本身（即 cgroup 的内存使用情况）。
+统计内容：RSS，即进程占用的内存。这个值更接近应用程序（比如你的 MySQL 进程）真正占用的、未被磁盘缓存缓冲区的内存
+特点： 这个值通常会更小，因为它不包含被内核利用为缓存（Page Cache）的内存。
+
+kubectl top (显示 15334 MiB ≈ 15 GiB)
+
+统计来源： 这个数据来自于 Kubernetes 的监控组件 metrics-server，而 metrics-server 的数据又来自节点的 cAdvisor。
+
+统计内容： 它显示的是容器内存工作集（Working Set） 的大小。
+
+工作集（Working Set） 包括：
+内存使用量（memory.usage_in_bytes）：&#x3D; RSS + 缓存（包括文件缓存、块设备缓存等） + 内核内存等
+
+
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+        <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2025/09/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[欢迎来到我的博客！
+一下是开启我博客的开始之路
+一、创建于 Hexo + GitHub Pages 的搭建个人博客网站的详细教程
+二、更新博客的源码（Markdown文章、主题、配置等）通常存放在一个GitHub仓库中，而通过Hexo生成的静态网站文件则部署到GitHub Pages（通常是 username.github.io 仓库的特定分支，如 gh-pages 或 main）。
+
+📝 手动更新发布流程（本地完成）这种方式需要在计算机上配置好Hexo环境（Node.js, Git, Hexo等）。
+
+新建博文：使用命令创建新的Markdown文件。
+hexo new &quot;文章题目&quot;  # 或 hexo n &quot;文章题目&quot;
+
+
+
+这会在 source/_posts 目录下生成一个 文章题目.md 文件。
+
+编写&#x2F;更新内容：用文本编辑器（如VS Code）编辑生成的Markdown文件。
+
+生成静态文件：在Hexo站点根目录下执行命令，将Markdown转换为HTML等静态资源。
+hexo generate  # 或 hexo g
+
+
+
+如果需要先清除缓存和旧文件，可以使用：
+hexo clean &amp;&amp; hexo generate```:cite[1]
+
+
+
+本地预览（可选但推荐）：在部署前，最好先在本地启动服务器检查效果。
+hexo server  # 或 hexo s 
+
+
+
+然后在浏览器中访问 http://localhost:4000 查看。
+
+部署到GitHub Pages：将生成好的静态文件（通常在 public 目录）推送至GitHub仓库的特定分支。
+hexo deploy  # 或 hexo d
+
+
+
+常用的便捷组合命令是：
+hexo clean &amp;&amp; hexo g &amp;&amp; hexo d为了能使用 `hexo deploy` 命令，您需要：在Hexo的**站点配置文件** (`_config.yml`) 中正确设置部署信息:    deploy:      type: git      repo: &lt;您的GitHub仓库SSH或HTTPS地址&gt;  # 例如 git@github.com:username/username.github.io.git      branch: &lt;部署分支，如gh-pages或main&gt; 
+
+
+确保已安装 hexo-deployer-git 插件:cite[4]:cite[6]：npm install hexo-deployer-git --save
+
+
+推送源码（重要）：hexo deploy 通常只部署生成的静态文件。别忘了将您的博客源码（Markdown文章、主题、配置文件等）也推送到GitHub仓库的另一个分支（例如 source 或 hexo-source），以便备份和在多设备间同步。
+
+
+三、next 客制化页面3.1 字体设置
+font:  #enable: false  enable: true  # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).  host:  # Font options:  # `external: true` will load this font family from `host` above.  # `family: Times New Roman`. Without any quotes.  # `size: x.x`. Use `em` as unit. Default: 1 (16px)  # Global font settings used for all elements inside &lt;body&gt;.  global:    external: true    family: sans-serif    size: 0.725em  # Font settings for site title (.site-title).  title:    external: true    family:    size:  # Font settings for headlines (&lt;h1&gt; to &lt;h6&gt;).  headings:    external: true    family:    size:  # Font settings for posts (.post-body).  posts:    external: true    family:  # Font settings for &lt;code&gt; and code blocks.  #Roboto  codes:    external: true    family: Fira Code      size: .6em
+
+
+
+3.2 页面字体设置
+cat  themes/next/source/css/_variables/base.styl$font-size-base           = (hexo-config(&#x27;font.enable&#x27;) and hexo-config(&#x27;font.global.size&#x27;) is a &#x27;unit&#x27;) ? unit(hexo-config(&#x27;font.global.size&#x27;), em) : .8125em;//$font-size-base           = .8125em; #统一更改这个大小
+
+3.3 生效并部署
+hexo clean &amp;&amp; hexo g &amp;&amp; hexo d #清除缓存且浏览器也需无痕
+
+3.4 图片问题与设置
+#参数开启+插件安装+用hexo n 文档 去生成文档文件1.将_config.yml 文件中的post_asset_folder 选项设为 true 来打开2.npm install https://github.com/CodeFalling/hexo-asset-image --save
+
+图片设置不生效  标签与分类配置  站点导航
+]]></content>
+      <categories>
+        <category>杂篇</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记一次网卡修改及nmcli 使用</title>
+    <url>/2025/09/06/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BD%91%E5%8D%A1%E4%BF%AE%E6%94%B9%E5%8F%8Anmcli-%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[因需要修改系统参数网卡队列，需要将其机器需要重启。目前发现集群一共100多台机器，重启其中一台master机器后，一直处于notReady状态。原因是因为改机器为双网卡，但是因为网卡名未固定。造成使用为固定的网卡未启动成功。
+解决思路：
+1. 查询100多台机器，/etc/udev/rules.d/70-persistent-net.rules  文件是否都含2条记录2.针对未含的节点操作，添加该条信息，网卡名不可修改，要与原先重启前一致。添加后如下：SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:98:70:9c&quot;, NAME=&quot;ens3&quot;SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;fa:16:3e:f5:e0:f1&quot;, NAME=&quot;ens10&quot; #更新的目标网卡名
+
+拓展：因加的网卡名变更为ens4，造成网卡一直up不起来。
+[root@tcs-10-25-83-48 network-scripts]# nmcli  device conn ens4错误：添加/激活新连接失败：Connection &#x27;ens4&#x27; is not available on device ens4 because device is strictly unmanaged
+nmcli处理过程：nmcli conn show  #查看设备连接情况nmcli conn show &quot;System ens4&quot; #查看网卡设置的详情nmcli conn reload #重启设备nmcli conn up ens4 #连接ens4设置nmcli device set &lt;网卡名称&gt; managed yes #激活网卡nmcli device #查看所有的设备nmcli device conn #将所有设备connnmcli device conn ens4 #网卡连接nmcli  networking #查看网络是由设置
+
+原因：
+[root@X-x.1-x.1-x.1-x.1 network-scripts]# cd /etc/NetworkManager/conf.d/[root@X-x.1-x.1-x.1-x.1 conf.d]# ls99-cloud-init.conf  99-container.conf[root@X-x.1-x.1-x.1-x.1 conf.d]# cat 99-cloud-init.conf # Created by cloud-init on instance boot automatically, do not edit.#[main]dns = none[root@X-x.1-x.1-x.1-x.1 conf.d]# cat 99-container.conf# avoid making container interface down[keyfile]unmanaged-devices=*,except:interface-name:ens10,except:interface-name:ens3 #99-container.conf，因容器平台部署完后，网卡名被获取到了并写入到类似文件中，故不建议修改网卡名称(即NAME=&quot;ens10&quot;)
+
+拓展：记录一次因bond文件配置问题造成的交换机网口具有down的情况，没有nmcli工具需要配置网卡配置bond4，配置信息及其含义，记录正常的配置信息及如何再机器节点上进行排查确认网口bond正常
+ifcfg-eth0#IP Config for eth0:DEVICE=&#x27;eth0&#x27;HWADDR=xxONBOOT=&#x27;yes&#x27;USERCTL=noBOOTPROTO=noneSLAVE=yes  # 修正拼写错误MASTER=bond1NM_CONTROLLED=no  # 添加此行
+
+ifcfg-eth1#IP Config for eth1:DEVICE=&#x27;eth1&#x27;HWADDR=xxxxxONBOOT=&#x27;yes&#x27;MASTER=bond1SLAVE=yesUSERCTL=no  # 修正为有效值BOOTPROTO=noneNM_CONTROLLED=no  # 添加此行
+
+ifcfg-bond1#IP Config for bond1:DEVICE=bond1BOOTPROTO=noneIPADDR=10.215.173.44NETMASK=255.255.255.128GATEWAY=10.215.173.1USERCTL=noONBOOT=&#x27;yes&#x27;TYPE=Bond  # 添加此行BONDING_OPTS=&#x27;miimon=100 mode=4 ad_select=0 lacp_rate=fast updelay=200 xmit_hash_policy=2&#x27;  # 修正参数NM_CONTROLLED=no  # 添加此行#mode=4：表示IEEE 802.3ad动态链路聚合（LACP）#miimon=100：每100毫秒检查一次链路状态#ad_select=1：选择策略，1表示备份模式（但根据bonding文档，ad_select的可能值为0、1、2，1表示“备份”似乎不对，通常ad_select=0（stable）或1（bandwidth）或2（count））注意：ad_select=1实际上表示“带宽”（bandwidth），即选择活动聚合组中带宽最大的端口。#lacp_rate=fast：LACP速率，fast表示每1秒发送一次LACP报文（慢速为30秒）#updelay=0：启用端口的延迟时间（毫秒），但这里设置了两次updelay，第一个为0，第二个为200，这可能会被最后一个值覆盖。实际上，在#BONDING_OPTS中，同一个参数出现多次，通常最后一个生效。所以updelay=200可能会覆盖前面的0。#xmit_hash_policy=2：传输哈希策略，2表示使用层3+4（IP和端口）的哈希。
+
+配置问题分析
+ ifcfg-bond1 中的问题
+
+重复的 updelay 参数：updelay=0 和 updelay=200 同时存在,最终生效的是最后一个，即 updelay&#x3D;200。
+ad_select&#x3D;1：在某些系统版本中可能不被支持
+
+check配置好后的状态
+1.ping 网关 
+2.&#x2F;proc&#x2F;net&#x2F;bonding&#x2F;bond1
+Bonding Mode: IEEE 802.3ad Dynamic link aggregation - 正确，模式为4。MII Status: up - 绑定接口状态正常。Slave Interface: eth0 和 eth1 都是 up，速度均为 25000 Mbps，全双工，链路失败计数为0，物理地址正确。Aggregator ID: 两个接口的 Aggregator ID 都是 1 - 这表示两个接口成功聚合到同一个聚合组中。Actor/Partner Churn State: 均为 none，表示没有发生扰动，连接稳定。Partner Mac Address: 两个接口的 Partner Mac Address 都是 00:01:00:01:00:01，这表示它们连接到同一个对端设备（交换机）。
+
+3.使用 ethtool eth0 和 ethtool eth1 再次确认链路状态为 Link detected: yes 且速率为 25000Mb&#x2F;s。
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>nmcli</tag>
+        <tag>bond</tag>
+      </tags>
+  </entry>
+</search>
