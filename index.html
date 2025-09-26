@@ -189,6 +189,369 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/" class="post-title-link" itemprop="url">容器化之细节问题处理篇05</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-25 18:45:51" itemprop="dateCreated datePublished" datetime="2025-09-25T18:45:51+08:00">2025-09-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-26 11:40:13" itemprop="dateModified" datetime="2025-09-26T11:40:13+08:00">2025-09-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>nerdctl 构建镜像</p>
+<p>需求场景，需要做一个提交代码，然后构建镜像的脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker run -td --network host --entrypoint bash registry.tce.com/director-daemon/director-xdp:1.0.0-20250714-163850-01d4694.rhel.amd64</span><br><span class="line">nerdctl -n k8s.io <span class="built_in">cp</span> ./tcs_lb.c b3476a7b1d77:/tcs_lb/tcs_lb.c</span><br><span class="line">nerdctl -nk8s.io commit -c <span class="string">&#x27;ENTRYPOINT [&quot;/director-loader&quot;]&#x27;</span> b3476a7b1d77  registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line">nerdctl -nk8s.io push registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">容器化之K8S标签污点使用问题记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-24 11:04:43" itemprop="dateCreated datePublished" datetime="2025-09-24T11:04:43+08:00">2025-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-26 13:35:49" itemprop="dateModified" datetime="2025-09-26T13:35:49+08:00">2025-09-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、问题标签不匹配"><a href="#一、问题标签不匹配" class="headerlink" title="一、问题标签不匹配"></a>一、问题标签不匹配</h2><p>因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Warning  FailedScheduling  94s   default-scheduler  0/6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.io/infrastore: &#125;, that the pod didn<span class="string">&#x27;t tolerate, 2 Insufficient memory, 3 node(s) had taint &#123;node-role.kubernetes.io/master: &#125;, that the pod didn&#x27;</span>t tolerate.</span><br></pre></td></tr></table></figure>
+
+<p>1.查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">affinity:</span><br><span class="line">        nodeAffinity:</span><br><span class="line">          requiredDuringSchedulingIgnoredDuringExecution: <span class="comment">#亲和性配置</span></span><br><span class="line">            nodeSelectorTerms:</span><br><span class="line">            - matchExpressions:</span><br><span class="line">              - key: node-role.kubernetes.io/infrastore <span class="comment">#打上标签</span></span><br><span class="line">                operator: Exists  <span class="comment"># 只需要标签存在，不关心值</span></span><br></pre></td></tr></table></figure>
+
+<p>2.根据亲和配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>总结：节点亲和性nodeAffinity，operator字段用法</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作符</th>
+<th align="left">使用场景</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Exists</strong></td>
+<td align="left">只需要标识节点类型，不关心具体值</td>
+<td align="left">标识计算节点、存储节点等</td>
+</tr>
+<tr>
+<td align="left"><strong>DoesNotExist</strong></td>
+<td align="left">排除特定类型的节点</td>
+<td align="left">排除测试节点、维护节点</td>
+</tr>
+<tr>
+<td align="left"><strong>In</strong></td>
+<td align="left">选择特定值的节点</td>
+<td align="left">环境选择（prod&#x2F;staging）、区域选择</td>
+</tr>
+<tr>
+<td align="left"><strong>NotIn</strong></td>
+<td align="left">排除特定值的节点</td>
+<td align="left">排除特定故障域、排除旧版本</td>
+</tr>
+<tr>
+<td align="left"><strong>Gt&#x2F;Lt</strong></td>
+<td align="left">基于数值的选择</td>
+<td align="left">内存大小、磁盘容量、CPU核心数</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport 10.25.82.41:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
+<h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
+<p>正确的Service配置示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
+
+<p>在Kubernetes中，Service的<code>externalTrafficPolicy</code>字段有两个选项：<code>Cluster</code>（默认）和<code>Local</code>。</p>
+<ul>
+<li><strong>Cluster</strong>：将外部流量均匀分配到所有节点（包括没有运行Pod的节点），然后通过kube-proxy转发到Pod。这会隐藏客户端的源IP（因为经过了一次转发），并且可能增加网络跳数。</li>
+<li><strong>Local</strong>：只将流量分配到运行有Service Pod的节点，并且直接由该节点上的kube-proxy转发到本地的Pod。这样可以保留客户端的源IP，并且避免额外的网络跳转。</li>
+</ul>
+<p><strong>为什么使用<code>externalTrafficPolicy: Local</code>对于IP哈希会话保持更有利？</strong></p>
+<p>当使用<code>sessionAffinity: ClientIP</code>时，Service会根据客户端的IP地址进行哈希，将同一个客户端的请求转发到同一个Pod。但是，如果<code>externalTrafficPolicy</code>是<code>Cluster</code>，那么到达Service的流量可能会先到任何一个节点，然后该节点再转发到目标Pod。在这个过程中，客户端的源IP可能会被丢失（因为经过SNAT），尤其是当流量被转发到不同节点上的Pod时。</p>
+<p>而设置<code>externalTrafficPolicy: Local</code>可以确保：</p>
+<ol>
+<li>保留客户端的真实IP地址。</li>
+<li>流量只到达运行有Pod的节点，并且直接由该节点处理，不会跨节点转发。</li>
+</ol>
+<p>这样，基于客户端IP的会话保持会更加准确，因为Service看到的客户端IP是真实的，而不是某个中间节点的IP。</p>
+<h3 id="其他实现方案"><a href="#其他实现方案" class="headerlink" title="其他实现方案"></a>其他实现方案</h3><h4 id="方案二：使用Ingress的会话保持"><a href="#方案二：使用Ingress的会话保持" class="headerlink" title="方案二：使用Ingress的会话保持"></a>方案二：使用Ingress的会话保持</h4><p>如果使用Ingress，可以配置：</p>
+<p>yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: your-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/affinity: &quot;cookie&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-name: &quot;route&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-expires: &quot;172800&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-max-age: &quot;172800&quot;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: your-domain.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: your-service</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><strong>ClientIP获取问题</strong>：在云环境或经过NAT时，可能需要配置<code>externalTrafficPolicy: Local</code>来确保获取真实客户端IP</li>
+<li><strong>Pod重启问题</strong>：如果Pod重启，会话会中断，需要考虑应用层的会话复制或持久化</li>
+<li><strong>测试方法</strong>：从同一客户端多次访问，检查日志确认请求总是到达同一个Pod</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>您只需要在Service中设置<code>sessionAffinity: ClientIP</code>即可，<strong>不需要填写Pod的IP地址</strong>。Kubernetes会自动基于客户端IP进行哈希计算，将同一客户端的请求路由到同一个Pod。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/ZK%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/22/ZK%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/" class="post-title-link" itemprop="url">ZK基本使用及问题处理01</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-09-22 19:20:55 / 修改时间：19:21:14" itemprop="dateCreated datePublished" datetime="2025-09-22T19:20:55+08:00">2025-09-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#容器场景和主机场景只是修改了这个配置</span></span><br><span class="line">file=/etc/zoo.cfg.runtime   </span><br><span class="line">clientPort=$(<span class="built_in">cat</span> <span class="variable">$file</span> | grep clientPort| awk -F <span class="string">&#x27;=&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">hostlist=$(<span class="built_in">cat</span> <span class="variable">$file</span> | grep server. | awk -F <span class="string">&#x27;=&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;%-15s %-10s %-10s  %-10s  %-10s\n&quot;</span> <span class="string">&quot;ip&quot;</span> <span class="string">&quot;status&quot;</span> <span class="string">&quot;zxid&quot;</span> <span class="string">&quot;zk_ephemerals_count&quot;</span> <span class="string">&quot;zk_znode_count&quot;</span></span><br><span class="line"><span class="keyword">for</span> host <span class="keyword">in</span> <span class="variable">$hostlist</span>; <span class="keyword">do</span></span><br><span class="line">  domain=<span class="variable">$host</span></span><br><span class="line">  ip=$(ping -c 1 <span class="variable">$domain</span> | grep -oE <span class="string">&#x27;[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+&#x27;</span> | <span class="built_in">head</span> -n 1)</span><br><span class="line">  state=$(<span class="built_in">echo</span> mntr| nc -w 3 <span class="variable">$ip</span> <span class="variable">$clientPort</span> | grep zk_server_state | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">  zxid=$(<span class="built_in">echo</span> -n srvr | nc <span class="variable">$ip</span> <span class="variable">$clientPort</span> | grep -i <span class="string">&quot;zxid&quot;</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">  zk_ephemerals_count=$(<span class="built_in">echo</span> mntr |nc <span class="variable">$ip</span> <span class="variable">$clientPort</span> |grep zk_ephemerals_count | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">  zk_znode_count=$(<span class="built_in">echo</span> mntr |nc <span class="variable">$ip</span> <span class="variable">$clientPort</span> |grep zk_znode_count | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;%-15s %-10s %-10s  %-20s  %-10s\n&quot;</span> <span class="string">&quot;<span class="variable">$ip</span>&quot;</span> <span class="string">&quot;<span class="variable">$state</span>&quot;</span> <span class="string">&quot;<span class="variable">$zxid</span>&quot;</span> <span class="string">&quot;<span class="variable">$zk_ephemerals_count</span>&quot;</span> <span class="string">&quot;<span class="variable">$zk_znode_count</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/19/ADP%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/19/ADP%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF01/" class="post-title-link" itemprop="url">ADP的学习之路01</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-19 19:53:04" itemprop="dateCreated datePublished" datetime="2025-09-19T19:53:04+08:00">2025-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-24 21:57:00" itemprop="dateModified" datetime="2025-09-24T21:57:00+08:00">2025-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%99%BA%E8%83%BD%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">智能体</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>假设你的目标是 <strong>“做一顿丰盛的晚餐”</strong>：</p>
+<ul>
+<li><strong>只用 RAG：</strong> 你问它“红烧肉怎么做？”，它去翻菜谱，然后给你一个最正宗的做法。但它不会动手做。</li>
+<li><strong>只用 Workflow：</strong> 你设置好一个流程：1. 洗菜 -&gt; 2. 切菜 -&gt; 3. 炒菜 -&gt; 4. 装盘。它会把每一步都自动化执行，但如果你突然想改做清蒸鱼，整个流程就得重写。</li>
+<li><strong>使用 Agent：</strong> 你直接告诉它“我饿了，想做点好吃的，冰箱里有排骨和土豆”。它会自己决定是做糖醋排骨还是土豆烧排骨，然后自己去搜索做法，控制炒菜机、电饭煲等工具，最后把菜端到你面前。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -591,7 +954,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-19 17:08:06" itemprop="dateModified" datetime="2025-09-19T17:08:06+08:00">2025-09-19</time>
+                <time title="修改时间：2025-09-22 16:41:38" itemprop="dateModified" datetime="2025-09-22T16:41:38+08:00">2025-09-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -614,10 +977,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /data/tcpdump</span><br><span class="line"><span class="built_in">chmod</span> 777  /data/tcpdump</span><br><span class="line"><span class="comment">#现场需要把这个podname做成替换，替换为现场的实际pod名称</span></span><br><span class="line">podname=4d1af57e04da</span><br><span class="line"><span class="built_in">id</span>=$(docker ps | grep -v pause | grep <span class="variable">$podname</span> | <span class="built_in">head</span> -1 |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">pid=$(docker inspect <span class="variable">$id</span>| grep -w Pid |grep -oE <span class="string">&#x27;[0-9]+&#x27;</span>)</span><br><span class="line">nsenter -t <span class="variable">$pid</span> -n  tcpdump -i eth0    -nvve -C 100 -W 20 -w /tmp/<span class="variable">$podname</span>.pcap</span><br><span class="line"></span><br><span class="line"><span class="comment"># -C 100 是100M，-W 10 保存10个文件</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <p>要对容器进行抓包，且容器里面没有抓包的工具。用nsenter -t pid -n 可获取容器内的内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /data/tcpdump</span><br><span class="line"><span class="built_in">chmod</span> 777  /data/tcpdump</span><br><span class="line"><span class="comment">#现场需要把这个podname做成替换，替换为现场的实际pod名称</span></span><br><span class="line">podname=4d1af57e04da</span><br><span class="line"><span class="built_in">id</span>=$(docker ps | grep -v pause | grep <span class="variable">$podname</span> | <span class="built_in">head</span> -1 |awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">pid=$(docker inspect <span class="variable">$id</span>| grep -w Pid |grep -oE <span class="string">&#x27;[0-9]+&#x27;</span>)</span><br><span class="line">nsenter -t <span class="variable">$pid</span> -n  tcpdump -i eth0    -nvve -C 100 -W 20 -w /tmp/<span class="variable">$podname</span>.pcap</span><br><span class="line"></span><br><span class="line"><span class="comment"># -C 100 是100M，-W 10 保存10个文件</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>查看一个服务异常，需要查看详细的日志</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">journalctl -xe -u network</span><br><span class="line">dmesg | grep bond</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看按照某个组件是由什么提供的</span></span><br><span class="line">yum provides iostat </span><br></pre></td></tr></table></figure>
 
 
       
@@ -669,7 +1037,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-14 14:20:46" itemprop="dateModified" datetime="2025-09-14T14:20:46+08:00">2025-09-14</time>
+                <time title="修改时间：2025-09-19 17:14:15" itemprop="dateModified" datetime="2025-09-19T17:14:15+08:00">2025-09-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -861,7 +1229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-15 15:26:32" itemprop="dateModified" datetime="2025-09-15T15:26:32+08:00">2025-09-15</time>
+                <time title="修改时间：2025-09-26 10:29:23" itemprop="dateModified" datetime="2025-09-26T10:29:23+08:00">2025-09-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -886,6 +1254,11 @@
       
           <p>项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
 <h3 id="清理数据"><a href="#清理数据" class="headerlink" title="清理数据"></a>清理数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -I -m 10 -o /dev/null -s -w %&#123;http_code&#125; -X GET <span class="string">&quot;<span class="variable">$&#123;dst_es_schema&#125;</span>://<span class="variable">$&#123;dst_es_user&#125;</span>:<span class="variable">$&#123;dst_es_passwd&#125;</span>@<span class="variable">$&#123;dst_es_host&#125;</span>:<span class="variable">$&#123;dst_es_port&#125;</span>/_cluster/health?pretty&quot;</span></span><br><span class="line"><span class="comment"># 如需用户名与密码则需 curl -u xxx:&#x27;xxx&#x27;, 密码有特殊字符可用单引号</span></span><br><span class="line">curl 10.25.83.242:9200/_cluster/health?pretty <span class="comment">#查看监控</span></span><br><span class="line">curl 10.25.83.242:9200/_cat/indices?v |grep gb <span class="comment">#查看数据</span></span><br><span class="line">curl -XDELETE 10.25.83.242:9200/xxxxx <span class="comment">#删除数据</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>数据清理脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">index_prefix=tsf</span><br><span class="line">es_url=<span class="variable">$1</span></span><br><span class="line">es_port=<span class="variable">$2</span></span><br><span class="line">es_user=<span class="variable">$3</span></span><br><span class="line">es_pass=<span class="variable">$4</span></span><br><span class="line">ttl_date=2</span><br><span class="line"></span><br><span class="line">current=$(<span class="built_in">date</span> <span class="string">&#x27;+%Y/%m/%d %H:%M:%S&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">date2stamp</span></span> () &#123;</span><br><span class="line">    <span class="built_in">date</span> --utc --<span class="built_in">date</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> +%s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">dateDiff</span></span>() &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">        -s)   sec=1;      <span class="built_in">shift</span>;;</span><br><span class="line">        -m)   sec=60;     <span class="built_in">shift</span>;;</span><br><span class="line">        -h)   sec=3600;   <span class="built_in">shift</span>;;</span><br><span class="line">        -d)   sec=86400;  <span class="built_in">shift</span>;;</span><br><span class="line">        *)    sec=86400;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">    dte1=$(date2stamp <span class="variable">$1</span>)</span><br><span class="line">    dte2=$(date2stamp <span class="variable">$2</span>)</span><br><span class="line">    diffSec=$((dte2-dte1))</span><br><span class="line">    <span class="keyword">if</span> ((diffSec &lt; <span class="number">0</span>)); <span class="keyword">then</span> abs=-1; <span class="keyword">else</span> abs=1; <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> $((diffSec/sec*abs))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$es_url</span> == *<span class="string">&quot;:&quot;</span>* ]]; <span class="keyword">then</span></span><br><span class="line">  indices=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -6 -g <span class="string">&quot;[<span class="variable">$&#123;es_url&#125;</span>]:<span class="variable">$&#123;es_port&#125;</span>/_cat/indices?v&amp;s=index&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$&#123;index_prefix&#125;</span>-*&quot;</span> | grep -v <span class="string">&quot;tsf-oss&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  indices=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/_cat/indices?v&amp;s=index&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$&#123;index_prefix&#125;</span>-*&quot;</span> | grep -v <span class="string">&quot;tsf-oss&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> <span class="variable">$indices</span>;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	<span class="built_in">date</span>=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$index</span>&quot;</span> | awk -F<span class="string">&#x27;@&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">	<span class="keyword">if</span> [ <span class="variable">$date</span> ]; <span class="keyword">then</span></span><br><span class="line">      cond=$(<span class="built_in">date</span> +%Y-%m-%d)</span><br><span class="line">	    diff=$(dateDiff -d <span class="variable">$date</span> <span class="variable">$cond</span>)</span><br><span class="line">	    <span class="keyword">if</span> [ <span class="variable">$&#123;diff&#125;</span> -gt <span class="variable">$&#123;ttl_date&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line">        rsp=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -XDELETE <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/<span class="variable">$&#123;index&#125;</span>&quot;</span>)</span><br><span class="line">        res=$(<span class="built_in">echo</span> <span class="variable">$rsp</span> | awk -F<span class="string">&quot;[,:&#125;]&quot;</span> <span class="string">&#x27;&#123;for(i=1;i&lt;=NF;i++)&#123;if($i~/&#x27;</span>acknowledged<span class="string">&#x27;\042/)&#123;print $(i+1)&#125;&#125;&#125;&#x27;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;&quot;&#x27;</span> | sed -n 1p)</span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;true&quot;</span> == <span class="string">&quot;<span class="variable">$res</span>&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete success&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete failed: <span class="variable">$res</span>&quot;</span> &gt;&amp;2</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> still lives&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	      result=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$index</span>&quot;</span> | grep <span class="string">&quot;failed&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$result</span>&quot;</span> != <span class="string">&quot;&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            rsp=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -XDELETE <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/<span class="variable">$&#123;index&#125;</span>&quot;</span>)</span><br><span class="line">            res=$(<span class="built_in">echo</span> <span class="variable">$rsp</span> | awk -F<span class="string">&quot;[,:&#125;]&quot;</span> <span class="string">&#x27;&#123;for(i=1;i&lt;=NF;i++)&#123;if($i~/&#x27;</span>acknowledged<span class="string">&#x27;\042/)&#123;print $(i+1)&#125;&#125;&#125;&#x27;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;&quot;&#x27;</span> | sed -n 1p)</span><br><span class="line">            <span class="keyword">if</span> [ <span class="string">&quot;true&quot;</span> == <span class="string">&quot;<span class="variable">$res</span>&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">              <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete success&quot;</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">              <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete failed: <span class="variable">$res</span>&quot;</span> &gt;&amp;2</span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> has no date field&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 
 <h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p><strong>只读标记未手动清除</strong>：这是最常见的原因。Elasticsearch <strong>不会自动</strong>将索引的 <code>read_only_allow_delete</code> 属性改回 <code>false</code></p>
 <p><strong>磁盘空间未真正有效释放</strong>：</p>
@@ -1048,563 +1421,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/08/clickhouse%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/08/clickhouse%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">clickhouse分布式基本使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-09-08 11:01:56 / 修改时间：13:27:57" itemprop="dateCreated datePublished" datetime="2025-09-08T11:01:56+08:00">2025-09-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>目前clickhouse创建是2副本的,业务页面访问clickhouse 发现两个clickhouse的数据不同步。主要原因是未创建分布式clickhouse实例。目前针对该场景进行记录clickhouse分布式的使用</p>
-<h3 id="容器登陆clickhouse数据库"><a href="#容器登陆clickhouse数据库" class="headerlink" title="容器登陆clickhouse数据库"></a>容器登陆clickhouse数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">kubectl  <span class="built_in">exec</span> -it -n sso     clickhouse-sso-test-clickhhouse-0-ss-0  -c clickhouse -- clickhouse-client --user root --password testclickhouse  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="或者使用curl连接clickhouse"><a href="#或者使用curl连接clickhouse" class="headerlink" title="或者使用curl连接clickhouse"></a>或者使用curl连接clickhouse</h3><p>目前业务可依据使用情况，如使用代码进行创建。或者使用可视化视图进行创建。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  <span class="string">&quot;http://10.25.83.231:8123/?user=root&amp;password=testclickhouse&quot;</span> \</span><br><span class="line">  -d <span class="string">&quot;create database test0814 on cluster defaultCluster;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="创建分布式库"><a href="#创建分布式库" class="headerlink" title="创建分布式库"></a>创建分布式库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test0813 为数据库名</span></span><br><span class="line"><span class="comment">#defaultCluster 的 ClickHouse 集群</span></span><br><span class="line">create database test0813 on cluster defaultCluster;</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建本地表"><a href="#创建本地表" class="headerlink" title="创建本地表"></a>创建本地表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SHOW CREATE TABLE test0813.local_table 可查看表结构</span></span><br><span class="line">CREATE TABLE test0813.local_table ON CLUSTER defaultCluster</span><br><span class="line">(</span><br><span class="line">    event_date Date,</span><br><span class="line">    user_id UInt64,</span><br><span class="line">    action_type Enum(<span class="string">&#x27;login&#x27;</span>, <span class="string">&#x27;logout&#x27;</span>),</span><br><span class="line">    device Array(String)</span><br><span class="line">)</span><br><span class="line">ENGINE = ReplicatedMergeTree(<span class="string">&#x27;/clickhouse/tables/&#123;shard&#125;/test0813/local_table&#x27;</span>, <span class="string">&#x27;&#123;replica&#125;&#x27;</span>)</span><br><span class="line">PARTITION BY toYYYYMM(event_date)</span><br><span class="line">ORDER BY (user_id, action_type)</span><br><span class="line">SETTINGS index_granularity = 8192;</span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>1.test0813.local_table：创建在 test0813 数据库中的 local_table 表</p>
-<p>2.ON CLUSTER defaultCluster：在名为 defaultCluster 的 ClickHouse 集群所有节点上创建此表</p>
-<p>3.ReplicatedMergeTree这个引擎用于创建具有复制功能的表，确保数据在多个副本之间同步。</p>
-<table>
-<thead>
-<tr>
-<th><strong>路径组件</strong></th>
-<th><strong>说明</strong></th>
-<th><strong>示例值</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x2F;clickhouse&#x2F;tables</td>
-<td>根路径（ClickHouse 约定）</td>
-<td>固定值</td>
-</tr>
-<tr>
-<td>{shard}</td>
-<td><strong>分片标识符占位符</strong></td>
-<td>01, shard1</td>
-</tr>
-<tr>
-<td>test0813</td>
-<td>数据库名称</td>
-<td>您的数据库名</td>
-</tr>
-<tr>
-<td>local_table</td>
-<td>本地表名称</td>
-<td>您的表名</td>
-</tr>
-</tbody></table>
-<p>4.PARTITION BY toYYYYMM(event_date) <em>– 按月分区</em></p>
-<p>5.ORDER BY (user_id, action_type) <em>– 主键索引</em></p>
-<p>6.SETTINGS index_granularity &#x3D; 8192 <em>– 索引粒度</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">索引粒度：每 8192 行生成一个索引标记</span><br><span class="line">性能影响：</span><br><span class="line">值越小 → 索引更精细 → 查询更快 → 索引更大</span><br><span class="line">值越大 → 索引更粗糙 → 查询稍慢 → 索引更小</span><br><span class="line">默认值：8192（平衡选择）</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="创建分布式表"><a href="#创建分布式表" class="headerlink" title="创建分布式表"></a>创建分布式表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE test0813.user_data ON CLUSTER defaultCluster</span><br><span class="line">(</span><br><span class="line">    event_date Date,</span><br><span class="line">    user_id UInt64,</span><br><span class="line">    action_type Enum(<span class="string">&#x27;login&#x27;</span>, <span class="string">&#x27;logout&#x27;</span>),</span><br><span class="line">    device Array(String)</span><br><span class="line">)</span><br><span class="line">ENGINE = Distributed(</span><br><span class="line">    defaultCluster,   -- 集群名称</span><br><span class="line">    <span class="string">&#x27;test0813&#x27;</span>,       -- 数据库名</span><br><span class="line">    <span class="string">&#x27;local_table&#x27;</span>,    -- 底层本地表名</span><br><span class="line">    rand()            -- 分片键（随机分布）</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过分布式表插入（自动路由）</span></span><br><span class="line">INSERT INTO test0813.user_data </span><br><span class="line">VALUES</span><br><span class="line">    (<span class="string">&#x27;2023-08-11&#x27;</span>, 1001, <span class="string">&#x27;login&#x27;</span>, [<span class="string">&#x27;iPhone&#x27;</span>,<span class="string">&#x27;iOS 15&#x27;</span>]),</span><br><span class="line">    (<span class="string">&#x27;2023-08-11&#x27;</span>, 1002, <span class="string">&#x27;logout&#x27;</span>, [<span class="string">&#x27;Android&#x27;</span>,<span class="string">&#x27;Chrome&#x27;</span>]),</span><br><span class="line">    (<span class="string">&#x27;2023-08-12&#x27;</span>, 1003, <span class="string">&#x27;login&#x27;</span>, [<span class="string">&#x27;Windows&#x27;</span>,<span class="string">&#x27;Firefox&#x27;</span>]);</span><br></pre></td></tr></table></figure>
-
-<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安全删除分布式表，删除分布式表（不影响数据）</span></span><br><span class="line">DROP TABLE IF EXISTS test0813.user_data ON CLUSTER defaultCluster</span><br><span class="line"><span class="comment">#删除本地表（永久删除数据）</span></span><br><span class="line">DROP TABLE IF EXISTS test0813.local_table ON CLUSTER defaultCluster</span><br></pre></td></tr></table></figure>
-
-<h3 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h3><ol>
-<li>创建多张表，是否需要创建多张local_table的表？需要的</li>
-<li>需要关闭一台节点，查看数据是否同步。会同步的</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">Chronyd 安装与配置排错指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-09-07 12:38:00 / 修改时间：13:42:58" itemprop="dateCreated datePublished" datetime="2025-09-07T12:38:00+08:00">2025-09-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Chronyd-安装与配置排错指南"><a href="#Chronyd-安装与配置排错指南" class="headerlink" title="Chronyd 安装与配置排错指南"></a>Chronyd 安装与配置排错指南</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
-<li>Chronyd 安装与配置</li>
-<li>端口检查与防火墙配置</li>
-<li>时间同步状态诊断</li>
-<li>硬件时钟问题解决方案</li>
-<li>时区配置</li>
-</ol>
-<hr>
-<h2 id="1-Chronyd-安装与配置"><a href="#1-Chronyd-安装与配置" class="headerlink" title="1. Chronyd 安装与配置"></a>1. Chronyd 安装与配置</h2><h3 id="安装-Chronyd"><a href="#安装-Chronyd" class="headerlink" title="安装 Chronyd"></a>安装 Chronyd</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install chronyd -y</span><br></pre></td></tr></table></figure>
-
-<h3 id="检查时间同步源"><a href="#检查时间同步源" class="headerlink" title="检查时间同步源"></a>检查时间同步源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chronyc sources -v</span><br></pre></td></tr></table></figure>
-
-<h3 id="验证-Chronyd-服务状态"><a href="#验证-Chronyd-服务状态" class="headerlink" title="验证 Chronyd 服务状态"></a>验证 Chronyd 服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nlap | grep 123  <span class="comment"># 查看 UDP 端口，确认 chronyd 已启动</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="2-端口检查与防火墙配置"><a href="#2-端口检查与防火墙配置" class="headerlink" title="2. 端口检查与防火墙配置"></a>2. 端口检查与防火墙配置</h2><h3 id="检查-UDP-端口连通性"><a href="#检查-UDP-端口连通性" class="headerlink" title="检查 UDP 端口连通性"></a>检查 UDP 端口连通性</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案1：使用 nmap</span></span><br><span class="line">nmap -sU 192.168.70.2 -p 123 -Pn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案2：使用 netcat</span></span><br><span class="line">nc -uvz 192.168.70.2 123</span><br></pre></td></tr></table></figure>
-
-<h3 id="端口状态说明"><a href="#端口状态说明" class="headerlink" title="端口状态说明"></a>端口状态说明</h3><ul>
-<li><strong>正常状态</strong>: <code>123/udp open ntp</code></li>
-<li><strong>异常状态</strong>: <code>123/udp open|filtered ntp</code> (表示端口不可用)</li>
-</ul>
-<h3 id="配置防火墙规则-UFW-示例"><a href="#配置防火墙规则-UFW-示例" class="headerlink" title="配置防火墙规则 (UFW 示例)"></a>配置防火墙规则 (UFW 示例)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前防火墙规则</span></span><br><span class="line">ufw status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开放 NTP 服务所需端口</span></span><br><span class="line">ufw allow 123/udp</span><br><span class="line">ufw allow 323/udp</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="3-时间同步状态诊断"><a href="#3-时间同步状态诊断" class="headerlink" title="3. 时间同步状态诊断"></a>3. 时间同步状态诊断</h2><h3 id="异常状态示例"><a href="#异常状态示例" class="headerlink" title="异常状态示例"></a>异常状态示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查 chrony 服务状态</span></span><br><span class="line">chronyc sources</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^? 192.168.70.2                  0   9     0     -     +0ns[   +0ns] +/-    0ns</span><br></pre></td></tr></table></figure>
-
-<h3 id="正常状态示例"><a href="#正常状态示例" class="headerlink" title="正常状态示例"></a>正常状态示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 正常输出示例：</span></span><br><span class="line">210 Number of sources = 1</span><br><span class="line">MS Name/IP address         Stratum Poll Reach LastRx Last sample</span><br><span class="line">===============================================================================</span><br><span class="line">^* 192.168.70.2                 10   6    17     1    -12us[+23us] +/- 276us</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="4-硬件时钟问题解决方案"><a href="#4-硬件时钟问题解决方案" class="headerlink" title="4. 硬件时钟问题解决方案"></a>4. 硬件时钟问题解决方案</h2><h3 id="检查当前时间状态"><a href="#检查当前时间状态" class="headerlink" title="检查当前时间状态"></a>检查当前时间状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">date</span>                    <span class="comment"># 查看系统时间</span></span><br><span class="line">hwclock --show          <span class="comment"># 查看硬件时钟时间</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="硬件时钟同步操作"><a href="#硬件时钟同步操作" class="headerlink" title="硬件时钟同步操作"></a>硬件时钟同步操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 手动设置硬件时钟时间</span></span><br><span class="line">hwclock --<span class="built_in">set</span> --<span class="built_in">date</span> <span class="string">&#x27;2018-08-20 14:05:25&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步硬件时钟与系统时间</span></span><br><span class="line">hwclock --hctosys       <span class="comment"># 硬件时间同步到系统时间</span></span><br><span class="line">hwclock --systohc       <span class="comment"># 系统时间同步到硬件时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存时钟设置</span></span><br><span class="line">clock -w</span><br></pre></td></tr></table></figure>
-
-<h3 id="高级时间管理"><a href="#高级时间管理" class="headerlink" title="高级时间管理"></a>高级时间管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看时间同步源状态</span></span><br><span class="line">chronyc sourcestats -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即手动同步时间（适用于时间偏差较大时）</span></span><br><span class="line">chronyc -a makestep</span><br><span class="line"></span><br><span class="line"><span class="comment"># 校准时间服务器</span></span><br><span class="line">chronyc tracking</span><br></pre></td></tr></table></figure>
-
-<h3 id="硬件时钟配置"><a href="#硬件时钟配置" class="headerlink" title="硬件时钟配置"></a>硬件时钟配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查硬件时钟配置</span></span><br><span class="line">timedatectl | grep <span class="built_in">local</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用本地时区</span></span><br><span class="line">timedatectl set-local-rtc 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置硬件时钟使用 UTC（推荐）</span></span><br><span class="line">timedatectl set-local-rtc 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用 NTP 时间同步</span></span><br><span class="line">timedatectl set-ntp <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="5-时区配置"><a href="#5-时区配置" class="headerlink" title="5. 时区配置"></a>5. 时区配置</h2><h3 id="更改时区（例如从-EST-改为-CST）"><a href="#更改时区（例如从-EST-改为-CST）" class="headerlink" title="更改时区（例如从 EST 改为 CST）"></a>更改时区（例如从 EST 改为 CST）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 备份原时区配置</span></span><br><span class="line"><span class="built_in">mv</span> /etc/localtime /etc/localtime.bak</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置上海时区（中国标准时间 CST）</span></span><br><span class="line"><span class="built_in">ln</span> -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="故障排除流程图"><a href="#故障排除流程图" class="headerlink" title="故障排除流程图"></a>故障排除流程图</h2><ol>
-<li><strong>时间不同步</strong><ul>
-<li>检查 <code>chronyc sources</code> 输出</li>
-<li>验证 NTP 端口连通性</li>
-<li>确认防火墙配置</li>
-</ul>
-</li>
-<li><strong>硬件时钟与系统时间不一致</strong><ul>
-<li>使用 <code>hwclock --hctosys</code> 或 <code>hwclock --systohc</code> 同步</li>
-<li>检查时区设置是否正确</li>
-</ul>
-</li>
-<li><strong>时区错误</strong><ul>
-<li>使用 <code>timedatectl</code> 检查当前时区</li>
-<li>重新链接正确的时区文件</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h2 id="常用命令速查表"><a href="#常用命令速查表" class="headerlink" title="常用命令速查表"></a>常用命令速查表</h2><table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">功能描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>chronyc sources</code></td>
-<td align="left">查看时间同步源状态</td>
-</tr>
-<tr>
-<td align="left"><code>chronyc -a makestep</code></td>
-<td align="left">立即强制时间同步</td>
-</tr>
-<tr>
-<td align="left"><code>hwclock --hctosys</code></td>
-<td align="left">硬件时间同步到系统时间</td>
-</tr>
-<tr>
-<td align="left"><code>hwclock --systohc</code></td>
-<td align="left">系统时间同步到硬件时间</td>
-</tr>
-<tr>
-<td align="left"><code>timedatectl set-local-rtc 1</code></td>
-<td align="left">设置硬件时钟使用本地时区</td>
-</tr>
-<tr>
-<td align="left"><code>timedatectl set-ntp yes</code></td>
-<td align="left">启用 NTP 时间同步</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>适用系统</strong>: CentOS&#x2F;RHEL 7+、Ubuntu 16.04+</p>
-<blockquote>
-<p>提示：生产环境中建议将硬件时钟设置为 UTC (<code>timedatectl set-local-rtc 0</code>)，并确保防火墙正确配置允许 NTP 流量。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/07/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8702/" class="post-title-link" itemprop="url">容器化之细节问题处理篇02</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-09-07 09:54:09 / 修改时间：11:07:59" itemprop="dateCreated datePublished" datetime="2025-09-07T09:54:09+08:00">2025-09-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>背景：项目上需要将服务的日志都显示出来，对于有两类日志文件不能正常显示日志出来的。<br>情况1：业务服务中未将服务日志打印在日志文件中，查看容器所在节点有查看到0.log 类似的日志，需要确认该日志是否就是服务的运行日志，目前针对该种日志产生的过程流程梳理</p>
-<p>容器的标准输出<br>&#x2F;var&#x2F;log&#x2F;pods&#x2F;…&#x2F;0.log 文件的产生过程是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">App 输出 -&gt; stdout/stderr</span><br><span class="line"></span><br><span class="line">运行时捕获 -&gt; 容器运行时（Docker/containerd）将其写入自己的 JSON 日志文件中。</span><br><span class="line"></span><br><span class="line">kubelet 组织 -&gt; kubelet 创建清晰的目录结构，并通过符号链接指向容器运行时的原始日志文件。</span><br><span class="line"></span><br><span class="line">对外接口 -&gt; 这个路径成为了该容器日志在节点上的标准化、稳定的访问点。无论是系统管理员、日志采集代理（如 Filebeat、Fluentd），还是 kubectl logs 命令，最终都是通过读取这个路径下的文件来获取日志内容的。</span><br><span class="line"></span><br><span class="line">kubectl logs 命令的工作原理就是：apiserver -&gt; 对应节点的 kubelet -&gt; kubelet 读取 /var/log/pods/.../0.<span class="built_in">log</span> 文件中的内容，解析 JSON 格式，只提取 <span class="built_in">log</span> 字段的纯文本信息，然后流式传输回给请求者。</span><br></pre></td></tr></table></figure>
-
-<h3 id="关系与区别"><a href="#关系与区别" class="headerlink" title="关系与区别"></a>关系与区别</h3><table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left"><code>/var/log/pods/.../0.log</code> (源文件:类比数据库原始表)</th>
-<th align="left"><code>kubectl logs</code> (解析后的视图:类比执行SQL后的视图)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>内容</strong></td>
-<td align="left"><strong>原始、完整</strong>的数据</td>
-<td align="left"><strong>解析后、筛选过</strong>的内容</td>
-</tr>
-<tr>
-<td align="left"><strong>格式</strong></td>
-<td align="left"><strong>JSON格式</strong>，每行一条完整的JSON记录</td>
-<td align="left"><strong>纯文本</strong>，只提取了JSON中的日志消息本身</td>
-</tr>
-<tr>
-<td align="left"><strong>元数据</strong></td>
-<td align="left"><strong>包含丰富元数据</strong>，如完整的时间戳、流类型（stdout&#x2F;stderr）</td>
-<td align="left"><strong>不包含</strong>JSON中的元数据，但可能会格式化输出时间戳（需加 <code>--timestamps</code>）</td>
-</tr>
-<tr>
-<td align="left"><strong>访问方式</strong></td>
-<td align="left">直接登录到节点服务器查看文件</td>
-<td align="left">通过Kubernetes API Server远程查询</td>
-</tr>
-<tr>
-<td align="left"><strong>主要使用者</strong></td>
-<td align="left">系统、日志采集代理（如Fluentd, Filebeat）</td>
-<td align="left"><strong>开发者、运维人员</strong></td>
-</tr>
-</tbody></table>
-<p>情况2：业务服务中日志打印显示是需要日志文件的挂载，目前挂载文件日志显示如下。mountPath: &#x2F;root&#x2F;app (服务启动jar在改目录) 则会挂载失败。原因:共享卷会把其他镜像内置的文件清空的。所以使用该种方式最好统一放在日志文件中，如下是该种情况的最佳实践</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/root/app/log</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">test-log-l9ynkeyd-1</span></span><br><span class="line"></span><br><span class="line"><span class="string">...</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">emptyDir:</span> &#123;&#125;</span><br><span class="line">        <span class="attr">name:</span> <span class="string">test-log-l9ynkeyd-1</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="存储类型总结对比表格"><a href="#存储类型总结对比表格" class="headerlink" title="存储类型总结对比表格:"></a>存储类型总结对比表格:</h3><table>
-<thead>
-<tr>
-<th align="left">存储类型</th>
-<th align="left">概念理解</th>
-<th align="left">生命周期</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>emptyDir</strong></td>
-<td align="left">临时存储，会在节点创建空目录</td>
-<td align="left">生命周期&#x3D;pod</td>
-</tr>
-<tr>
-<td align="left"><strong>hostPath</strong></td>
-<td align="left">允许挂载宿主机文件到pod</td>
-<td align="left">生命周期&#x3D;宿主机</td>
-</tr>
-<tr>
-<td align="left"><strong>PVC&#x2F;PV</strong></td>
-<td align="left">Kubernetes中持久存储的抽象，用户通过声明PVC请求存储资源，而PVC会绑定到满足其需求的PV</td>
-<td align="left">持久存储</td>
-</tr>
-<tr>
-<td align="left"><strong>StorageClass</strong></td>
-<td align="left">多个StorageClass，用户在创建PVC时指定StorageClass名称，以动态申请存储资源。</td>
-<td align="left">持久存储</td>
-</tr>
-</tbody></table>
-<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1650296">详细场景说明</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/" class="post-title-link" itemprop="url">容器化之细节问题处理篇01</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-06 19:18:23" itemprop="dateCreated datePublished" datetime="2025-09-06T19:18:23+08:00">2025-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-12 09:50:42" itemprop="dateModified" datetime="2025-09-12T09:50:42+08:00">2025-09-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>问题现象：<br>容器1，我们可以看到：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PID 1： Java进程</span><br></pre></td></tr></table></figure>
-
-<p>容器2，我们可以看到：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PID 1: /sbin/tini -- ./entrypoint.sh</span><br><span class="line">PID 6: Java进程</span><br></pre></td></tr></table></figure>
-
-<p>关键区别在于：第二个容器的entrypoint.sh脚本可能是通过tini启动的。而第一个容器可能是直接以entrypoint.sh作为入口点，没有使用tini，所以在exec执行后Java进程替换了shell进程成为PID 1。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a --no-trunc |grep xxx <span class="comment">#查看docker 启动命令进行确认,使用docker run时指定了init程序为tini。</span></span><br></pre></td></tr></table></figure>
-
-<p>这是因为在Dockerfile中可能使用了类似以下的指令：<br>ENTRYPOINT [“&#x2F;sbin&#x2F;tini”, “–”, “.&#x2F;entrypoint.sh”]</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> entrypoint.sh </span><br><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;The application will start in <span class="variable">$&#123;APP_SLEEP&#125;</span>s...&quot;</span> &amp;&amp; <span class="built_in">sleep</span> <span class="variable">$&#123;APP_SLEEP&#125;</span></span><br><span class="line"><span class="built_in">exec</span> /usr/bin/java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap <span class="variable">$&#123;JAVA_OPTS&#125;</span> \</span><br><span class="line">     	-Djava.security.egd=file:/dev/./urandom \</span><br><span class="line">      -Dtsf.swagger.enabled=<span class="literal">false</span> \</span><br><span class="line">     	-jar /root/app/element-server2*.jar <span class="variable">$&#123;RUN_ARGS&#125;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-<p><strong>tini 的作用</strong></p>
-<ul>
-<li><p>1.tini 是一个轻量级的初始化系统，专门为容器设计</p>
-</li>
-<li><p>1.可以确保它能正确接收 Docker 停止命令发送的信号</p>
-</li>
-<li><p>2.它作为 PID 1 运行，负责管理子进程（这里是 entrypoint.sh）</p>
-</li>
-<li><p>3.entrypoint.sh 脚本仍然使用 exec 启动 Java，但此时：</p>
-<p>  exec 替换的是 entrypoint.sh 进程（PID 6），而不是 PID 1</p>
-<p>  tini 保持为 PID 1，Java 进程作为其子进程运行</p>
-</li>
-</ul>
-<h2 id="两种方式的比较"><a href="#两种方式的比较" class="headerlink" title="两种方式的比较"></a>两种方式的比较</h2><table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left">直接 exec (无 tini)</th>
-<th align="left">使用 tini</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">PID 1 进程</td>
-<td align="left">Java 应用</td>
-<td align="left">tini</td>
-</tr>
-<tr>
-<td align="left">信号处理</td>
-<td align="left">应用需自行处理</td>
-<td align="left">tini 协助处理</td>
-</tr>
-<tr>
-<td align="left">僵尸进程回收</td>
-<td align="left">可能存在问题</td>
-<td align="left">自动回收</td>
-</tr>
-<tr>
-<td align="left">进程树结构</td>
-<td align="left">更简单</td>
-<td align="left">稍复杂但更健壮</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1674,20 +1490,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

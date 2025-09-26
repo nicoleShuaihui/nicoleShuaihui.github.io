@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=sans-serif:300,300italic,400,400italic,700,700italic|Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、问题标签不匹配因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下： 1Warning  FailedScheduling  94s   default-scheduler  0&#x2F;6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器化之K8S标签污点使用问题记录">
+<meta property="og:url" content="http://example.com/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="一、问题标签不匹配因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下： 1Warning  FailedScheduling  94s   default-scheduler  0&#x2F;6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.i">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-24T03:04:43.000Z">
+<meta property="article:modified_time" content="2025-09-26T05:35:49.927Z">
+<meta property="article:author" content="帅汇">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>容器化之K8S标签污点使用问题记录 | 我的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          容器化之K8S标签污点使用问题记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-24 11:04:43" itemprop="dateCreated datePublished" datetime="2025-09-24T11:04:43+08:00">2025-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-26 13:35:49" itemprop="dateModified" datetime="2025-09-26T13:35:49+08:00">2025-09-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">容器化</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、问题标签不匹配"><a href="#一、问题标签不匹配" class="headerlink" title="一、问题标签不匹配"></a>一、问题标签不匹配</h2><p>因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Warning  FailedScheduling  94s   default-scheduler  0/6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.io/infrastore: &#125;, that the pod didn<span class="string">&#x27;t tolerate, 2 Insufficient memory, 3 node(s) had taint &#123;node-role.kubernetes.io/master: &#125;, that the pod didn&#x27;</span>t tolerate.</span><br></pre></td></tr></table></figure>
+
+<p>1.查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">affinity:</span><br><span class="line">        nodeAffinity:</span><br><span class="line">          requiredDuringSchedulingIgnoredDuringExecution: <span class="comment">#亲和性配置</span></span><br><span class="line">            nodeSelectorTerms:</span><br><span class="line">            - matchExpressions:</span><br><span class="line">              - key: node-role.kubernetes.io/infrastore <span class="comment">#打上标签</span></span><br><span class="line">                operator: Exists  <span class="comment"># 只需要标签存在，不关心值</span></span><br></pre></td></tr></table></figure>
+
+<p>2.根据亲和配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>总结：节点亲和性nodeAffinity，operator字段用法</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作符</th>
+<th align="left">使用场景</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Exists</strong></td>
+<td align="left">只需要标识节点类型，不关心具体值</td>
+<td align="left">标识计算节点、存储节点等</td>
+</tr>
+<tr>
+<td align="left"><strong>DoesNotExist</strong></td>
+<td align="left">排除特定类型的节点</td>
+<td align="left">排除测试节点、维护节点</td>
+</tr>
+<tr>
+<td align="left"><strong>In</strong></td>
+<td align="left">选择特定值的节点</td>
+<td align="left">环境选择（prod&#x2F;staging）、区域选择</td>
+</tr>
+<tr>
+<td align="left"><strong>NotIn</strong></td>
+<td align="left">排除特定值的节点</td>
+<td align="left">排除特定故障域、排除旧版本</td>
+</tr>
+<tr>
+<td align="left"><strong>Gt&#x2F;Lt</strong></td>
+<td align="left">基于数值的选择</td>
+<td align="left">内存大小、磁盘容量、CPU核心数</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport 10.25.82.41:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
+<h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
+<p>正确的Service配置示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
+
+<p>在Kubernetes中，Service的<code>externalTrafficPolicy</code>字段有两个选项：<code>Cluster</code>（默认）和<code>Local</code>。</p>
+<ul>
+<li><strong>Cluster</strong>：将外部流量均匀分配到所有节点（包括没有运行Pod的节点），然后通过kube-proxy转发到Pod。这会隐藏客户端的源IP（因为经过了一次转发），并且可能增加网络跳数。</li>
+<li><strong>Local</strong>：只将流量分配到运行有Service Pod的节点，并且直接由该节点上的kube-proxy转发到本地的Pod。这样可以保留客户端的源IP，并且避免额外的网络跳转。</li>
+</ul>
+<p><strong>为什么使用<code>externalTrafficPolicy: Local</code>对于IP哈希会话保持更有利？</strong></p>
+<p>当使用<code>sessionAffinity: ClientIP</code>时，Service会根据客户端的IP地址进行哈希，将同一个客户端的请求转发到同一个Pod。但是，如果<code>externalTrafficPolicy</code>是<code>Cluster</code>，那么到达Service的流量可能会先到任何一个节点，然后该节点再转发到目标Pod。在这个过程中，客户端的源IP可能会被丢失（因为经过SNAT），尤其是当流量被转发到不同节点上的Pod时。</p>
+<p>而设置<code>externalTrafficPolicy: Local</code>可以确保：</p>
+<ol>
+<li>保留客户端的真实IP地址。</li>
+<li>流量只到达运行有Pod的节点，并且直接由该节点处理，不会跨节点转发。</li>
+</ol>
+<p>这样，基于客户端IP的会话保持会更加准确，因为Service看到的客户端IP是真实的，而不是某个中间节点的IP。</p>
+<h3 id="其他实现方案"><a href="#其他实现方案" class="headerlink" title="其他实现方案"></a>其他实现方案</h3><h4 id="方案二：使用Ingress的会话保持"><a href="#方案二：使用Ingress的会话保持" class="headerlink" title="方案二：使用Ingress的会话保持"></a>方案二：使用Ingress的会话保持</h4><p>如果使用Ingress，可以配置：</p>
+<p>yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: your-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/affinity: &quot;cookie&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-name: &quot;route&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-expires: &quot;172800&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-max-age: &quot;172800&quot;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: your-domain.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: your-service</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><strong>ClientIP获取问题</strong>：在云环境或经过NAT时，可能需要配置<code>externalTrafficPolicy: Local</code>来确保获取真实客户端IP</li>
+<li><strong>Pod重启问题</strong>：如果Pod重启，会话会中断，需要考虑应用层的会话复制或持久化</li>
+<li><strong>测试方法</strong>：从同一客户端多次访问，检查日志确认请求总是到达同一个Pod</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>您只需要在Service中设置<code>sessionAffinity: ClientIP</code>即可，<strong>不需要填写Pod的IP地址</strong>。Kubernetes会自动基于客户端IP进行哈希计算，将同一客户端的请求路由到同一个Pod。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/k8s/" rel="tag"># k8s</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/09/22/ZK%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/" rel="prev" title="ZK基本使用及问题处理01">
+      <i class="fa fa-chevron-left"></i> ZK基本使用及问题处理01
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/" rel="next" title="容器化之细节问题处理篇05">
+      容器化之细节问题处理篇05 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%E6%A0%87%E7%AD%BE%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">1.</span> <span class="nav-text">一、问题标签不匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%B9%E5%99%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0IP-hash%E7%9A%84%E8%83%BD%E5%8A%9B"><span class="nav-number">2.</span> <span class="nav-text">二、容器中如何实现IP hash的能力</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-number">2.0.1.</span> <span class="nav-text">问题分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AE%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.</span> <span class="nav-text">正确配置方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-SessionAffinity-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1. SessionAffinity 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88"><span class="nav-number">2.3.</span> <span class="nav-text">其他实现方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8Ingress%E7%9A%84%E4%BC%9A%E8%AF%9D%E4%BF%9D%E6%8C%81"><span class="nav-number">2.3.1.</span> <span class="nav-text">方案二：使用Ingress的会话保持</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.4.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">帅汇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帅汇</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
