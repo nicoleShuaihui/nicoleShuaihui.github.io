@@ -28,7 +28,7 @@
 <meta property="og:description" content="一、问题标签不匹配因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下： 1Warning  FailedScheduling  94s   default-scheduler  0&#x2F;6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.i">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-24T03:04:43.000Z">
-<meta property="article:modified_time" content="2025-09-26T05:35:49.927Z">
+<meta property="article:modified_time" content="2025-10-05T15:08:42.345Z">
 <meta property="article:author" content="帅汇">
 <meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-26 13:35:49" itemprop="dateModified" datetime="2025-09-26T13:35:49+08:00">2025-09-26</time>
+                <time title="修改时间：2025-10-05 23:08:42" itemprop="dateModified" datetime="2025-10-05T23:08:42+08:00">2025-10-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,6 +256,11 @@
 
 <p>2.根据亲和配置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>3.命令上与yaml中标签的区别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#检查标签</span></span><br><span class="line">kubectl get nodes --show-labels | grep -E <span class="string">&quot;(app=wetwin-middleware|NAME)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只查看带有 app=wetwin-middleware 标签的节点</span></span><br><span class="line">kubectl get nodes -l app=wetwin-middleware --show-labels</span><br><span class="line"><span class="comment"># 或者只为特定类型的节点添加</span></span><br><span class="line">kubectl get nodes -l node-role.kubernetes.io/worker= --no-headers | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | xargs -I &#123;&#125; kubectl label nodes &#123;&#125; app=wetwin-middleware</span><br><span class="line"></span><br><span class="line"><span class="comment">#标签上的是使用，didn&#x27;t match node selector，那么就是查看的是node上的标签。可以先用命令检查</span></span><br><span class="line">kubectl label nodes xxxx app=wetwin-middleware</span><br><span class="line"><span class="comment">#yaml文件中=变为: 的形式</span></span><br><span class="line">  labels:</span><br><span class="line">    app: wetwin-middleware</span><br><span class="line"><span class="comment"># 删除节点标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app-</span><br><span class="line"><span class="comment"># 修改现有标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app=wetwin-middleware-new --overwrite</span><br></pre></td></tr></table></figure>
+
+
 
 <p>总结：节点亲和性nodeAffinity，operator字段用法</p>
 <table>
@@ -295,7 +300,7 @@
 <p>示例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport 10.25.82.41:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
+<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport xxx.xxx.xxx.xxx:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
 <h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
 <p>正确的Service配置示例：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
@@ -420,20 +425,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

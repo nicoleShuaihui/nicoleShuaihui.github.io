@@ -189,6 +189,164 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/25/%E3%80%90Linux%E3%80%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%E4%B9%8B%E6%9C%AC%E5%9C%B0yum%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/25/%E3%80%90Linux%E3%80%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%E4%B9%8B%E6%9C%AC%E5%9C%B0yum%E6%BA%90/" class="post-title-link" itemprop="url">【Linux】基础环境建设之本地yum源</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-25 13:33:53" itemprop="dateCreated datePublished" datetime="2025-10-25T13:33:53+08:00">2025-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-29 09:55:00" itemprop="dateModified" datetime="2025-10-29T09:55:00+08:00">2025-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83/" itemprop="url" rel="index"><span itemprop="name">Linux基础环境</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####本地用法###</span></span><br><span class="line">1、下载 iso 到每台机器，在每台机器执行以下操作:</span><br><span class="line">2、iso 挂载</span><br><span class="line"><span class="built_in">mkdir</span> -p /data1/tencentos2.4</span><br><span class="line">mount -o loop /data1/TencentOS-Server-2.4-TK4-x86 64-everything-2209.8.iso</span><br><span class="line">/data1/tencentos2.4</span><br><span class="line">3、生成 yum repo 文件:</span><br><span class="line">在/etc/yum.repos.d中创建文件 tencentos.repo:</span><br><span class="line">[tencentos-2.4-dvd-server]</span><br><span class="line">name=Tencent OS packages</span><br><span class="line">baseurl=file:///mnt/yum/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"><span class="comment">###TCP端口####</span></span><br><span class="line"><span class="built_in">nohup</span> python -m SimpleHTTPServer 80 &amp; </span><br><span class="line">4、需要配置http的情况</span><br><span class="line">[base]</span><br><span class="line">name =<span class="string">&quot;CentOS7 HTTP Yum&quot;</span></span><br><span class="line">baseurl= http://192.168.1.115/centos/            <span class="comment">#执向我们创建的yun源</span></span><br><span class="line">gpgcheck = 0                                    <span class="comment">#0表示不检查，那就不用写gpgkey</span></span><br><span class="line">enabled = 1</span><br><span class="line">[updates]</span><br><span class="line">name =<span class="string">&quot;Centos7 HTTP Yum&quot;</span></span><br><span class="line">baseurl= http://192.168.1.115/centos/</span><br><span class="line">gpgcheck = 0                                    <span class="comment">#0表示不检查，那就不用写gpgkey</span></span><br><span class="line">enabled = 1</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/09/%E3%80%90%E7%A3%81%E7%9B%98%E3%80%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A801/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="帅汇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/09/%E3%80%90%E7%A3%81%E7%9B%98%E3%80%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A801/" class="post-title-link" itemprop="url">【磁盘】的基本使用01</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-09 16:55:07" itemprop="dateCreated datePublished" datetime="2025-10-09T16:55:07+08:00">2025-10-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-12 16:44:50" itemprop="dateModified" datetime="2025-10-12T16:44:50+08:00">2025-10-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 1. 查看LVM信息</span></span><br><span class="line">lvs</span><br><span class="line">vgs</span><br><span class="line">pvs </span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 卸载相关文件系统</span></span><br><span class="line">umount /dev/mapper/vg_data-lv_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 删除逻辑卷 ( 逻辑分区)</span></span><br><span class="line">lvremove /dev/vg_data/lv_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 删除卷组( 硬盘组合)</span></span><br><span class="line">vgremove vg_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 删除物理卷( 物理硬盘)</span></span><br><span class="line">pvremove /dev/sdb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 验证清理结果</span></span><br><span class="line">pvs  <span class="comment"># 应该看不到该磁盘</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 清除磁盘签名</span></span><br><span class="line"></span><br><span class="line">wipefs -a /dev/sdb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用dd清除前几个扇区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/dev/sdb bs=1M count=100</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#目录结构</span></span><br><span class="line">vdc</span><br><span class="line"> |_vdc1</span><br><span class="line"> 	 |_cspvg-lv_csp          lvm</span><br><span class="line">lvremove /dev/cspvg/lv_csp <span class="comment">#lv逻辑卷</span></span><br><span class="line">vgremove cspvg <span class="comment">#vg 卷组</span></span><br><span class="line">pvremove /dev/vdc <span class="comment">#pv 物理卷</span></span><br></pre></td></tr></table></figure>
+
+<p>添加lvm</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sdb /dev/sdc</span><br><span class="line">vgcreate vg_data /dev/sdb /dev/sdc</span><br><span class="line">lvcreate -n lv_data -L 100G vg_data</span><br><span class="line">lvcreate -n lv_data1 -l +100%FREE vg_data</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /data /data1</span><br><span class="line">disk=/dev/mapper/vg_data-lv_data</span><br><span class="line">mkfs.xfs -n ftype=1 <span class="variable">$disk</span> -f</span><br><span class="line">blkid <span class="variable">$disk</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | sed <span class="string">&#x27;s/&quot;//g&#x27;</span> | xargs -I &#123;&#125; <span class="built_in">echo</span> <span class="string">&quot;&#123;&#125; /data xfs defaults,noatime,nodiratime,prjquota 0 2&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line">disk=/dev/mapper/vg_data-lv_data1</span><br><span class="line">mkfs.xfs -n ftype=1 <span class="variable">$disk</span> -f</span><br><span class="line">blkid <span class="variable">$disk</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | sed <span class="string">&#x27;s/&quot;//g&#x27;</span> | xargs -I &#123;&#125; <span class="built_in">echo</span> <span class="string">&quot;&#123;&#125; /data1 xfs defaults,noatime,nodiratime,prjquota 0 2&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line"><span class="built_in">df</span> -h</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -296,7 +454,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-26 13:35:49" itemprop="dateModified" datetime="2025-09-26T13:35:49+08:00">2025-09-26</time>
+                <time title="修改时间：2025-10-05 23:08:42" itemprop="dateModified" datetime="2025-10-05T23:08:42+08:00">2025-10-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -327,6 +485,11 @@
 
 <p>2.根据亲和配置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>3.命令上与yaml中标签的区别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#检查标签</span></span><br><span class="line">kubectl get nodes --show-labels | grep -E <span class="string">&quot;(app=wetwin-middleware|NAME)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只查看带有 app=wetwin-middleware 标签的节点</span></span><br><span class="line">kubectl get nodes -l app=wetwin-middleware --show-labels</span><br><span class="line"><span class="comment"># 或者只为特定类型的节点添加</span></span><br><span class="line">kubectl get nodes -l node-role.kubernetes.io/worker= --no-headers | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | xargs -I &#123;&#125; kubectl label nodes &#123;&#125; app=wetwin-middleware</span><br><span class="line"></span><br><span class="line"><span class="comment">#标签上的是使用，didn&#x27;t match node selector，那么就是查看的是node上的标签。可以先用命令检查</span></span><br><span class="line">kubectl label nodes xxxx app=wetwin-middleware</span><br><span class="line"><span class="comment">#yaml文件中=变为: 的形式</span></span><br><span class="line">  labels:</span><br><span class="line">    app: wetwin-middleware</span><br><span class="line"><span class="comment"># 删除节点标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app-</span><br><span class="line"><span class="comment"># 修改现有标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app=wetwin-middleware-new --overwrite</span><br></pre></td></tr></table></figure>
+
+
 
 <p>总结：节点亲和性nodeAffinity，operator字段用法</p>
 <table>
@@ -366,7 +529,7 @@
 <p>示例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport 10.25.82.41:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
+<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport xxx.xxx.xxx.xxx:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
 <h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
 <p>正确的Service配置示例：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
@@ -1119,308 +1282,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/" class="post-title-link" itemprop="url">ETCD基本使用及问题处理01</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-11 14:04:31" itemprop="dateCreated datePublished" datetime="2025-09-11T14:04:31+08:00">2025-09-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-15 10:27:57" itemprop="dateModified" datetime="2025-09-15T10:27:57+08:00">2025-09-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AD%E9%97%B4/" itemprop="url" rel="index"><span itemprop="name">中间</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.3查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="帅汇">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/" class="post-title-link" itemprop="url">ES基本使用及问题处理01</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-08 14:20:17" itemprop="dateCreated datePublished" datetime="2025-09-08T14:20:17+08:00">2025-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-26 10:29:23" itemprop="dateModified" datetime="2025-09-26T10:29:23+08:00">2025-09-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
-<h3 id="清理数据"><a href="#清理数据" class="headerlink" title="清理数据"></a>清理数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -I -m 10 -o /dev/null -s -w %&#123;http_code&#125; -X GET <span class="string">&quot;<span class="variable">$&#123;dst_es_schema&#125;</span>://<span class="variable">$&#123;dst_es_user&#125;</span>:<span class="variable">$&#123;dst_es_passwd&#125;</span>@<span class="variable">$&#123;dst_es_host&#125;</span>:<span class="variable">$&#123;dst_es_port&#125;</span>/_cluster/health?pretty&quot;</span></span><br><span class="line"><span class="comment"># 如需用户名与密码则需 curl -u xxx:&#x27;xxx&#x27;, 密码有特殊字符可用单引号</span></span><br><span class="line">curl 10.25.83.242:9200/_cluster/health?pretty <span class="comment">#查看监控</span></span><br><span class="line">curl 10.25.83.242:9200/_cat/indices?v |grep gb <span class="comment">#查看数据</span></span><br><span class="line">curl -XDELETE 10.25.83.242:9200/xxxxx <span class="comment">#删除数据</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>数据清理脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">index_prefix=tsf</span><br><span class="line">es_url=<span class="variable">$1</span></span><br><span class="line">es_port=<span class="variable">$2</span></span><br><span class="line">es_user=<span class="variable">$3</span></span><br><span class="line">es_pass=<span class="variable">$4</span></span><br><span class="line">ttl_date=2</span><br><span class="line"></span><br><span class="line">current=$(<span class="built_in">date</span> <span class="string">&#x27;+%Y/%m/%d %H:%M:%S&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">date2stamp</span></span> () &#123;</span><br><span class="line">    <span class="built_in">date</span> --utc --<span class="built_in">date</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> +%s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">dateDiff</span></span>() &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">        -s)   sec=1;      <span class="built_in">shift</span>;;</span><br><span class="line">        -m)   sec=60;     <span class="built_in">shift</span>;;</span><br><span class="line">        -h)   sec=3600;   <span class="built_in">shift</span>;;</span><br><span class="line">        -d)   sec=86400;  <span class="built_in">shift</span>;;</span><br><span class="line">        *)    sec=86400;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">    dte1=$(date2stamp <span class="variable">$1</span>)</span><br><span class="line">    dte2=$(date2stamp <span class="variable">$2</span>)</span><br><span class="line">    diffSec=$((dte2-dte1))</span><br><span class="line">    <span class="keyword">if</span> ((diffSec &lt; <span class="number">0</span>)); <span class="keyword">then</span> abs=-1; <span class="keyword">else</span> abs=1; <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> $((diffSec/sec*abs))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$es_url</span> == *<span class="string">&quot;:&quot;</span>* ]]; <span class="keyword">then</span></span><br><span class="line">  indices=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -6 -g <span class="string">&quot;[<span class="variable">$&#123;es_url&#125;</span>]:<span class="variable">$&#123;es_port&#125;</span>/_cat/indices?v&amp;s=index&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$&#123;index_prefix&#125;</span>-*&quot;</span> | grep -v <span class="string">&quot;tsf-oss&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  indices=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/_cat/indices?v&amp;s=index&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$&#123;index_prefix&#125;</span>-*&quot;</span> | grep -v <span class="string">&quot;tsf-oss&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> <span class="variable">$indices</span>;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	<span class="built_in">date</span>=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$index</span>&quot;</span> | awk -F<span class="string">&#x27;@&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">	<span class="keyword">if</span> [ <span class="variable">$date</span> ]; <span class="keyword">then</span></span><br><span class="line">      cond=$(<span class="built_in">date</span> +%Y-%m-%d)</span><br><span class="line">	    diff=$(dateDiff -d <span class="variable">$date</span> <span class="variable">$cond</span>)</span><br><span class="line">	    <span class="keyword">if</span> [ <span class="variable">$&#123;diff&#125;</span> -gt <span class="variable">$&#123;ttl_date&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line">        rsp=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -XDELETE <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/<span class="variable">$&#123;index&#125;</span>&quot;</span>)</span><br><span class="line">        res=$(<span class="built_in">echo</span> <span class="variable">$rsp</span> | awk -F<span class="string">&quot;[,:&#125;]&quot;</span> <span class="string">&#x27;&#123;for(i=1;i&lt;=NF;i++)&#123;if($i~/&#x27;</span>acknowledged<span class="string">&#x27;\042/)&#123;print $(i+1)&#125;&#125;&#125;&#x27;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;&quot;&#x27;</span> | sed -n 1p)</span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;true&quot;</span> == <span class="string">&quot;<span class="variable">$res</span>&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete success&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete failed: <span class="variable">$res</span>&quot;</span> &gt;&amp;2</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> still lives&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	      result=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$index</span>&quot;</span> | grep <span class="string">&quot;failed&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$result</span>&quot;</span> != <span class="string">&quot;&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            rsp=$(curl -s -u <span class="string">&quot;<span class="variable">$&#123;es_user&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;es_pass&#125;</span>&quot;</span> -XDELETE <span class="string">&quot;<span class="variable">$&#123;es_url&#125;</span>:<span class="variable">$&#123;es_port&#125;</span>/<span class="variable">$&#123;index&#125;</span>&quot;</span>)</span><br><span class="line">            res=$(<span class="built_in">echo</span> <span class="variable">$rsp</span> | awk -F<span class="string">&quot;[,:&#125;]&quot;</span> <span class="string">&#x27;&#123;for(i=1;i&lt;=NF;i++)&#123;if($i~/&#x27;</span>acknowledged<span class="string">&#x27;\042/)&#123;print $(i+1)&#125;&#125;&#125;&#x27;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;&quot;&#x27;</span> | sed -n 1p)</span><br><span class="line">            <span class="keyword">if</span> [ <span class="string">&quot;true&quot;</span> == <span class="string">&quot;<span class="variable">$res</span>&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">              <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete success&quot;</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">              <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> delete failed: <span class="variable">$res</span>&quot;</span> &gt;&amp;2</span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;current&#125;</span> <span class="variable">$&#123;index&#125;</span> has no date field&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p><strong>只读标记未手动清除</strong>：这是最常见的原因。Elasticsearch <strong>不会自动</strong>将索引的 <code>read_only_allow_delete</code> 属性改回 <code>false</code></p>
-<p><strong>磁盘空间未真正有效释放</strong>：</p>
-<ul>
-<li><p><strong>延迟释放</strong>：使用 <code>DELETE</code> 操作或 <code>_delete_by_query</code> 进行数据删除时，Elasticsearch 采用的是“标记删除”而非立即从磁盘擦除。真正的空间释放需要等待 <strong>Segment Merge</strong> 过程完成。</p>
-</li>
-<li><p><strong>清理量不足</strong>：可能删除的数据量不足以让所有磁盘的使用率都降到水位线（特别是 flood_stage, 例如95%）以下。Elasticsearch 会检查所有节点磁盘空间。</p>
-</li>
-</ul>
-<p>水位线检查有延迟或缓存：Elasticsearch 检测磁盘空间和使用率变化可能存在短暂延迟。</p>
-<p>分片分配问题：即使空间足够，如果之前因磁盘空间不足导致分片未分配，空间释放后可能需要手动恢复分片分配或等待集群自动重新平衡。</p>
-<h4 id="📖-总结：问题解决步骤"><a href="#📖-总结：问题解决步骤" class="headerlink" title="📖 总结：问题解决步骤"></a>📖 总结：问题解决步骤</h4><table>
-<thead>
-<tr>
-<th align="left">步骤</th>
-<th align="left">操作</th>
-<th align="left">命令&#x2F;操作示例</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">1️⃣</td>
-<td align="left"><strong>确认磁盘空间</strong></td>
-<td align="left"><code>GET /_cat/allocation?v</code></td>
-<td align="left">查看所有节点的磁盘使用率，确保均低于洪水水位线（如95%）</td>
-</tr>
-<tr>
-<td align="left">2️⃣</td>
-<td align="left"><strong>检查索引设置</strong></td>
-<td align="left"><code>GET your_index_name/_settings</code></td>
-<td align="left">确认 <code>index.blocks.read_only_allow_delete</code> 是否为 <code>true</code></td>
-</tr>
-<tr>
-<td align="left">3️⃣</td>
-<td align="left"><strong>手动解除只读</strong></td>
-<td align="left">curl  -H “Content-Type:application&#x2F;json” -XPUT 10.25.83.242:9200&#x2F;_cluster&#x2F;settings -d ‘{   “persistent”: {     “cluster.blocks.read_only_allow_delete”: false   } }’</td>
-<td align="left">核心步骤：手动清除索引的只读标记</td>
-</tr>
-<tr>
-<td align="left">4️⃣</td>
-<td align="left">xxx</td>
-<td align="left">curl -H “Content-Type: application&#x2F;json”  -XPUT ‘10.25.83.242:9200&#x2F;_all&#x2F;_settings’ -d ‘{“index”:{“blocks”:{“read_only_allow_delete”:null}}}’</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">5️⃣</td>
-<td align="left"><strong>验证写入</strong></td>
-<td align="left"><code>POST your_index_name/_doc &#123; &quot;test&quot;: &quot;data&quot; &#125;</code></td>
-<td align="left">尝试写入一条测试数据，验证是否成功</td>
-</tr>
-</tbody></table>
-<h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>项目背景：目前项目由两套环境，需要将A环境的数据迁移至环境B。项目B中本身也有数据。故需求是需要先将项目B中的ES数据清空后再将项目A的ES数据迁移过来。因为A、B两个环境的网络可临时开通端口且两个环境没有HDFS、s3这样的共享文件系统，但可部署ntfs系统。故es备份恢复使用的是multielasticdump进行的备份与恢复。</p>
-<h4 id="备份工具区别选择"><a href="#备份工具区别选择" class="headerlink" title="备份工具区别选择"></a>备份工具区别选择</h4><table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left">elasticdump</th>
-<th align="left">multielasticdump</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>核心原理</strong></td>
-<td align="left">单进程工具</td>
-<td align="left"><strong>elasticdump 的包装器</strong>，管理多个进程</td>
-</tr>
-<tr>
-<td align="left"><strong>处理方式</strong></td>
-<td align="left"><strong>串行</strong>：一次处理一个索引或一种数据类型</td>
-<td align="left"><strong>并行</strong>：同时处理多个索引</td>
-</tr>
-<tr>
-<td align="left"><strong>效率</strong></td>
-<td align="left">速度较慢，尤其当索引很多时</td>
-<td align="left"><strong>速度非常快</strong>，充分利用多核CPU和网络带宽</td>
-</tr>
-<tr>
-<td align="left"><strong>使用场景</strong></td>
-<td align="left">备份或迁移<strong>单个或少量几个索引</strong></td>
-<td align="left">备份或迁移<strong>整个集群</strong>或大量索引</td>
-</tr>
-<tr>
-<td align="left"><strong>输出结构</strong></td>
-<td align="left">输出是指定的单个文件</td>
-<td align="left">为<strong>每个索引创建子文件夹</strong>，文件夹内包含该索引的各种类型文件（data, mapping等）</td>
-</tr>
-<tr>
-<td align="left"><strong>资源占用</strong></td>
-<td align="left">占用资源较少</td>
-<td align="left">占用资源较多（CPU、内存、网络连接数）</td>
-</tr>
-<tr>
-<td align="left"><strong>控制粒度</strong></td>
-<td align="left"><strong>高</strong>：可以非常精细地控制单个索引的传输</td>
-<td align="left"><strong>低</strong>：以索引为单元进行批量操作</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left"><code>elasticdump</code> &#x2F; <code>multielasticdump</code></th>
-<th align="left">Elasticsearch 快照&#x2F;恢复 (Snapshot&#x2F;Restore)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>格式</strong></td>
-<td align="left"><strong>纯文本 JSON</strong></td>
-<td align="left"><strong>专有的二进制格式</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>可读性</strong></td>
-<td align="left"><strong>高</strong>。可以用文本编辑器、<code>cat</code>, <code>head</code>, <code>jq</code> 等工具直接查看和分析。</td>
-<td align="left"><strong>低</strong>。只能由 Elasticsearch 本身识别和解析。</td>
-</tr>
-<tr>
-<td align="left"><strong>用途</strong></td>
-<td align="left"><strong>逻辑备份</strong>。数据迁移、少量数据恢复、数据审计、转换格式。</td>
-<td align="left"><strong>物理备份</strong>。完整的集群快照，用于灾难恢复、全量备份。</td>
-</tr>
-<tr>
-<td align="left"><strong>速度</strong></td>
-<td align="left">相对较慢（需要将二进制数据编码为JSON文本并传输）</td>
-<td align="left"><strong>非常快</strong>（直接拷贝底层的段文件）</td>
-</tr>
-<tr>
-<td align="left"><strong>存储空间</strong></td>
-<td align="left"><strong>更大</strong>（文本格式通常比二进制表示更占空间）</td>
-<td align="left"><strong>更小</strong>（是高效的二进制压缩格式）</td>
-</tr>
-<tr>
-<td align="left"><strong>系统要求</strong></td>
-<td align="left">任何有文件系统的地方</td>
-<td align="left">必须配置在支持的<strong>快照仓库</strong>中（如 S3, HDFS, NFS, 共享FS）</td>
-</tr>
-</tbody></table>
-<h4 id="数据迁移过程"><a href="#数据迁移过程" class="headerlink" title="数据迁移过程"></a>数据迁移过程</h4><p>查看数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET <span class="string">&#x27;&lt;ES_IP&gt;:9200/_cluster/health?pretty&#x27;</span></span><br><span class="line">1. 使用 GET /_cat/indices 命令</span><br><span class="line">curl [--user &lt;账号&gt;:&lt;密码&gt;] -XGET <span class="string">&#x27;&lt;ES_IP&gt;:9200/_cat/indices?v&#x27;</span> | grep red</span><br><span class="line"><span class="comment">#查看所有索引</span></span><br><span class="line">curl -u elastic:<span class="string">&#x27;your_password&#x27;</span> http://localhost:9200/_cat/indices?v</span><br></pre></td></tr></table></figure>
-
-<p>数据清理,将所有的索引的数据都清理干净。也可以用删除索引的方式将其都删除。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -u <span class="string">&quot;elastic:密码&quot;</span> -X POST <span class="string">&quot;http://localhost:9200/&lt;索引名&gt;/_delete_by_query&quot;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> -d<span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;match_all&quot;: &#123;&#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>数据备份：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">date_dir=`<span class="built_in">date</span> +%Y%m%d`</span><br><span class="line">multielasticdump \</span><br><span class="line">    --direction=dump \</span><br><span class="line">    --match=<span class="string">&#x27;^.*$&#x27;</span> \</span><br><span class="line">    --includeType=<span class="string">&#x27;data,mapping,analyzer,alias,settings,template&#x27;</span> \</span><br><span class="line">    --input=http://<span class="variable">$&#123;es_user&#125;</span>:<span class="variable">$&#123;es_passwd&#125;</span>@<span class="variable">$&#123;es_host&#125;</span>:<span class="variable">$&#123;es_port&#125;</span> \</span><br><span class="line">    --output=<span class="variable">$backup_dir</span>/elasticsearch-dump/<span class="variable">$date_dir</span> </span><br></pre></td></tr></table></figure>
-
-<p>数据恢复</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">multielasticdump \</span><br><span class="line">  --direction=load \</span><br><span class="line">  --skip-existing \</span><br><span class="line">  --match=<span class="string">&#x27;^.*$&#x27;</span> \</span><br><span class="line">  --includeType=<span class="string">&#x27;data,mapping,analyzer,alias,settings,template&#x27;</span> \</span><br><span class="line">  --ignoreChildError \</span><br><span class="line">  --input=<span class="variable">$backup_data</span> \</span><br><span class="line">  --output=http://<span class="variable">$&#123;ES_USER&#125;</span>:<span class="variable">$&#123;ES_PASSWD&#125;</span>@<span class="variable">$ES_HOST</span>:<span class="variable">$ES_PORT</span></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1490,20 +1351,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

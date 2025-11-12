@@ -126,6 +126,19 @@
       </tags>
   </entry>
   <entry>
+    <title>ETCD基本使用及问题处理01</title>
+    <url>/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line">3.检查每个endpoint的健康状况，主备均正常，endpoints填上面列出的每条<span class="string">&quot;CLIENT ADDRS&quot;</span>中的IP:PORT</span><br><span class="line">etcdctl --endpoints=10.30.2.8:2379,10.30.2.7:2379,10.30.2.6:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key endpoint health --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>中间</category>
+      </categories>
+      <tags>
+        <tag>ETCD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ES基本使用及问题处理01</title>
     <url>/2025/09/08/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
     <content><![CDATA[<p>项目问题1：业务进行压测，后面造成ES数据满了，有90%告警。针对该情况需要清理ES，数据可以正常写入。</p>
@@ -298,19 +311,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>ETCD基本使用及问题处理01</title>
-    <url>/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
-    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.3查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>中间</category>
-      </categories>
-      <tags>
-        <tag>ETCD</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>clickhouse分布式基本使用</title>
     <url>/2025/09/08/clickhouse%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>目前clickhouse创建是2副本的,业务页面访问clickhouse 发现两个clickhouse的数据不同步。主要原因是未创建分布式clickhouse实例。目前针对该场景进行记录clickhouse分布式的使用</p>
@@ -412,89 +412,16 @@
       </tags>
   </entry>
   <entry>
-    <title>容器化之K8S标签污点使用问题记录</title>
-    <url>/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="一、问题标签不匹配"><a href="#一、问题标签不匹配" class="headerlink" title="一、问题标签不匹配"></a>一、问题标签不匹配</h2><p>因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Warning  FailedScheduling  94s   default-scheduler  0/6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.io/infrastore: &#125;, that the pod didn<span class="string">&#x27;t tolerate, 2 Insufficient memory, 3 node(s) had taint &#123;node-role.kubernetes.io/master: &#125;, that the pod didn&#x27;</span>t tolerate.</span><br></pre></td></tr></table></figure>
+    <title>【Linux】基础环境建设之本地yum源</title>
+    <url>/2025/10/25/%E3%80%90Linux%E3%80%91%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%E4%B9%8B%E6%9C%AC%E5%9C%B0yum%E6%BA%90/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">####本地用法###</span></span><br><span class="line">1、下载 iso 到每台机器，在每台机器执行以下操作:</span><br><span class="line">2、iso 挂载</span><br><span class="line"><span class="built_in">mkdir</span> -p /data1/tencentos2.4</span><br><span class="line">mount -o loop /data1/TencentOS-Server-2.4-TK4-x86 64-everything-2209.8.iso</span><br><span class="line">/data1/tencentos2.4</span><br><span class="line">3、生成 yum repo 文件:</span><br><span class="line">在/etc/yum.repos.d中创建文件 tencentos.repo:</span><br><span class="line">[tencentos-2.4-dvd-server]</span><br><span class="line">name=Tencent OS packages</span><br><span class="line">baseurl=file:///mnt/yum/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"><span class="comment">###TCP端口####</span></span><br><span class="line"><span class="built_in">nohup</span> python -m SimpleHTTPServer 80 &amp; </span><br><span class="line">4、需要配置http的情况</span><br><span class="line">[base]</span><br><span class="line">name =<span class="string">&quot;CentOS7 HTTP Yum&quot;</span></span><br><span class="line">baseurl= http://192.168.1.115/centos/            <span class="comment">#执向我们创建的yun源</span></span><br><span class="line">gpgcheck = 0                                    <span class="comment">#0表示不检查，那就不用写gpgkey</span></span><br><span class="line">enabled = 1</span><br><span class="line">[updates]</span><br><span class="line">name =<span class="string">&quot;Centos7 HTTP Yum&quot;</span></span><br><span class="line">baseurl= http://192.168.1.115/centos/</span><br><span class="line">gpgcheck = 0                                    <span class="comment">#0表示不检查，那就不用写gpgkey</span></span><br><span class="line">enabled = 1</span><br></pre></td></tr></table></figure>
 
-<p>1.查看</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">affinity:</span><br><span class="line">        nodeAffinity:</span><br><span class="line">          requiredDuringSchedulingIgnoredDuringExecution: <span class="comment">#亲和性配置</span></span><br><span class="line">            nodeSelectorTerms:</span><br><span class="line">            - matchExpressions:</span><br><span class="line">              - key: node-role.kubernetes.io/infrastore <span class="comment">#打上标签</span></span><br><span class="line">                operator: Exists  <span class="comment"># 只需要标签存在，不关心值</span></span><br></pre></td></tr></table></figure>
-
-<p>2.根据亲和配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
-
-<p>总结：节点亲和性nodeAffinity，operator字段用法</p>
-<table>
-<thead>
-<tr>
-<th align="left">操作符</th>
-<th align="left">使用场景</th>
-<th align="left">示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>Exists</strong></td>
-<td align="left">只需要标识节点类型，不关心具体值</td>
-<td align="left">标识计算节点、存储节点等</td>
-</tr>
-<tr>
-<td align="left"><strong>DoesNotExist</strong></td>
-<td align="left">排除特定类型的节点</td>
-<td align="left">排除测试节点、维护节点</td>
-</tr>
-<tr>
-<td align="left"><strong>In</strong></td>
-<td align="left">选择特定值的节点</td>
-<td align="left">环境选择（prod&#x2F;staging）、区域选择</td>
-</tr>
-<tr>
-<td align="left"><strong>NotIn</strong></td>
-<td align="left">排除特定值的节点</td>
-<td align="left">排除特定故障域、排除旧版本</td>
-</tr>
-<tr>
-<td align="left"><strong>Gt&#x2F;Lt</strong></td>
-<td align="left">基于数值的选择</td>
-<td align="left">内存大小、磁盘容量、CPU核心数</td>
-</tr>
-</tbody></table>
-<p>示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport 10.25.82.41:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
-<h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
-<p>正确的Service配置示例：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
-
-<p>在Kubernetes中，Service的<code>externalTrafficPolicy</code>字段有两个选项：<code>Cluster</code>（默认）和<code>Local</code>。</p>
-<ul>
-<li><strong>Cluster</strong>：将外部流量均匀分配到所有节点（包括没有运行Pod的节点），然后通过kube-proxy转发到Pod。这会隐藏客户端的源IP（因为经过了一次转发），并且可能增加网络跳数。</li>
-<li><strong>Local</strong>：只将流量分配到运行有Service Pod的节点，并且直接由该节点上的kube-proxy转发到本地的Pod。这样可以保留客户端的源IP，并且避免额外的网络跳转。</li>
-</ul>
-<p><strong>为什么使用<code>externalTrafficPolicy: Local</code>对于IP哈希会话保持更有利？</strong></p>
-<p>当使用<code>sessionAffinity: ClientIP</code>时，Service会根据客户端的IP地址进行哈希，将同一个客户端的请求转发到同一个Pod。但是，如果<code>externalTrafficPolicy</code>是<code>Cluster</code>，那么到达Service的流量可能会先到任何一个节点，然后该节点再转发到目标Pod。在这个过程中，客户端的源IP可能会被丢失（因为经过SNAT），尤其是当流量被转发到不同节点上的Pod时。</p>
-<p>而设置<code>externalTrafficPolicy: Local</code>可以确保：</p>
-<ol>
-<li>保留客户端的真实IP地址。</li>
-<li>流量只到达运行有Pod的节点，并且直接由该节点处理，不会跨节点转发。</li>
-</ol>
-<p>这样，基于客户端IP的会话保持会更加准确，因为Service看到的客户端IP是真实的，而不是某个中间节点的IP。</p>
-<h3 id="其他实现方案"><a href="#其他实现方案" class="headerlink" title="其他实现方案"></a>其他实现方案</h3><h4 id="方案二：使用Ingress的会话保持"><a href="#方案二：使用Ingress的会话保持" class="headerlink" title="方案二：使用Ingress的会话保持"></a>方案二：使用Ingress的会话保持</h4><p>如果使用Ingress，可以配置：</p>
-<p>yaml</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: your-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/affinity: &quot;cookie&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-name: &quot;route&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-expires: &quot;172800&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-max-age: &quot;172800&quot;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: your-domain.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: your-service</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
-
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
-<li><strong>ClientIP获取问题</strong>：在云环境或经过NAT时，可能需要配置<code>externalTrafficPolicy: Local</code>来确保获取真实客户端IP</li>
-<li><strong>Pod重启问题</strong>：如果Pod重启，会话会中断，需要考虑应用层的会话复制或持久化</li>
-<li><strong>测试方法</strong>：从同一客户端多次访问，检查日志确认请求总是到达同一个Pod</li>
-</ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>您只需要在Service中设置<code>sessionAffinity: ClientIP</code>即可，<strong>不需要填写Pod的IP地址</strong>。Kubernetes会自动基于客户端IP进行哈希计算，将同一客户端的请求路由到同一个Pod。</p>
 ]]></content>
       <categories>
-        <category>容器化</category>
+        <category>Linux基础环境</category>
       </categories>
       <tags>
-        <tag>k8s</tag>
+        <tag>yum源</tag>
       </tags>
   </entry>
   <entry>
@@ -729,6 +656,118 @@
       </tags>
   </entry>
   <entry>
+    <title>【磁盘】的基本使用01</title>
+    <url>/2025/10/09/%E3%80%90%E7%A3%81%E7%9B%98%E3%80%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A801/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 1. 查看LVM信息</span></span><br><span class="line">lvs</span><br><span class="line">vgs</span><br><span class="line">pvs </span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 卸载相关文件系统</span></span><br><span class="line">umount /dev/mapper/vg_data-lv_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 删除逻辑卷 ( 逻辑分区)</span></span><br><span class="line">lvremove /dev/vg_data/lv_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 删除卷组( 硬盘组合)</span></span><br><span class="line">vgremove vg_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 删除物理卷( 物理硬盘)</span></span><br><span class="line">pvremove /dev/sdb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 验证清理结果</span></span><br><span class="line">pvs  <span class="comment"># 应该看不到该磁盘</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 清除磁盘签名</span></span><br><span class="line"></span><br><span class="line">wipefs -a /dev/sdb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用dd清除前几个扇区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/dev/sdb bs=1M count=100</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#目录结构</span></span><br><span class="line">vdc</span><br><span class="line"> |_vdc1</span><br><span class="line"> 	 |_cspvg-lv_csp          lvm</span><br><span class="line">lvremove /dev/cspvg/lv_csp <span class="comment">#lv逻辑卷</span></span><br><span class="line">vgremove cspvg <span class="comment">#vg 卷组</span></span><br><span class="line">pvremove /dev/vdc <span class="comment">#pv 物理卷</span></span><br></pre></td></tr></table></figure>
+
+<p>添加lvm</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pvcreate /dev/sdb /dev/sdc</span><br><span class="line">vgcreate vg_data /dev/sdb /dev/sdc</span><br><span class="line">lvcreate -n lv_data -L 100G vg_data</span><br><span class="line">lvcreate -n lv_data1 -l +100%FREE vg_data</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /data /data1</span><br><span class="line">disk=/dev/mapper/vg_data-lv_data</span><br><span class="line">mkfs.xfs -n ftype=1 <span class="variable">$disk</span> -f</span><br><span class="line">blkid <span class="variable">$disk</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | sed <span class="string">&#x27;s/&quot;//g&#x27;</span> | xargs -I &#123;&#125; <span class="built_in">echo</span> <span class="string">&quot;&#123;&#125; /data xfs defaults,noatime,nodiratime,prjquota 0 2&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line">disk=/dev/mapper/vg_data-lv_data1</span><br><span class="line">mkfs.xfs -n ftype=1 <span class="variable">$disk</span> -f</span><br><span class="line">blkid <span class="variable">$disk</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | sed <span class="string">&#x27;s/&quot;//g&#x27;</span> | xargs -I &#123;&#125; <span class="built_in">echo</span> <span class="string">&quot;&#123;&#125; /data1 xfs defaults,noatime,nodiratime,prjquota 0 2&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line"><span class="built_in">df</span> -h</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>lvm的使用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器化之K8S标签污点使用问题记录</title>
+    <url>/2025/09/24/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8BK8S%E6%A0%87%E7%AD%BE%E6%B1%A1%E7%82%B9%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="一、问题标签不匹配"><a href="#一、问题标签不匹配" class="headerlink" title="一、问题标签不匹配"></a>一、问题标签不匹配</h2><p>因一服务启动pending，describe 查看其原因。主要是因为：节点亲和性不匹配与master 节点污点不匹配。报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Warning  FailedScheduling  94s   default-scheduler  0/6 nodes are available: 1 node(s) had taint &#123;node-role.kubernetes.io/infrastore: &#125;, that the pod didn<span class="string">&#x27;t tolerate, 2 Insufficient memory, 3 node(s) had taint &#123;node-role.kubernetes.io/master: &#125;, that the pod didn&#x27;</span>t tolerate.</span><br></pre></td></tr></table></figure>
+
+<p>1.查看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">affinity:</span><br><span class="line">        nodeAffinity:</span><br><span class="line">          requiredDuringSchedulingIgnoredDuringExecution: <span class="comment">#亲和性配置</span></span><br><span class="line">            nodeSelectorTerms:</span><br><span class="line">            - matchExpressions:</span><br><span class="line">              - key: node-role.kubernetes.io/infrastore <span class="comment">#打上标签</span></span><br><span class="line">                operator: Exists  <span class="comment"># 只需要标签存在，不关心值</span></span><br></pre></td></tr></table></figure>
+
+<p>2.根据亲和配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给目标节点打上标签</span></span><br><span class="line">kubectl label nodes &lt;node-name&gt; node-role.kubernetes.io/infrastore=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点应该有如下配置</span></span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    node-role.kubernetes.io/infrastore: <span class="string">&quot;&quot;</span>  <span class="comment"># 值为空字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>3.命令上与yaml中标签的区别</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#检查标签</span></span><br><span class="line">kubectl get nodes --show-labels | grep -E <span class="string">&quot;(app=wetwin-middleware|NAME)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只查看带有 app=wetwin-middleware 标签的节点</span></span><br><span class="line">kubectl get nodes -l app=wetwin-middleware --show-labels</span><br><span class="line"><span class="comment"># 或者只为特定类型的节点添加</span></span><br><span class="line">kubectl get nodes -l node-role.kubernetes.io/worker= --no-headers | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | xargs -I &#123;&#125; kubectl label nodes &#123;&#125; app=wetwin-middleware</span><br><span class="line"></span><br><span class="line"><span class="comment">#标签上的是使用，didn&#x27;t match node selector，那么就是查看的是node上的标签。可以先用命令检查</span></span><br><span class="line">kubectl label nodes xxxx app=wetwin-middleware</span><br><span class="line"><span class="comment">#yaml文件中=变为: 的形式</span></span><br><span class="line">  labels:</span><br><span class="line">    app: wetwin-middleware</span><br><span class="line"><span class="comment"># 删除节点标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app-</span><br><span class="line"><span class="comment"># 修改现有标签</span></span><br><span class="line">kubectl label nodes &lt;节点名称&gt; app=wetwin-middleware-new --overwrite</span><br></pre></td></tr></table></figure>
+
+
+
+<p>总结：节点亲和性nodeAffinity，operator字段用法</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作符</th>
+<th align="left">使用场景</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Exists</strong></td>
+<td align="left">只需要标识节点类型，不关心具体值</td>
+<td align="left">标识计算节点、存储节点等</td>
+</tr>
+<tr>
+<td align="left"><strong>DoesNotExist</strong></td>
+<td align="left">排除特定类型的节点</td>
+<td align="left">排除测试节点、维护节点</td>
+</tr>
+<tr>
+<td align="left"><strong>In</strong></td>
+<td align="left">选择特定值的节点</td>
+<td align="left">环境选择（prod&#x2F;staging）、区域选择</td>
+</tr>
+<tr>
+<td align="left"><strong>NotIn</strong></td>
+<td align="left">排除特定值的节点</td>
+<td align="left">排除特定故障域、排除旧版本</td>
+</tr>
+<tr>
+<td align="left"><strong>Gt&#x2F;Lt</strong></td>
+<td align="left">基于数值的选择</td>
+<td align="left">内存大小、磁盘容量、CPU核心数</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: example-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: <span class="string">&quot;node-role.kubernetes.io/infrastore&quot;</span></span><br><span class="line">            operator: Exists  <span class="comment"># 标签键存在即可</span></span><br><span class="line">          - key: <span class="string">&quot;environment&quot;</span></span><br><span class="line">            operator: In</span><br><span class="line">            values: [<span class="string">&quot;production&quot;</span>, <span class="string">&quot;staging&quot;</span>]  <span class="comment"># 环境必须是生产或预发布</span></span><br><span class="line">          - key: <span class="string">&quot;gpu-type&quot;</span></span><br><span class="line">            operator: NotIn</span><br><span class="line">            values: [<span class="string">&quot;old-model&quot;</span>]  <span class="comment"># 不能是旧型号GPU</span></span><br><span class="line">          - key: <span class="string">&quot;disk-size&quot;</span></span><br><span class="line">            operator: Gt</span><br><span class="line">            values: [<span class="string">&quot;500&quot;</span>]  <span class="comment"># 磁盘大小大于500GB</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、容器中如何实现IP-hash的能力"><a href="#二、容器中如何实现IP-hash的能力" class="headerlink" title="二、容器中如何实现IP hash的能力"></a>二、容器中如何实现IP hash的能力</h2><h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>负载均衡策略都不能用轮询或者权重，要保证同一个电脑每次访问的节点是同一个，不然管理端用不了，实际该服务的pod 172.16.26.2 172.16.27.7 ，使用的是nodeport xxx.xxx.xxx.xxx:31359 访问。可用<strong>会话保持（Session Affinity）</strong>功能</p>
+<h3 id="正确配置方案"><a href="#正确配置方案" class="headerlink" title="正确配置方案"></a>正确配置方案</h3><h3 id="1-SessionAffinity-配置"><a href="#1-SessionAffinity-配置" class="headerlink" title="1. SessionAffinity 配置"></a>1. SessionAffinity 配置</h3><p><strong>不需要填写Pod的IP</strong>，<code>sessionAffinity: ClientIP</code> 是Service级别的配置，Kubernetes会自动处理IP到Pod的映射。</p>
+<p>正确的Service配置示例：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">your-management-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">externalTrafficPolicy:</span> <span class="string">Local</span>  <span class="comment"># 关键配置</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">ClientIP</span> </span><br><span class="line">  <span class="attr">sessionAffinityConfig:</span></span><br><span class="line">    <span class="attr">clientIP:</span></span><br><span class="line">      <span class="attr">timeoutSeconds:</span> <span class="number">10800</span>  <span class="comment"># 3小时</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">31359</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">management-app</span></span><br></pre></td></tr></table></figure>
+
+<p>在Kubernetes中，Service的<code>externalTrafficPolicy</code>字段有两个选项：<code>Cluster</code>（默认）和<code>Local</code>。</p>
+<ul>
+<li><strong>Cluster</strong>：将外部流量均匀分配到所有节点（包括没有运行Pod的节点），然后通过kube-proxy转发到Pod。这会隐藏客户端的源IP（因为经过了一次转发），并且可能增加网络跳数。</li>
+<li><strong>Local</strong>：只将流量分配到运行有Service Pod的节点，并且直接由该节点上的kube-proxy转发到本地的Pod。这样可以保留客户端的源IP，并且避免额外的网络跳转。</li>
+</ul>
+<p><strong>为什么使用<code>externalTrafficPolicy: Local</code>对于IP哈希会话保持更有利？</strong></p>
+<p>当使用<code>sessionAffinity: ClientIP</code>时，Service会根据客户端的IP地址进行哈希，将同一个客户端的请求转发到同一个Pod。但是，如果<code>externalTrafficPolicy</code>是<code>Cluster</code>，那么到达Service的流量可能会先到任何一个节点，然后该节点再转发到目标Pod。在这个过程中，客户端的源IP可能会被丢失（因为经过SNAT），尤其是当流量被转发到不同节点上的Pod时。</p>
+<p>而设置<code>externalTrafficPolicy: Local</code>可以确保：</p>
+<ol>
+<li>保留客户端的真实IP地址。</li>
+<li>流量只到达运行有Pod的节点，并且直接由该节点处理，不会跨节点转发。</li>
+</ol>
+<p>这样，基于客户端IP的会话保持会更加准确，因为Service看到的客户端IP是真实的，而不是某个中间节点的IP。</p>
+<h3 id="其他实现方案"><a href="#其他实现方案" class="headerlink" title="其他实现方案"></a>其他实现方案</h3><h4 id="方案二：使用Ingress的会话保持"><a href="#方案二：使用Ingress的会话保持" class="headerlink" title="方案二：使用Ingress的会话保持"></a>方案二：使用Ingress的会话保持</h4><p>如果使用Ingress，可以配置：</p>
+<p>yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: your-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/affinity: &quot;cookie&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-name: &quot;route&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-expires: &quot;172800&quot;</span><br><span class="line">    nginx.ingress.kubernetes.io/session-cookie-max-age: &quot;172800&quot;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: your-domain.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: your-service</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><strong>ClientIP获取问题</strong>：在云环境或经过NAT时，可能需要配置<code>externalTrafficPolicy: Local</code>来确保获取真实客户端IP</li>
+<li><strong>Pod重启问题</strong>：如果Pod重启，会话会中断，需要考虑应用层的会话复制或持久化</li>
+<li><strong>测试方法</strong>：从同一客户端多次访问，检查日志确认请求总是到达同一个Pod</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>您只需要在Service中设置<code>sessionAffinity: ClientIP</code>即可，<strong>不需要填写Pod的IP地址</strong>。Kubernetes会自动基于客户端IP进行哈希计算，将同一客户端的请求路由到同一个Pod。</p>
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>容器化之细节问题处理篇01</title>
     <url>/2025/09/06/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8701/</url>
     <content><![CDATA[<p>问题现象：<br>容器1，我们可以看到：</p>
@@ -878,6 +917,36 @@
       </tags>
   </entry>
   <entry>
+    <title>容器化之细节问题处理篇04</title>
+    <url>/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/</url>
+    <content><![CDATA[<p>问题背景：在k8s种，查看一个mysql 容器化的内存（16G）告警了，表示资源不够了。该mysql pod 有三副本，一主两从。有1从得资源内存耗费很低。且该内存已经由8G已经扩容至16G了。使用kubectl top 查看该mysql的 的确是到达了15334Mi ，但是docker stats看到的内存使用量4.477GiB。为什么同一个对象，显示的内存差异如此之大。</p>
+<p>核心原因：统计维度不同</p>
+<p><strong><code>docker stats</code> (显示 4.477 GiB)</strong></p>
+<ul>
+<li><strong>统计对象</strong>： Docker 容器本身（即 <code>cgroup</code> 的内存使用情况）。</li>
+<li><strong>统计内容</strong>：RSS，即进程占用的内存。这个值更接近应用程序（比如你的 MySQL 进程）真正占用的、未被磁盘缓存缓冲区的内存</li>
+<li><strong>特点</strong>： 这个值通常会更小，因为它不包含被内核利用为缓存（Page Cache）的内存。</li>
+</ul>
+<p><strong><code>kubectl top</code> (显示 15334 MiB ≈ 15 GiB)</strong></p>
+<ul>
+<li><p><strong>统计来源</strong>： 这个数据来自于 Kubernetes 的监控组件 <code>metrics-server</code>，而 <code>metrics-server</code> 的数据又来自节点的 <code>cAdvisor</code>。</p>
+</li>
+<li><p><strong>统计内容</strong>： 它显示的是<strong>容器内存工作集（Working Set）</strong> 的大小。</p>
+</li>
+<li><p><strong>工作集（Working Set）</strong> 包括：</p>
+<p>内存使用量（memory.usage_in_bytes）：&#x3D; RSS + 缓存（包括文件缓存、块设备缓存等） + 内核内存等</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+        <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>容器化之细节问题处理篇03</title>
     <url>/2025/09/11/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8703/</url>
     <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Warning  SystemLoadIsFull  56s (x1313 over 2d2h)  custom-plugin-monitor  (combined from similar events): system load/cores percent exceeded threshold 80%, load/cores percent: 118.09%, load15m: 37.79</span><br></pre></td></tr></table></figure>
@@ -922,36 +991,6 @@
 <li><p><strong>为什么您的系统负载高，但CPU使用率看起来不算极高？</strong></p>
 <p>1.<strong><code>%wa</code> (I&#x2F;O Wait)</strong>,几乎所有核心的 <code>%wa</code> 都是 <strong>0.0</strong>。所有高纯粹的CPU计算资源竞争。</p>
 <p>2.这些进程对CPU的总需求（43.67）超过了系统能同时提供的数量（32），所以它们必须<strong>排队</strong>。这个排队队伍的<strong>平均长度</strong>就是负载平均值(43.67)。【理解等于PID的所再占的CPU值大于32】</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>容器化</category>
-      </categories>
-      <tags>
-        <tag>k8s</tag>
-        <tag>cpu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>容器化之细节问题处理篇04</title>
-    <url>/2025/09/15/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8704/</url>
-    <content><![CDATA[<p>问题背景：在k8s种，查看一个mysql 容器化的内存（16G）告警了，表示资源不够了。该mysql pod 有三副本，一主两从。有1从得资源内存耗费很低。且该内存已经由8G已经扩容至16G了。使用kubectl top 查看该mysql的 的确是到达了15334Mi ，但是docker stats看到的内存使用量4.477GiB。为什么同一个对象，显示的内存差异如此之大。</p>
-<p>核心原因：统计维度不同</p>
-<p><strong><code>docker stats</code> (显示 4.477 GiB)</strong></p>
-<ul>
-<li><strong>统计对象</strong>： Docker 容器本身（即 <code>cgroup</code> 的内存使用情况）。</li>
-<li><strong>统计内容</strong>：RSS，即进程占用的内存。这个值更接近应用程序（比如你的 MySQL 进程）真正占用的、未被磁盘缓存缓冲区的内存</li>
-<li><strong>特点</strong>： 这个值通常会更小，因为它不包含被内核利用为缓存（Page Cache）的内存。</li>
-</ul>
-<p><strong><code>kubectl top</code> (显示 15334 MiB ≈ 15 GiB)</strong></p>
-<ul>
-<li><p><strong>统计来源</strong>： 这个数据来自于 Kubernetes 的监控组件 <code>metrics-server</code>，而 <code>metrics-server</code> 的数据又来自节点的 <code>cAdvisor</code>。</p>
-</li>
-<li><p><strong>统计内容</strong>： 它显示的是<strong>容器内存工作集（Working Set）</strong> 的大小。</p>
-</li>
-<li><p><strong>工作集（Working Set）</strong> 包括：</p>
-<p>内存使用量（memory.usage_in_bytes）：&#x3D; RSS + 缓存（包括文件缓存、块设备缓存等） + 内核内存等</p>
 </li>
 </ul>
 ]]></content>
