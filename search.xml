@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ADP的学习之路01</title>
+    <url>/2025/09/19/ADP%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF01/</url>
+    <content><![CDATA[<p>假设你的目标是 <strong>“做一顿丰盛的晚餐”</strong>：</p>
+<ul>
+<li><strong>只用 RAG：</strong> 你问它“红烧肉怎么做？”，它去翻菜谱，然后给你一个最正宗的做法。但它不会动手做。</li>
+<li><strong>只用 Workflow：</strong> 你设置好一个流程：1. 洗菜 -&gt; 2. 切菜 -&gt; 3. 炒菜 -&gt; 4. 装盘。它会把每一步都自动化执行，但如果你突然想改做清蒸鱼，整个流程就得重写。</li>
+<li><strong>使用 Agent：</strong> 你直接告诉它“我饿了，想做点好吃的，冰箱里有排骨和土豆”。它会自己决定是做糖醋排骨还是土豆烧排骨，然后自己去搜索做法，控制炒菜机、电饭煲等工具，最后把菜端到你面前。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>智能体</category>
+      </categories>
+      <tags>
+        <tag>ADP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Chronyd 安装与配置排错指南</title>
     <url>/2025/09/07/Chronyd-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="Chronyd-安装与配置排错指南"><a href="#Chronyd-安装与配置排错指南" class="headerlink" title="Chronyd 安装与配置排错指南"></a>Chronyd 安装与配置排错指南</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
@@ -106,36 +123,6 @@
       </categories>
       <tags>
         <tag>chrony</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ADP的学习之路01</title>
-    <url>/2025/09/19/ADP%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF01/</url>
-    <content><![CDATA[<p>假设你的目标是 <strong>“做一顿丰盛的晚餐”</strong>：</p>
-<ul>
-<li><strong>只用 RAG：</strong> 你问它“红烧肉怎么做？”，它去翻菜谱，然后给你一个最正宗的做法。但它不会动手做。</li>
-<li><strong>只用 Workflow：</strong> 你设置好一个流程：1. 洗菜 -&gt; 2. 切菜 -&gt; 3. 炒菜 -&gt; 4. 装盘。它会把每一步都自动化执行，但如果你突然想改做清蒸鱼，整个流程就得重写。</li>
-<li><strong>使用 Agent：</strong> 你直接告诉它“我饿了，想做点好吃的，冰箱里有排骨和土豆”。它会自己决定是做糖醋排骨还是土豆烧排骨，然后自己去搜索做法，控制炒菜机、电饭煲等工具，最后把菜端到你面前。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>智能体</category>
-      </categories>
-      <tags>
-        <tag>ADP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ETCD基本使用及问题处理01</title>
-    <url>/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
-    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line">3.检查每个endpoint的健康状况，主备均正常，endpoints填上面列出的每条<span class="string">&quot;CLIENT ADDRS&quot;</span>中的IP:PORT</span><br><span class="line">etcdctl --endpoints=10.30.2.8:2379,10.30.2.7:2379,10.30.2.6:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key endpoint health --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>中间</category>
-      </categories>
-      <tags>
-        <tag>ETCD</tag>
       </tags>
   </entry>
   <entry>
@@ -301,6 +288,19 @@
       </categories>
       <tags>
         <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ETCD基本使用及问题处理01</title>
+    <url>/2025/09/11/ETCD%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%8601/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.拷贝etcd命令并指定并使用etcdctlv3的版本</span><br><span class="line"><span class="built_in">which</span> etcdctl || docker <span class="built_in">cp</span> $(docker ps | grep  etcd-10 | grep -v pause | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>):/usr/local/bin/etcdctl  /usr/local/bin/</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_API=3</span><br><span class="line">2.查询etcd member</span><br><span class="line">etcdctl --endpoints=https://127.0.0.1:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  member list --write-out=table</span><br><span class="line">3.查询etcd leader</span><br><span class="line">etcdctl  --endpoints=10.0.3.1xx:2379,10.0.3.1yy:2379,10.0.3.2zz:2379  --cacert=/etc/kubernetes/pki/etcd/ca.crt  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key  endpoint status --write-out=table</span><br><span class="line">3.检查每个endpoint的健康状况，主备均正常，endpoints填上面列出的每条<span class="string">&quot;CLIENT ADDRS&quot;</span>中的IP:PORT</span><br><span class="line">etcdctl --endpoints=10.30.2.8:2379,10.30.2.7:2379,10.30.2.6:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key endpoint health --write-out=table</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>中间</category>
+      </categories>
+      <tags>
+        <tag>ETCD</tag>
       </tags>
   </entry>
   <entry>
@@ -1003,11 +1003,25 @@
       </tags>
   </entry>
   <entry>
+    <title>容器化之细节问题处理篇05</title>
+    <url>/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/</url>
+    <content><![CDATA[<p>nerdctl 构建镜像</p>
+<p>需求场景，需要做一个提交代码，然后构建镜像的脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">docker run -td --network host --entrypoint bash registry.tce.com/director-daemon/director-xdp:1.0.0-20250714-163850-01d4694.rhel.amd64</span><br><span class="line">nerdctl -n k8s.io <span class="built_in">cp</span> ./tcs_lb.c b3476a7b1d77:/tcs_lb/tcs_lb.c</span><br><span class="line">nerdctl -nk8s.io commit -c <span class="string">&#x27;ENTRYPOINT [&quot;/director-loader&quot;]&#x27;</span> b3476a7b1d77  registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line">nerdctl -nk8s.io push registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>containerd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的一次考试准备工作</title>
     <url>/2025/11/13/%E6%88%91%E7%9A%84%E4%B8%80%E6%AC%A1%E8%80%83%E8%AF%95%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</url>
     <content><![CDATA[<p>部署的资源信息：<img src="/images/%E6%88%91%E7%9A%84%E4%B8%80%E6%AC%A1%E8%80%83%E8%AF%95%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.asserts/image-20251113015807537.png" alt="image-20251113015807537"></p>
 <p><img src="/images/%E6%88%91%E7%9A%84%E4%B8%80%E6%AC%A1%E8%80%83%E8%AF%95%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.asserts/image-20251113015848691.png" alt="image-20251113015848691"> </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">自研：考试记得提前下载物料 260多G 差不多要2个多小时</span><br><span class="line">虚拟IP（vip）：https://console.cloud.tencent.com/vpc/havip2?rid=33</span><br><span class="line">163地址：https://mail.163.com/ 13387324256@163.com shuaihui123456,</span><br><span class="line">腾讯云账号登陆：100010739579 13387324256@163.com shuaihui123456,</span><br><span class="line">实例信息：https://console.cloud.tencent.com/cvm/instance/index?rid=33</span><br><span class="line">保存的物料盘： 申请了挂上去 /material</span><br><span class="line">操作系统选择：7.9 </span><br><span class="line"></span><br><span class="line">部署手册：</span><br><span class="line">https://cloud.tencent.com/edu/learning/learn-4306-80047 <span class="comment"># ppt</span></span><br><span class="line">https://docs.qq.com/doc/DSXBnVkxFa3NvdFVP <span class="comment">#底座部署</span></span><br><span class="line">https://docs.qq.com/doc/DSXZzR3dPbG5qRVVQ <span class="comment">#自研软件认证实验考试注意事项</span></span><br><span class="line">https://docs.qq.com/doc/DSWdrb2xZaVpaWkxj <span class="comment">#腾讯云原生TCS TBDS部署手册</span></span><br><span class="line">https://docs.qq.com/doc/DSW52c2ZveFpwRFN6?nlc=1 <span class="comment">#腾讯云原生TCS WeData部署手册</span></span><br><span class="line"></span><br><span class="line">1.havip 4个：10.15.15.11,10.15.15.13,10.15.15.14,10.15.15.15 </span><br><span class="line">2. master 3台 : 64C128G 100G 1000G 1500G 1000G 600G</span><br><span class="line">  - ip: 10.15.15.19</span><br><span class="line">  - ip: 10.15.15.39 </span><br><span class="line">  - ip: 10.15.15.45</span><br><span class="line">   worker:1. WeData（manager管控服务,页面功能）&amp;Wedata-Worker: 4台 32C64G 100G 1000G 1000G 2. TBDS:3台 32C64G 100G 500G 500G</span><br><span class="line"></span><br><span class="line">云鼎（可选）：3台 32C64G 200G 500G 1000G</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">自研：考试记得提前下载物料 260多G 差不多要2个多小时</span><br><span class="line">虚拟IP（vip）：https://console.cloud.tencent.com/vpc/havip2?rid=33</span><br><span class="line">163地址：https://mail.163.com/ 13387324256@163.com shuaihui123456,</span><br><span class="line">腾讯云账号登陆：100010739579 13387324256@163.com shuaihui123456,</span><br><span class="line">实例信息：https://console.cloud.tencent.com/cvm/instance/index?rid=33</span><br><span class="line">保存的物料盘： 申请了挂上去 /material</span><br><span class="line">操作系统选择：7.9  3.10.0-1160.119.1.el7.x86_64</span><br><span class="line"></span><br><span class="line">部署手册：</span><br><span class="line">https://cloud.tencent.com/edu/learning/learn-4306-80047 <span class="comment"># ppt</span></span><br><span class="line">https://docs.qq.com/doc/DSXBnVkxFa3NvdFVP <span class="comment">#底座部署</span></span><br><span class="line">https://docs.qq.com/doc/DSXZzR3dPbG5qRVVQ <span class="comment">#自研软件认证实验考试注意事项</span></span><br><span class="line">https://docs.qq.com/doc/DSWdrb2xZaVpaWkxj <span class="comment">#腾讯云原生TCS TBDS部署手册</span></span><br><span class="line">https://docs.qq.com/doc/DSW52c2ZveFpwRFN6?nlc=1 <span class="comment">#腾讯云原生TCS WeData部署手册</span></span><br><span class="line"></span><br><span class="line">1.havip 4个：10.15.15.11,10.15.15.13,10.15.15.14,10.15.15.15 </span><br><span class="line">2. master 3台 : 64C128G 100G 1000G 1500G 1000G 600G</span><br><span class="line">  - ip: 10.15.15.19</span><br><span class="line">  - ip: 10.15.15.39 </span><br><span class="line">  - ip: 10.15.15.45</span><br><span class="line">   worker:1. WeData（manager管控服务,页面功能）&amp;Wedata-Worker: 4台 32C64G 100G 1000G 1000G 2. TBDS:3台 32C64G 100G 500G 500G</span><br><span class="line"></span><br><span class="line">云鼎（可选）：3台 32C64G 200G 500G 1000G</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p> 1、     TCS底座+TBDS+Wedata的全量包( <strong>提前下载</strong>，下载时，直接通过sh download.sh -p true下载即可；需要一块单独的至少 <strong>600G</strong> 的数据盘)</p>
 <p>2、     wedata的客制化包(很小可以不提前下载，可以部署过程中再去下载，放到&#x2F;data&#x2F;toc&#x2F;materials&#x2F;进行下载)</p>
@@ -1042,20 +1056,6 @@
       <categories>
         <category>杂篇</category>
       </categories>
-  </entry>
-  <entry>
-    <title>容器化之细节问题处理篇05</title>
-    <url>/2025/09/25/%E5%AE%B9%E5%99%A8%E5%8C%96%E4%B9%8B%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86%E7%AF%8705/</url>
-    <content><![CDATA[<p>nerdctl 构建镜像</p>
-<p>需求场景，需要做一个提交代码，然后构建镜像的脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">docker run -td --network host --entrypoint bash registry.tce.com/director-daemon/director-xdp:1.0.0-20250714-163850-01d4694.rhel.amd64</span><br><span class="line">nerdctl -n k8s.io <span class="built_in">cp</span> ./tcs_lb.c b3476a7b1d77:/tcs_lb/tcs_lb.c</span><br><span class="line">nerdctl -nk8s.io commit -c <span class="string">&#x27;ENTRYPOINT [&quot;/director-loader&quot;]&#x27;</span> b3476a7b1d77  registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line">nerdctl -nk8s.io push registry.tce.com/director-daemon/director-xdp:<span class="built_in">test</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>容器化</category>
-      </categories>
-      <tags>
-        <tag>containerd</tag>
-      </tags>
   </entry>
   <entry>
     <title>我的第一篇博客</title>
